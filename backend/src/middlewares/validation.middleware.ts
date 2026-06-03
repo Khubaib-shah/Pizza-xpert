@@ -12,7 +12,7 @@ export const validate = (schema: z.ZodSchema) =>
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        return res.status(400).json({ message: 'Validation Error', errors: error.issues });
       }
       return res.status(500).json({ message: 'Internal Server Error' });
     }
