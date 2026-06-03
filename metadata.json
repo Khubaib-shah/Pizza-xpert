@@ -1,0 +1,6 @@
+{
+  "name": "Pizza Xpert",
+  "description": "Expertise In Every Slice! A cinematic, high-converting premium digital pizza ordering product.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;700;900&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", "Montserrat", sans-serif;
+  --font-script: "Pacifico", cursive;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-burgundy: #5D1113;
+  --color-cheese: #F5B109;
+  --color-tomato: #E63946;
+  --color-cream: #F8F3E7;
+  --color-charcoal: #1E1E1E;
+  --color-olive: #6BAA75;
+}
+
+/* Custom CSS variables & Global rules */
+@layer base {
+  body {
+    background-color: #1E1E1E;
+    color: #F8F3E7;
+    font-family: "Montserrat", sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Film grain effect — fixed so it doesn't repaint on scroll */
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Chrome/Safari/Edge Scrollbar customization */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1E1E1E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5D1113;
+  border-radius: 999px;
+  border: 2px solid #1E1E1E;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F5B109;
+}
+
+/* Interactive custom animation rules */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.animate-float-levitate {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker-scroller {
+  animation: ticker-scroll 42s linear infinite;
+}
+
+/* Cheese Glow highlights */
+.cheese-glow {
+  background: radial-gradient(circle, rgba(245, 177, 9, 0.15) 0%, rgba(245, 177, 9, 0) 70%);
+}
+
+.tomato-glow {
+  background: radial-gradient(circle, rgba(230, 57, 70, 0.1) 0%, rgba(230, 57, 70, 0) 70%);
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card-dark {
+  backdrop-filter: blur(24px);
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Utility shadow overrides */
+.btn-cheese-shadow {
+  box-shadow: 0 4px 20px rgba(245, 177, 9, 0.4);
+}
+
+.btn-cheese-shadow:hover {
+  box-shadow: 0 8px 30px rgba(245, 177, 9, 0.6);
+}
+
+.btn-burgundy-shadow {
+  box-shadow: 0 4px 20px rgba(93, 17, 19, 0.5);
+}
+
+.u-form-input {
+  width: 100%;
+  background: #151515;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  color: #f8f3e7;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.u-form-input:focus {
+  border-color: #f5b109;
+  box-shadow: 0 0 0 4px rgba(245, 177, 9, 0.12);
+}
+
+.u-button-primary {
+  background: #e63946;
+  color: #ffffff;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.u-button-primary:hover {
+  background: #f5b109;
+  color: #1e1e1e;
+}
+
+.card-pizza-shadow {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.card-pizza-shadow-hover:hover {
+  box-shadow: 0 16px 48px rgba(93, 17, 19, 0.6);
+}
+
+/* Text glow effects — use GPU-compositable color-only glow, avoid text-shadow during scroll */
+.text-glow-gold {
+  color: #F5B109;
+}
+
+.text-glow-red {
+  color: #E63946;
+}
+
+/* Scroll performance: promote interactive cards to their own GPU layer */
+.card-pizza-shadow {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+}
+
+.card-pizza-shadow-hover:hover {
+  box-shadow: 0 16px 48px rgba(93, 17, 19, 0.6);
+}
+
+.hero-section {
+  background: radial-gradient(circle at center, #8B0000 0%, #660000 100%);
+  min-height: 400px;
+  width: 100%;
+}
+
+/* Primary Button Animation */
+.btn-primary-anim {
+  position: relative;
+  transition: ease-out 0.3s;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary-anim::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: var(--color-cheese);
+  transition: ease-out 0.3s;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.btn-primary-anim:hover::before {
+  height: 100%;
+}
+
+.btn-primary-anim:hover {
+  color: var(--color-charcoal) !important;
+}
+
+.btn-primary-anim:active {
+  transform: scale(0.9);
+}
+
+/* Secondary Button Animation */
+.btn-secondary-anim {
+  position: relative;
+  display: inline-block;
+  transition: 0.3s;
+  background-color: transparent !important;
+  border: 2px solid var(--color-cheese) !important;
+  color: var(--color-cheese) !important;
+  overflow: visible;
+  z-index: 1;
+}
+
+.btn-secondary-anim::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background-color: var(--color-charcoal);
+  transition: 0.3s ease-out;
+  transform: scaleY(1);
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.btn-secondary-anim::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: 50%;
+  background-color: var(--color-charcoal);
+  transition: 0.3s ease-out;
+  transform: scaleY(1);
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.btn-secondary-anim:hover::before {
+  transform: translateY(-25px);
+  height: 0;
+}
+
+.btn-secondary-anim:hover::after {
+  transform: scaleX(0);
+  transition-delay: 0.15s;
+}
+
+.btn-secondary-anim:hover {
+  border: 2px solid var(--color-cheese) !important;
+  color: var(--color-cheese) !important;
+}
+
+.btn-secondary-text {
+  position: relative;
+  z-index: 3;
+}
