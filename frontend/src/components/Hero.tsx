@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Star, Flame, ArrowRight, ChevronLeft, ChevronRight, Award } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-import dealBgMain from '../assets/images/hero_deal_bg_1780278334343.png';
-import dealBgOven from '../assets/images/pizza_oven_1780276189628.png';
-import dealBgPepperoni from '../assets/images/pizza_pepperoni_1780276165703.png';
+import dealBgMain from '../assets/images/2.png';
+import dealBgOven from '../assets/images/1.png';
+import dealBgPepperoni from '../assets/images/1.png';
 
 interface HeroProps {
   onScrollToElement: (id: string) => void;
@@ -54,47 +54,47 @@ export default function Hero({ onScrollToElement }: HeroProps) {
     {
       id: 'deal-8-pizza',
       backgroundImg: dealBgMain,
-      badgeText: '🔥 HOT DEALS COMBO',
+      badgeText: '🔥 TOP SELLING DEAL',
       titleNumber: '8',
-      titleTextLines: ['LARGE', 'PIZZA'],
+      titleTextLines: ['LARGE', 'PIZZAS'],
       items: [
-        '1 x JUMBO COLDRINK',
-        '8 x DIP SAUCE'
+        '1 x JUMBO DRINK',
+        '8 x DIP SAUCES'
       ],
       price: '3850',
-      pricePrefix: 'PKR',
-      primaryCtaText: 'ORDER COMBO',
-      secondaryCtaText: 'VIEW signatures'
+      pricePrefix: 'Rs.',
+      primaryCtaText: 'ORDER NOW',
+      secondaryCtaText: 'VIEW MENU'
     },
     {
       id: 'deal-4-pizza',
       backgroundImg: dealBgOven,
-      badgeText: '⚡ WOODFIRE FAMILY SPECIAL',
+      badgeText: '⚡ FAMILY SPECIAL',
       titleNumber: '4',
       titleTextLines: ['MEDIUM', 'PIZZAS'],
       items: [
-        '1 x LITER COLDRINK',
-        '4 x DIP SAUCE'
+        '1 x LITER DRINK',
+        '4 x DIP SAUCES'
       ],
       price: '2150',
-      pricePrefix: 'PKR',
-      primaryCtaText: 'CLAIM FAMILY FEAST',
-      secondaryCtaText: 'VEGETARIAN CORNER'
+      pricePrefix: 'Rs.',
+      primaryCtaText: 'GET THIS DEAL',
+      secondaryCtaText: 'SEE ALL DEALS'
     },
     {
       id: 'deal-2-pizza',
       backgroundImg: dealBgPepperoni,
-      badgeText: '🏆 CRUST CRUSH BONANZA',
+      badgeText: '🏆 CHEESY LOVERS',
       titleNumber: '2',
       titleTextLines: ['JUMBO', 'PIZZAS'],
       items: [
-        '1 x CHILLED SODA',
+        '1 x CHILLED DRINK',
         '3 x GARLIC DIPS'
       ],
       price: '1650',
-      pricePrefix: 'PKR',
-      primaryCtaText: 'GRAB COZY DEAL',
-      secondaryCtaText: 'POPULAR OFFERS'
+      pricePrefix: 'Rs.',
+      primaryCtaText: 'ORDER NOW',
+      secondaryCtaText: 'MORE DEALS'
     }
   ];
 
@@ -124,7 +124,7 @@ export default function Hero({ onScrollToElement }: HeroProps) {
     <section
       id="home"
       style={{
-        backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.8) 40%, rgba(20, 20, 20, 0.3) 70%, rgba(20, 20, 20, 0.6) 100%), url(${activeSlide.backgroundImg})`,
+        backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.6) 30%, rgba(20, 20, 20, 0.3) 60%, rgba(20, 20, 20, 0) 100%), url(${activeSlide.backgroundImg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center right',
       }}
@@ -138,46 +138,71 @@ export default function Hero({ onScrollToElement }: HeroProps) {
       <div className="max-w-7xl mx-auto w-full px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center my-auto py-10 relative z-10">
 
         {/* LEFT COMPOSITION COLUMN WITH HERO CARD INFO */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait"> 
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 40 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="lg:col-span-7 flex flex-col justify-center text-left space-y-6 md:space-y-8 z-10"
+            className="lg:col-span-7 flex flex-col justify-center text-left space-y-6 md:space-y-8 z-10 order-2 lg:order-1"
           >
 
-            {/* Promo Pill Badge */}
-            <div className="inline-flex self-start items-center gap-2 px-4 py-2 bg-burgundy/90 border border-tomato/30 text-cheese font-sans text-xs md:text-sm font-bold tracking-wide rounded-full uppercase shadow-lg shadow-black/40">
-              <Flame className="w-4 h-4 text-tomato" />
-              <span>{activeSlide.badgeText}</span>
-            </div>
 
             {/* Main Display Heading */}
             <div className="relative space-y-2">
               <div className="flex items-center gap-4 select-none">
                 {/* Big Number Display */}
-                <span className="text-8.5xl sm:text-[130px] md:text-[160px] font-bold text-white leading-none tracking-wide filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
+                <span className="!text-8xl self-end sm:text-[130px] md:text-[160px] font-bold text-white leading-none tracking-wide filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
                   {activeSlide.titleNumber}
                 </span>
 
                 {/* Text Lines */}
-                <div className="flex flex-col justify-center">
-                  {activeSlide.titleTextLines.map((line, idx) => (
-                    <span
-                      key={idx}
-                      className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide text-[#F5B109] leading-[0.85] filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] uppercase"
-                    >
-                      {line}
-                    </span>
-                  ))}
+                <div className="flex items-end gap-3 sm:gap-5">
+                  <div className="flex flex-col justify-center">
+                    {activeSlide.titleTextLines.map((line, idx) => (
+                      <span
+                        key={idx}
+                        className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide text-cheese leading-[0.85] filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] uppercase"
+                      >
+                        {line}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Mobile Animated Badge Indicator (Hidden on md and up) */}
+                  <div className="md:hidden flex flex-col justify-end items-center pb-1 pl-12 ">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0, scale: 0.7, rotate: -20 }}
+                        animate={{ opacity: 1, scale: 1, rotate: -5 }}
+                        exit={{ opacity: 0, scale: 0.7, rotate: 20 }}
+                        transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.15 }}
+                      >
+                        <div className="relative w-32 h-32 flex items-center justify-center" style={{ willChange: 'transform' }}>
+                          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
+                            <path fill="var(--color-burgundy)" stroke="var(--color-cheese)" strokeWidth="1.5" strokeLinejoin="round" d={renderScallopPath(28, 43, 47)} />
+                            <path fill="transparent" stroke="white" strokeWidth="0.8" strokeDasharray="1.5,1.5" strokeLinejoin="round" d={renderScallopPath(28, 39, 41)} />
+                          </svg>
+                          <div className="relative z-10 text-center flex flex-col justify-center items-center select-none font-display">
+                            <span className="text-[10px] !font-normal text-cheese tracking-wide leading-none filter drop-shadow">
+                              {activeSlide.pricePrefix}
+                            </span>
+                            <span className="text-[22px] font-medium text-white tracking-wide leading-none mt-0.5 shadow-text filter drop-shadow-md">
+                              {activeSlide.price}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Combo Bullet Items List */}
-            <div className="space-y-3 select-none border-l-4 border-[#F5B109] pl-5 py-1">
+            <div className="space-y-3 select-none border-l-4 border-cheese pl-5 py-1">
               {activeSlide.items.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-cheese flex-shrink-0" />
@@ -189,19 +214,22 @@ export default function Hero({ onScrollToElement }: HeroProps) {
             </div>
 
             {/* Action buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex items-center gap-2 sm:gap-4 pt-2 w-full max-w-[480px]">
               <button
                 onClick={() => onScrollToElement('menu')}
-                className="btn-primary-anim bg-[var(--color-burgundy)] text-white font-sans font-bold text-xs uppercase tracking-[2px] py-4 px-8 rounded-xl border border-white/10 w-full sm:w-auto btn-burgundy-shadow flex items-center justify-center gap-3 cursor-pointer"
+                className="flex-1 btn-primary-anim bg-[var(--color-burgundy)] text-white font-sans font-bold text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl border border-white/10 btn-burgundy-shadow flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
               >
-                {activeSlide.primaryCtaText}
-                <ArrowRight className="w-4 h-4" />
+                <span className="truncate">{activeSlide.primaryCtaText}</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               </button>
               <button
                 onClick={() => onScrollToElement('menu')}
-                className="btn-secondary-anim font-sans font-bold text-xs uppercase tracking-[2px] py-4 px-8 rounded-xl w-full sm:w-auto text-center cursor-pointer"
+                className="flex-1 btn-secondary-anim font-sans font-bold text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
               >
-                <span className="btn-secondary-text">{activeSlide.secondaryCtaText}</span>
+                <span className="btn-secondary-text flex items-center justify-center gap-1.5 sm:gap-2 truncate">
+                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  {activeSlide.secondaryCtaText}
+                </span>
               </button>
             </div>
 
@@ -209,43 +237,24 @@ export default function Hero({ onScrollToElement }: HeroProps) {
         </AnimatePresence>
 
         {/* RIGHT COLUMN PLACEHOLDER TO ALLOW THE PICTURE BACKGROUND ON RIGHT TO SHINE */}
-        <div className="lg:col-span-5 relative flex items-center justify-center p-4 min-h-[180px] md:min-h-[220px] lg:min-h-0 select-none">
+        <div className="order-1 lg:order-2 lg:col-span-5 relative flex items-center justify-center p-4 min-h-[180px] md:min-h-[220px] lg:min-h-0 select-none">
 
           {/* Active slide pricing sticker overlay positioned precisely on top of the design circles */}
           <AnimatePresence mode="wait">
-            {currentSlide === 0 ? (
-              /* Align text exactly over the embedded badge on the backplate of slide 0 */
-              <motion.div
-                key="badge-text-over-img"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.6, delay: 0.15 }}
-                className="absolute right-[22%] top-[45%] md:right-[23%] md:top-[42%] lg:right-[35%] lg:top-[44%] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center font-display"
-              >
-                <span className="text-xs sm:text-sm font-bold text-[#F5B109] tracking-widest leading-none filter drop-shadow">
-                  {activeSlide.pricePrefix}
-                </span>
-                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-wide leading-none mt-1 sm:mt-2 filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
-                  {activeSlide.price}
-                </span>
-              </motion.div>
-            ) : (
-              /* Render manual golden scallop badge sticker over custom backgrounds of other slides */
-              <motion.div
+           <motion.div
                 key={currentSlide}
                 initial={{ opacity: 0, scale: 0.7, rotate: -20 }}
                 animate={{ opacity: 1, scale: 1, rotate: -5 }}
                 exit={{ opacity: 0, scale: 0.7, rotate: 20 }}
                 transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.15 }}
-                className="absolute right-[22%] top-[45%] md:right-[23%] md:top-[42%] lg:right-[35%] lg:top-[44%] -translate-x-1/2 -translate-y-1/2 z-20"
+                className="hidden md:flex absolute right-[22%] top-[45%] md:right-[23%] md:top-[42%] lg:right-[35%] lg:top-[44%] -translate-x-1/2 -translate-y-1/2 z-20"
               >
                 <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center" style={{ willChange: 'transform' }}>
                   <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)]">
                     {/* Outer Scalloped Border with Glow */}
                     <path
-                      fill="#5D1113"
-                      stroke="#F5B109"
+                      fill="var(--color-burgundy)"
+                      stroke="var(--color-cheese)"
                       strokeWidth="1.5"
                       strokeLinejoin="round"
                       d={renderScallopPath(28, 43, 47)}
@@ -262,16 +271,15 @@ export default function Hero({ onScrollToElement }: HeroProps) {
                   </svg>
                   {/* Content */}
                   <div className="relative z-10 text-center flex flex-col justify-center items-center select-none font-display">
-                    <span className="text-[10px] md:text-xs font-bold text-[#F5B109] tracking-wide leading-none filter drop-shadow">
+                    <span className="text-[10px] md:text-xs !font-normal text-cheese tracking-wide leading-none filter drop-shadow">
                       {activeSlide.pricePrefix}
                     </span>
-                    <span className="text-2xl md:text-3xl font-bold text-white tracking-wide leading-none mt-1 shadow-text filter drop-shadow-md">
+                    <span className="text-2xl md:text-3xl font-medium text-white tracking-wide leading-none mt-1 shadow-text filter drop-shadow-md">
                       {activeSlide.price}
                     </span>
                   </div>
                 </div>
               </motion.div>
-            )}
           </AnimatePresence>
 
         </div>
@@ -281,14 +289,14 @@ export default function Hero({ onScrollToElement }: HeroProps) {
       {/* Manual Slide Navigation Arrow Overlays (visible on medium & up) */}
       <button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-black/60 hover:bg-[#E63946] border border-white/10 text-white items-center justify-center transition-all z-30 cursor-pointer hover:scale-110"
+        className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-black/60 hover:bg-tomato border border-white/10 text-white items-center justify-center transition-all z-30 cursor-pointer hover:scale-110"
         title="Previous combo"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-black/60 hover:bg-[#E63946] border border-white/10 text-white items-center justify-center transition-all z-30 cursor-pointer hover:scale-110"
+        className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-black/60 hover:bg-tomato border border-white/10 text-white items-center justify-center transition-all z-30 cursor-pointer hover:scale-110"
         title="Next combo"
       >
         <ChevronRight className="w-6 h-6" />
@@ -300,7 +308,7 @@ export default function Hero({ onScrollToElement }: HeroProps) {
           <button
             key={slide.id}
             onClick={() => setCurrentSlide(sIdx)}
-            className={`transition-all duration-300 h-2 rounded-full ${sIdx === currentSlide ? 'w-8 bg-[#F5B109]' : 'w-2 bg-white/40 hover:bg-white/70'
+            className={`transition-all duration-300 h-2 rounded-full ${sIdx === currentSlide ? 'w-8 bg-cheese' : 'w-2 bg-white/40 hover:bg-white/70'
               }`}
             title={`Slide ${sIdx + 1}`}
           />
@@ -308,14 +316,14 @@ export default function Hero({ onScrollToElement }: HeroProps) {
       </div>
 
       {/* BOTTOM TICKER PANEL */}
-      <div className="relative w-full overflow-hidden bg-burgundy border-y border-[#E6394620] py-4 select-none mt-auto flex">
+      <div className="relative w-full overflow-hidden bg-burgundy border-y border-[var(--color-tomato)20] py-4 select-none mt-auto flex">
         <div className="animate-ticker-scroller flex whitespace-nowrap w-max font-display text-lg md:text-2xl text-cream font-medium uppercase tracking-wide">
           {Array.from({ length: 4 }).map((_, rIdx) => (
             <span key={rIdx} className="flex gap-12 pr-12">
               <span>HOT & FRESH ✦</span>
               <span className="text-cheese text-glow-gold">FREE DELIVERY TODAY ✦</span>
               <span>100% ARTISAN MOZZARELLA ✦</span>
-              <span className="text-tomato">EXPERTISE IN EVERY SLICE ✦</span>
+              <span className="text-tomato">TASTIEST PIZZA IN TOWN ✦</span>
               <span>WOODFIRE BAKED AT 850°F ✦</span>
             </span>
           ))}

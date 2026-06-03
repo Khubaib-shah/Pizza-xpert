@@ -62,7 +62,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
   };
 
   return (
-    <section id="deals" className="relative bg-[#5D1113] bg-grain py-20 px-4 md:px-6 overflow-hidden">
+    <section id="deals" className="relative bg-burgundy bg-grain py-20 px-4 md:px-6 overflow-hidden">
 
       {/* Decorative Cheese Drips top border */}
       <div className="absolute top-0 left-0 right-0 h-6 bg-cheese/10 border-b border-cheese/10 overflow-hidden pointer-events-none" />
@@ -78,7 +78,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
             <Sparkles className="w-3.5 h-3.5 text-cheese animate-pulse" />
             LOCKED BARGAIN DEALS
           </div>
-          <h2 className="font-display text-4xl md:text-6xl font-bold text-white tracking-wide uppercase">
+          <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase">
             POPULAR <span className="text-cheese text-glow-gold">OFFERS</span> & DEALS
           </h2>
           <div className="w-16 h-1 bg-cheese mx-auto rounded-full" />
@@ -97,7 +97,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
             return (
               <div
                 key={deal.id}
-                className="group relative bg-[#F5B109] rounded-[24px] p-6 flex flex-col justify-between shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(245,177,9,0.3)] text-charcoal border border-[#E6890A]/35"
+                className="group relative bg-cheese rounded-[24px] p-6 flex flex-col justify-between shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(245,177,9,0.3)] text-charcoal border border-cheese-dark/35"
               >
                 {/* LIMITED TIME CORNER TAG */}
                 {isLimited && (
@@ -108,11 +108,11 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
 
                 {/* Card Header Stamp */}
                 <div className="space-y-3 text-left">
-                  <div className="inline-block bg-charcoal text-[#F5B109] font-display text-[22px] font-black px-4.5 py-1 rounded-xl shadow-md uppercase tracking-wider">
+                  <div className="inline-block bg-charcoal text-cheese font-display text-[22px] font-black px-4.5 py-1 rounded-xl shadow-md uppercase tracking-wider">
                     {deal.discountBadge}
                   </div>
 
-                  <h3 className="font-display text-2xl md:text-3xl font-black text-charcoal leading-none uppercase tracking-tight">
+                  <h3 className="font-display text-2xl md:text-3xl font-black text-charcoal leading-none uppercase tracking-wide">
                     {deal.title}
                   </h3>
 
@@ -148,7 +148,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                     disabled={isClaimed}
                     className={`w-full py-3.5 px-4 rounded-xl font-sans font-black text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
                       ? 'bg-olive text-white'
-                      : 'bg-charcoal text-[#F5B109] hover:bg-burgundy hover:text-white'
+                      : 'bg-charcoal text-cheese hover:bg-burgundy hover:text-white'
                       }`}
                   >
                     {isClaimed ? (

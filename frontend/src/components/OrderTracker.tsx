@@ -141,12 +141,12 @@ export default function OrderTracker({
                 <span className="w-2 h-2 rounded-full bg-cheese animate-ping" />
                 LIVE RADAR DETECTOR
               </div>
-              <h3 className="font-display text-2xl md:text-3xl font-black text-white uppercase tracking-tight mt-1.5">
+              <h3 className="font-display text-2xl md:text-3xl font-black text-white uppercase tracking-wide mt-1.5">
                 TRACKING ORDER #{order.id}
               </h3>
             </div>
             {/* Countdown Badge UI */}
-            <div className="bg-[#262626] border border-white/5 rounded-2xl p-3 flex items-center gap-2.5">
+            <div className="bg-charcoal-light border border-white/5 rounded-2xl p-3 flex items-center gap-2.5">
               <Clock className="w-5 h-5 text-cheese animate-spin" style={{ animationDuration: '6s' }} />
               <div>
                 <div className="text-[9px] text-cream/40 font-bold uppercase leading-none">ESTIMATE GIVING</div>
@@ -156,14 +156,14 @@ export default function OrderTracker({
           </div>
 
           {/* DEMO Mode Toggle Warning for Sandbox representation */}
-          <div className="bg-[#5D1113]/30 border border-[#E6394625] p-3 rounded-xl flex items-center justify-between text-xs font-sans text-cream/80">
+          <div className="bg-burgundy/30 border border-[var(--color-tomato)25] p-3 rounded-xl flex items-center justify-between text-xs font-sans text-cream/80">
             <span className="flex items-center gap-1.5 font-semibold">
               <Sparkles className="w-4 h-4 text-cheese animate-bounce" />
               Demo Speed Courier Mode (x15 Accelerated)
             </span>
             <button
               onClick={() => setDemoSpeedUp(!demoSpeedUp)}
-              className={`py-1.5 px-3 rounded-lg text-[10px] font-black uppercase tracking-wider select-none ${demoSpeedUp ? 'bg-[#F5B109] text-charcoal' : 'bg-charcoal text-cream border border-white/10'
+              className={`py-1.5 px-3 rounded-lg text-[10px] font-black uppercase tracking-wider select-none ${demoSpeedUp ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream border border-white/10'
                 }`}
             >
               {demoSpeedUp ? 'ON' : 'OFF'}
@@ -173,16 +173,16 @@ export default function OrderTracker({
           {/* Delivery Details cards in glass style */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div className="bg-[#262626]/40 rounded-xl p-3.5 border border-white/5 text-xs text-cream/80 font-medium">
+            <div className="bg-charcoal-light/40 rounded-xl p-3.5 border border-white/5 text-xs text-cream/80 font-medium">
               <div className="text-cream/40 uppercase tracking-widest text-[9px] font-bold">RECIPIENT GUEST</div>
               <div className="text-white font-black uppercase text-sm mt-1">{order.customerDetails.name}</div>
               <div className="text-[11px] text-cream/50 font-mono mt-0.5">{order.customerDetails.phone}</div>
             </div>
 
-            <div className="bg-[#262626]/40 rounded-xl p-3.5 border border-white/5 text-xs text-cream/80 font-medium">
+            <div className="bg-charcoal-light/40 rounded-xl p-3.5 border border-white/5 text-xs text-cream/80 font-medium">
               <div className="text-cream/40 uppercase tracking-widest text-[9px] font-bold">DISPATCHED ADDRESS</div>
               <div className="text-white font-black uppercase text-sm mt-1 truncate">{order.customerDetails.address}</div>
-              <div className="text-[11px] text-[#F5B109] font-sans font-bold mt-0.5">🛵 RIDER DISPATCHED OUT</div>
+              <div className="text-[11px] text-cheese font-sans font-bold mt-0.5">🛵 RIDER DISPATCHED OUT</div>
             </div>
 
           </div>
@@ -214,7 +214,7 @@ export default function OrderTracker({
                         ? 'border-cheese bg-cheese'
                         : isActive
                           ? 'border-cheese bg-charcoal'
-                          : 'border-[#262626] bg-[#1a1a1a]'
+                          : 'border-charcoal-light bg-charcoal-gray'
                         }`}
                     >
                       {isActive && <span className="absolute w-1.5 h-1.5 bg-tomato rounded-full animate-ping" />}
@@ -245,7 +245,7 @@ export default function OrderTracker({
           </div>
 
           {/* Interactive visual state display */}
-          <div className="bg-[#262626]/80 p-4.5 rounded-2xl flex items-center gap-4 border border-white/5 relative overflow-hidden text-left">
+          <div className="bg-charcoal-light/80 p-4.5 rounded-2xl flex items-center gap-4 border border-white/5 relative overflow-hidden text-left">
 
             {/* Display active status visuals */}
             {currentStage === 'placed' && (

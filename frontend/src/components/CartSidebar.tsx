@@ -103,7 +103,7 @@ export default function CartSidebar({
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-charcoal/90 z-10">
             <div className="flex items-center gap-2.5">
               <ShoppingBag className="w-5 h-5 text-cheese animate-bounce" />
-              <h2 className="font-display text-2xl font-black text-white uppercase tracking-tight">
+              <h2 className="font-display text-2xl font-black text-white uppercase tracking-wide">
                 YOUR CRAFT CART
               </h2>
               <span className="bg-burgundy text-cheese font-mono text-[10px] font-black px-2 py-0.5 rounded-full border border-tomato/20">
@@ -127,7 +127,7 @@ export default function CartSidebar({
                   {cart.map((item) => (
                     <div
                       key={item.id}
-                      className="bg-[#262626]/60 border border-white/5 rounded-2xl p-4 flex gap-4 transition-all hover:border-burgundy/10 text-left relative"
+                      className="bg-charcoal-light/60 border border-white/5 rounded-2xl p-4 flex gap-4 transition-all hover:border-burgundy/10 text-left relative"
                     >
                       {/* Image Thumbnail */}
                       <img
@@ -156,13 +156,13 @@ export default function CartSidebar({
                         {/* Pizza configuration specifications details */}
                         <div className="space-y-1 text-[10px] text-cream/50 bg-black/20 p-2 rounded-lg border border-white/5 leading-tight">
                           <div>
-                            • <b className="text-[#F5B109]">SIZE:</b> {item.customization.size}
+                            • <b className="text-cheese">SIZE:</b> {item.customization.size}
                           </div>
                           <div>
-                            • <b className="text-[#F5B109]">CRUST:</b> {item.customization.crust}
+                            • <b className="text-cheese">CRUST:</b> {item.customization.crust}
                           </div>
                           <div>
-                            • <b className="text-[#F5B109]">BASE:</b> {item.customization.sauce}
+                            • <b className="text-cheese">BASE:</b> {item.customization.sauce}
                           </div>
                           {item.customization.extraCheese && (
                             <div className="text-cheese font-black">
@@ -178,7 +178,7 @@ export default function CartSidebar({
 
                         {/* Quantity controls and pricing */}
                         <div className="flex items-center justify-between pt-1">
-                          <div className="flex items-center gap-2 bg-[#1e1e1e] border border-white/5 rounded-lg py-1 px-2 text-xs font-bold text-white">
+                          <div className="flex items-center gap-2 bg-charcoal border border-white/5 rounded-lg py-1 px-2 text-xs font-medium text-white">
                             <button
                               onClick={() => onUpdateQuantity(item.id, -1)}
                               className="text-cream/50 hover:text-cheese"
@@ -205,7 +205,7 @@ export default function CartSidebar({
                 </div>
 
                 {/* Subtotal summary card */}
-                <div className="bg-[#262626]/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/70 font-bold">
+                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/70 font-bold">
                   <div className="flex justify-between">
                     <span>ITEMS TOTAL</span>
                     <span className="font-mono">${subtotal.toFixed(2)}</span>
@@ -225,7 +225,7 @@ export default function CartSidebar({
                     </span>
                   </div>
                   {deliveryFee > 0 && (
-                    <div className="text-[10px] text-cheese/70 font-semibold uppercase text-center border border-dashed border-[#F5B109]/10 p-1.5 rounded bg-cheese/5">
+                    <div className="text-[10px] text-cheese/70 font-semibold uppercase text-center border border-dashed border-cheese/10 p-1.5 rounded bg-cheese/5">
                       💡 Add ${(25 - subtotal).toFixed(2)} more to secure FREE delivery fee
                     </div>
                   )}
@@ -238,8 +238,8 @@ export default function CartSidebar({
                 </div>
 
                 {/* Integrated checkout form inside the drawer context */}
-                <form onSubmit={handleSubmitOrder} className="bg-[#262626]/80 border border-[#E6394608] rounded-24px p-4.5 text-left space-y-4">
-                  <h3 className="font-display text-lg font-black text-[#F5B109] uppercase tracking-wide border-b border-white/5 pb-2">
+                <form onSubmit={handleSubmitOrder} className="bg-charcoal-light/80 border border-[var(--color-tomato)08] rounded-24px p-4.5 text-left space-y-4">
+                  <h3 className="font-display text-lg font-black text-cheese uppercase tracking-wide border-b border-white/5 pb-2">
                     🏎 INSTANT DISPATCH DETAILS
                   </h3>
 
@@ -272,7 +272,7 @@ export default function CartSidebar({
                         placeholder="e.g. Apt 4B, 847 Artisan Ave, Oven District"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="w-full bg-[#151515] border border-white/5 hover:border-white/10 rounded-lg py-2.5 px-3 text-cream focus:outline-none focus:border-cheese resize-none"
+                        className="w-full bg-charcoal-dark border border-white/5 hover:border-white/10 rounded-lg py-2.5 px-3 text-cream focus:outline-none focus:border-cheese resize-none"
                       />
                       {errors.address && <p className="text-[10px] text-tomato font-bold uppercase">{errors.address}</p>}
                     </div>
@@ -283,7 +283,7 @@ export default function CartSidebar({
                       <select
                         value={paymentMethod}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-full bg-[#151515] border border-white/5 hover:border-white/10 rounded-lg py-2.5 px-3 text-cream focus:outline-none focus:border-cheese"
+                        className="w-full bg-charcoal-dark border border-white/5 hover:border-white/10 rounded-lg py-2.5 px-3 text-cream focus:outline-none focus:border-cheese"
                       >
                         <option value="Cash on Delivery (COD)">Cash on Delivery (COD) / Card on Door</option>
                         <option value="Debit Card Transfer (Visa/Mastercard)">Secure Digital Card (Visa/MC Sim)</option>
@@ -297,7 +297,7 @@ export default function CartSidebar({
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 bg-tomato text-[#ffffff] hover:bg-cheese hover:text-charcoal font-sans font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 btn-cheese-shadow flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    className="w-full py-4 bg-tomato text-white hover:bg-cheese hover:text-charcoal font-sans font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 btn-cheese-shadow flex items-center justify-center gap-2 cursor-pointer mt-2"
                   >
                     {isProcessing ? (
                       <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />

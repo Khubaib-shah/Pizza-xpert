@@ -29,7 +29,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section id="about" className="relative bg-[#1a1a1a] py-20 px-4 md:px-6">
+    <section id="about" className="relative bg-charcoal-gray py-20 px-4 md:px-6">
 
       {/* Decorative side vignetting shadow border lines */}
       <div className="absolute inset-x-0 top-0 h-px bg-white/5" />
@@ -42,10 +42,10 @@ export default function WhyChooseUs() {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-burgundy/50 text-cheese rounded-full text-xs font-bold uppercase tracking-wide border border-white/5">
             🛡 THE PIZZA XPERT GUARANTEE
           </div>
-          <h2 className="font-display text-4xl md:text-6xl font-bold text-white tracking-wide uppercase leading-none">
+          <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase leading-none">
             WHY PIZZA <span className="text-cheese">XPERT</span> RULES
           </h2>
-          <div className="w-16 h-1 bg-[#E63946] mx-auto rounded-full" />
+          <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
           <p className="font-sans text-cream/70 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
             Our strict culinary bylaws guarantee gold-plated speed without sacrificial taste degradation.
           </p>
@@ -57,7 +57,7 @@ export default function WhyChooseUs() {
             <div
               key={index}
               style={{ willChange: 'transform' }}
-              className="group relative bg-[#262626]/40 hover:bg-[#262626]/80 rounded-[24px] p-6 md:p-8 border border-white/5 hover:border-burgundy/30 transition-colors duration-300 hover:-translate-y-2 flex flex-col justify-between"
+              className="group relative bg-charcoal-light/40 hover:bg-charcoal-light/80 rounded-[24px] p-6 md:p-8 border border-white/5 hover:border-burgundy/30 transition-colors duration-300 hover:-translate-y-2 flex flex-col justify-between"
             >
 
               {/* Corner Small Stat Badge watermark */}
@@ -72,7 +72,7 @@ export default function WhyChooseUs() {
                 </div>
 
                 <div className="space-y-2 text-left">
-                  <h3 className="font-display text-[22px] font-bold text-white group-hover:text-cheese tracking-tight uppercase transition-colors duration-200">
+                  <h3 className="font-display text-[22px] font-medium text-white group-hover:text-cheese tracking-wide uppercase transition-colors duration-200">
                     {feat.title}
                   </h3>
                   <p className="font-sans text-cream/70 text-xs font-medium leading-tight">

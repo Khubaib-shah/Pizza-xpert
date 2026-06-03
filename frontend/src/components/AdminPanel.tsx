@@ -242,21 +242,21 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#F8F3E7] font-sans antialiased flex flex-col md:flex-row relative">
+    <div className="min-h-screen bg-charcoal-gray text-cream font-sans antialiased flex flex-col md:flex-row relative">
 
       {/* ━━ LAYOUT: LEFT SIDEBAR FIXED ━━ */}
-      <aside className="w-full md:w-[260px] bg-[#111111] border-b md:border-b-0 md:border-r border-[#2C2C2C] flex flex-col justify-between flex-shrink-0 z-20">
+      <aside className="w-full md:w-[260px] bg-charcoal-black border-b md:border-b-0 md:border-r border-charcoal-border flex flex-col justify-between flex-shrink-0 z-20">
         <div>
           {/* Sidebar Brand Logo */}
-          <div className="p-6 border-b border-[#222222] flex items-center justify-between">
+          <div className="p-6 border-b border-charcoal-800 flex items-center justify-between">
             <div className="flex flex-col gap-1 items-start">
               <Logo />
-              <span className="text-[9px] tracking-wide font-mono text-[#F5B109] font-bold uppercase mt-1 pl-1">SAAS BACKPLANE</span>
+              <span className="text-[9px] tracking-wide font-mono text-cheese font-bold uppercase mt-1 pl-1">SAAS BACKPLANE</span>
             </div>
             {/* Simple exit toggle */}
             <button
               onClick={onBackToStore}
-              className="text-xs bg-[#222222] text-[#F5B109] hover:bg-[#F5B109] hover:text-[#111111] px-2 py-1 rounded font-bold uppercase transition-all tracking-wide md:hidden"
+              className="text-xs bg-charcoal-800 text-cheese hover:bg-cheese hover:text-charcoal-black px-2 py-1 rounded font-bold uppercase transition-all tracking-wide md:hidden"
             >
               Exit
             </button>
@@ -286,14 +286,14 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-xs uppercase tracking-wider relative cursor-pointer ${isActive
-                    ? 'bg-[#1E1E1E] text-[#F5B109] border-l-4 border-[#F5B109] pl-3'
-                    : 'text-cream/70 hover:text-white hover:bg-[#151515]'
+                    ? 'bg-charcoal text-cheese border-l-4 border-cheese pl-3'
+                    : 'text-cream/70 hover:text-white hover:bg-charcoal-dark'
                     }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#F5B109]' : 'text-cream/50'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-cheese' : 'text-cream/50'}`} />
                   <span>{item.label}</span>
                   {item.id === 3 && (
-                    <span className="absolute right-3 bg-[#5D1113] border border-[#F5B109]/30 text-white text-[9px] px-1.5 py-0.5 rounded-full font-mono animate-pulse">
+                    <span className="absolute right-3 bg-burgundy border border-cheese/30 text-white text-[9px] px-1.5 py-0.5 rounded-full font-mono animate-pulse">
                       {orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled').length}
                     </span>
                   )}
@@ -304,15 +304,15 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
         </div>
 
         {/* Sidebar Footer Account Profile */}
-        <div className="p-4 border-t border-[#222222] bg-[#0A0A0A]">
+        <div className="p-4 border-t border-charcoal-800 bg-charcoal-900">
           <div className="flex items-center gap-3">
             <div className="relative">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
                 alt="Admin Avatar"
-                className="w-10 h-10 rounded-full border border-[#F5B109] object-cover"
+                className="w-10 h-10 rounded-full border border-cheese object-cover"
               />
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-[#111111]" />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-charcoal-black" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-xs font-black text-white block truncate uppercase font-display">Admin User</span>
@@ -320,7 +320,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
             </div>
             <button
               onClick={handleLogout}
-              className="p-1 hover:bg-[#222222] rounded text-cream/50 hover:text-red-400 transition-colors cursor-pointer"
+              className="p-1 hover:bg-charcoal-800 rounded text-cream/50 hover:text-red-400 transition-colors cursor-pointer"
               title="Logout"
             >
               <X className="w-4 h-4" />
@@ -328,7 +328,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
           </div>
           <button
             onClick={onBackToStore}
-            className="w-full mt-3 bg-[#111111] hover:bg-[#5D1113] hover:text-white text-xs border border-[#F5B109]/30 hover:border-red-500/20 text-[#F5B109] font-black py-2 rounded-lg transition-all uppercase tracking-widest cursor-pointer"
+            className="w-full mt-3 bg-charcoal-black hover:bg-burgundy hover:text-white text-xs border border-cheese/30 hover:border-red-500/20 text-cheese font-black py-2 rounded-lg transition-all uppercase tracking-widest cursor-pointer"
           >
             ← Back to Storefront
           </button>
@@ -339,11 +339,11 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
       <main className="flex-1 flex flex-col min-w-0 relative z-10 overflow-x-hidden">
 
         {/* TOP HEADER BAR */}
-        <header className="h-16 bg-[#111111]/90 backdrop-blur-md border-b border-[#2C2C2C] px-6 flex items-center justify-between sticky top-0 z-30">
+        <header className="h-16 bg-charcoal-black/90 backdrop-blur-md border-b border-charcoal-border px-6 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <h1 className="text-sm tracking-widest font-display font-black text-white uppercase flex items-center gap-2">
               <span>View:</span>
-              <span className="text-[#F5B109]">
+              <span className="text-cheese">
                 {[
                   'Analytics Deck',
                   'Order Registry',
@@ -371,7 +371,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 placeholder="Database Query..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="bg-[#1A1A1A] border border-[#2C2C2C] rounded-lg py-1.5 pl-9 pr-4 text-xs font-mono text-[#F8F3E7] placeholder-cream/30 focus:outline-none focus:border-[#F5B109] w-48 transition-all"
+                className="bg-charcoal-gray border border-charcoal-border rounded-lg py-1.5 pl-9 pr-4 text-xs font-mono text-cream placeholder-cream/30 focus:outline-none focus:border-cheese w-48 transition-all"
               />
               <Search className="w-3.5 h-3.5 text-cream/40 absolute left-3 top-1/2 -translate-y-1/2" />
             </div>
@@ -379,10 +379,10 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
             {/* Notification triggers */}
             <button
               onClick={() => setActiveTab(11)}
-              className="relative p-2 bg-[#1E1E1E] border border-[#222222] hover:border-[#F5B109]/40 rounded-lg text-[#F5B109] transition-all cursor-pointer"
+              className="relative p-2 bg-charcoal border border-charcoal-800 hover:border-cheese/40 rounded-lg text-cheese transition-all cursor-pointer"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute -top-1 -right-1 bg-[#5D1113] border border-[#F5B109]/40 w-4 h-4 rounded-full text-[8px] text-white flex items-center justify-center font-mono">
+              <span className="absolute -top-1 -right-1 bg-burgundy border border-cheese/40 w-4 h-4 rounded-full text-[8px] text-white flex items-center justify-center font-mono">
                 {notifications.filter(n => !n.read).length}
               </span>
             </button>
@@ -398,19 +398,19 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               {/* Glassmorphism Metric Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
-                  { title: "TODAY'S SAAS REVENUE", value: "₹28,450", change: "↑ 12% vs yesterday", glow: "shadow-[0_4px_20px_rgba(245,177,9,0.15)]", barGlow: "bg-[#F5B109]" },
+                  { title: "TODAY'S SAAS REVENUE", value: "₹28,450", change: "↑ 12% vs yesterday", glow: "shadow-[0_4px_20px_rgba(245,177,9,0.15)]", barGlow: "bg-cheese" },
                   { title: "TOTAL ORDERS HANDLED", value: "347", change: "↑ 8% count today", glow: "shadow-[0_4px_20px_rgba(34,197,94,0.15)]", barGlow: "bg-emerald-500" },
                   { title: "ACTIVE COURIER LOGGING", value: "23 Riders", change: "All GPS enabled", glow: "shadow-[0_4px_20px_rgba(59,130,246,0.15)]", barGlow: "bg-blue-500" },
                   { title: "NEW LOGGED VISITORS", value: "41 Signups", change: "↑ 18% loyalty signup", glow: "shadow-[0_4px_20px_rgba(239,68,68,0.15)]", barGlow: "bg-red-500" }
                 ].map((card, idx) => (
-                  <div key={idx} className={`bg-[#2c2c2cb9] backdrop-blur-md rounded-2xl p-4 border border-white/5 relative overflow-hidden flex flex-col justify-between h-28 hover:border-[#F5B109]/30 transition-all ${card.glow}`}>
+                  <div key={idx} className={`bg-charcoal-border/70 backdrop-blur-md rounded-2xl p-4 border border-white/5 relative overflow-hidden flex flex-col justify-between h-28 hover:border-cheese/30 transition-all ${card.glow}`}>
                     <div className="absolute top-0 left-0 w-1 h-full col-scale" />
                     <div>
                       <span className="text-[10px] uppercase tracking-widest font-mono text-cream/60 font-black">{card.title}</span>
                       <h3 className="text-3xl font-display font-black text-white mt-1">{card.value}</h3>
                     </div>
                     <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className="text-[#F5B109] font-mono">{card.change}</span>
+                      <span className="text-cheese font-mono">{card.change}</span>
                       <div className="w-12 h-1 bg-white/10 rounded-full overflow-hidden">
                         <div className={`h-full w-2/3 ${card.barGlow}`} />
                       </div>
@@ -423,24 +423,24 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Custom revenue SVG line graph */}
-                <div className="lg:col-span-8 bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5">
+                <div className="lg:col-span-8 bg-charcoal border border-charcoal-border rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-xs uppercase tracking-widest font-black text-white">REVENUE TIMELINE (LAST 30 DAYS)</h4>
-                    <span className="text-xs text-[#F5B109] font-mono font-bold">AVG VALUE: ₹950/order</span>
+                    <span className="text-xs text-cheese font-mono font-bold">AVG VALUE: ₹950/order</span>
                   </div>
                   {/* SVG graph */}
                   <div className="relative h-64 w-full">
-                    <svg viewBox="0 0 500 200" className="w-full h-full text-[#F5B109]">
+                    <svg viewBox="0 0 500 200" className="w-full h-full text-cheese">
                       <defs>
                         <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#F5B109" stopOpacity="0.3"></stop>
-                          <stop offset="100%" stopColor="#F5B109" stopOpacity="0.0"></stop>
+                          <stop offset="0%" stopColor="var(--color-cheese)" stopOpacity="0.3"></stop>
+                          <stop offset="100%" stopColor="var(--color-cheese)" stopOpacity="0.0"></stop>
                         </linearGradient>
                       </defs>
                       {/* Grid Lines */}
-                      <line x1="0" y1="40" x2="500" y2="40" stroke="#333333" strokeDasharray="3" />
-                      <line x1="0" y1="100" x2="500" y2="100" stroke="#333333" strokeDasharray="3" />
-                      <line x1="0" y1="160" x2="500" y2="160" stroke="#333333" strokeDasharray="3" />
+                      <line x1="0" y1="40" x2="500" y2="40" stroke="var(--color-charcoal-muted)" strokeDasharray="3" />
+                      <line x1="0" y1="100" x2="500" y2="100" stroke="var(--color-charcoal-muted)" strokeDasharray="3" />
+                      <line x1="0" y1="160" x2="500" y2="160" stroke="var(--color-charcoal-muted)" strokeDasharray="3" />
                       {/* Area Fill */}
                       <path
                         d="M 0 160 Q 50 120 100 130 T 200 80 T 300 110 T 400 40 T 500 60 L 500 200 L 0 200 Z"
@@ -450,12 +450,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <path
                         d="M 0 160 Q 50 120 100 130 T 200 80 T 300 110 T 400 40 T 500 60"
                         fill="none"
-                        stroke="#F5B109"
+                        stroke="var(--color-cheese)"
                         strokeWidth="3.5"
                       />
                       {/* Floating Indicator Circles */}
-                      <circle cx="200" cy="80" r="5" fill="#111111" stroke="#F5B109" strokeWidth="2" />
-                      <circle cx="400" cy="40" r="5" fill="#111111" stroke="#F5B109" strokeWidth="2" />
+                      <circle cx="200" cy="80" r="5" fill="var(--color-charcoal-black)" stroke="var(--color-cheese)" strokeWidth="2" />
+                      <circle cx="400" cy="40" r="5" fill="var(--color-charcoal-black)" stroke="var(--color-cheese)" strokeWidth="2" />
                     </svg>
                     <div className="absolute inset-0 flex justify-between items-end p-2 text-[9px] font-mono text-cream/40">
                       <span>May 01</span>
@@ -467,7 +467,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 </div>
 
                 {/* Categories Donut Visualizer */}
-                <div className="lg:col-span-4 bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5 flex flex-col justify-between">
+                <div className="lg:col-span-4 bg-charcoal border border-charcoal-border rounded-2xl p-5 flex flex-col justify-between">
                   <div>
                     <h4 className="text-xs uppercase tracking-widest font-black text-white mb-4">ORDERS BY CATEGORY</h4>
                     {/* Fake Donut SVG */}
@@ -475,14 +475,14 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <div className="relative w-32 h-32">
                         <svg viewBox="0 0 36 36" className="w-full h-full circular-chart">
                           <path className="circle-bg"
-                            stroke="#333333"
+                            stroke="var(--color-charcoal-muted)"
                             strokeWidth="4"
                             fill="none"
                             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                           />
                           {/* Segment Red */}
                           <path className="circle"
-                            stroke="#5D1113"
+                            stroke="var(--color-burgundy)"
                             strokeWidth="4.5"
                             strokeDasharray="45, 100"
                             fill="none"
@@ -490,7 +490,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           />
                           {/* Segment Yellow */}
                           <path className="circle"
-                            stroke="#F5B109"
+                            stroke="var(--color-cheese)"
                             strokeWidth="4.5"
                             strokeDasharray="30, 100"
                             strokeDashoffset="-45"
@@ -516,11 +516,11 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   </div>
                   <div className="space-y-1.5 text-xs text-cream/80">
                     <div className="flex justify-between items-center">
-                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#5D1113]" /> Solid Loaded</span>
+                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-burgundy" /> Solid Loaded</span>
                       <span className="font-mono font-bold">45%</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#F5B109]" /> Woodfire Classics</span>
+                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-cheese" /> Woodfire Classics</span>
                       <span className="font-mono font-bold">30%</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -533,7 +533,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               </div>
 
               {/* Peak hours heatmap grid (7-day x 24-hour grid simulation represented concisely for compactness) */}
-              <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5">
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5">
                 <h4 className="text-xs uppercase tracking-widest font-black text-white mb-3">PEAK ORDERING HEATMAP (7 DAYS × 24 HOURS GRID)</h4>
                 <div className="space-y-1">
                   {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
@@ -543,7 +543,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         {Array.from({ length: 24 }).map((_, h) => {
                           // mock intensity
                           const isPeak = (h >= 12 && h <= 14) || (h >= 19 && h <= 21);
-                          const opacity = isPeak ? 'bg-[#F5B109]' : 'bg-[#F5B109]/10';
+                          const opacity = isPeak ? 'bg-cheese' : 'bg-cheese/10';
                           return (
                             <div
                               key={h}
@@ -564,14 +564,14 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               </div>
 
               {/* Recent Orders table */}
-              <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden">
-                <div className="p-4 border-b border-[#2C2C2C] flex justify-between items-center">
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
+                <div className="p-4 border-b border-charcoal-border flex justify-between items-center">
                   <h4 className="text-xs uppercase tracking-widest font-black text-white">RECENT ORDERS DESPATCH TRAIL</h4>
-                  <button onClick={() => setActiveTab(2)} className="text-xs text-[#F5B109] font-black uppercase hover:underline">Full Registry →</button>
+                  <button onClick={() => setActiveTab(2)} className="text-xs text-cheese font-black uppercase hover:underline">Full Registry →</button>
                 </div>
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-[#151515] border-b border-[#222222] text-cream/40 uppercase font-bold text-[10px] tracking-wider">
+                    <tr className="bg-charcoal-dark border-b border-charcoal-800 text-cream/40 uppercase font-bold text-[10px] tracking-wider">
                       <th className="p-3">Order ID</th>
                       <th className="p-3">Customer</th>
                       <th className="p-3">Items Pizza details</th>
@@ -579,10 +579,10 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <th className="p-3">Workflow State</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#222222]">
+                  <tbody className="divide-y divide-charcoal-800">
                     {orders.slice(0, 3).map(o => (
-                      <tr key={o.id} className="hover:bg-[#222222]/30 transition-colors font-mono">
-                        <td className="p-3 font-bold text-[#F5B109]">{o.id}</td>
+                      <tr key={o.id} className="hover:bg-charcoal-800/30 transition-colors font-mono">
+                        <td className="p-3 font-bold text-cheese">{o.id}</td>
                         <td className="p-3 text-white font-sans font-bold">{o.customer}</td>
                         <td className="p-3 text-cream/70 font-sans">{o.items}</td>
                         <td className="p-3 text-white">₹{o.total}</td>
@@ -614,8 +614,8 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       key={f}
                       onClick={() => setOrderFilter(f)}
                       className={`px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider font-extrabold cursor-pointer transition-colors ${orderFilter === f
-                        ? 'bg-[#F5B109] text-black'
-                        : 'bg-[#222222] text-cream/80 hover:bg-[#2c2c2c]'
+                        ? 'bg-cheese text-black'
+                        : 'bg-charcoal-800 text-cream/80 hover:bg-[#2c2c2c]'
                         }`}
                     >
                       {f}
@@ -630,7 +630,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     placeholder="Filter customer / code..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-lg py-2 pl-9 pr-4 text-xs font-mono text-white w-full focus:outline-none focus:border-[#F5B109]"
+                    className="bg-charcoal border border-charcoal-border rounded-lg py-2 pl-9 pr-4 text-xs font-mono text-white w-full focus:outline-none focus:border-cheese"
                   />
                   <Search className="w-4 h-4 text-cream/40 absolute left-3 top-1/2 -translate-y-1/2" />
                 </div>
@@ -638,9 +638,9 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
               {/* Bulk operations dashboard */}
               {selectedOrders.length > 0 && (
-                <div className="bg-[#5D1113]/30 border border-[#F5B109]/30 rounded-xl p-3 flex items-center justify-between animate-fade-in text-xs">
+                <div className="bg-burgundy/30 border border-cheese/30 rounded-xl p-3 flex items-center justify-between animate-fade-in text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[#F5B109] font-black">{selectedOrders.length} ORDERS SELECTED</span>
+                    <span className="font-mono text-cheese font-black">{selectedOrders.length} ORDERS SELECTED</span>
                   </div>
                   <div className="flex gap-2">
                     <button
@@ -648,7 +648,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         setOrders(prev => prev.map(o => selectedOrders.includes(o.id) ? { ...o, status: 'Ready' } : o));
                         setSelectedOrders([]);
                       }}
-                      className="bg-[#F5B109] text-black hover:bg-yellow-400 font-extrabold px-3 py-1 rounded"
+                      className="bg-cheese text-black hover:bg-yellow-400 font-extrabold px-3 py-1 rounded"
                     >
                       Mark as Ready
                     </button>
@@ -674,16 +674,16 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               )}
 
               {/* Big central list */}
-              <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden">
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-[#111111] border-b border-[#222222] text-cream/40 uppercase font-bold text-[10px] tracking-wider select-none">
+                    <tr className="bg-charcoal-black border-b border-charcoal-800 text-cream/40 uppercase font-bold text-[10px] tracking-wider select-none">
                       <th className="p-4 w-10">
                         <input
                           type="checkbox"
                           checked={selectedOrders.length === orders.length}
                           onChange={handleSelectAllOrders}
-                          className="rounded text-[#F5B109]"
+                          className="rounded text-cheese"
                         />
                       </th>
                       <th className="p-4">ID</th>
@@ -697,28 +697,28 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <th className="p-4 text-center">Trigger workflow</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#222222]">
+                  <tbody className="divide-y divide-charcoal-800">
                     {orders
                       .filter(o => orderFilter === 'ALL' || o.status === orderFilter)
                       .filter(o => o.customer.toLowerCase().includes(searchQuery.toLowerCase()) || o.id.toLowerCase().includes(searchQuery.toLowerCase()))
                       .map(o => {
                         const isChecked = selectedOrders.includes(o.id);
                         return (
-                          <tr key={o.id} className={`hover:bg-[#222222]/20 transition-all font-mono ${isChecked ? 'bg-[#F2AE02]/5' : ''}`}>
+                          <tr key={o.id} className={`hover:bg-charcoal-800/20 transition-all font-mono ${isChecked ? 'bg-yellow-500/5' : ''}`}>
                             <td className="p-4">
                               <input
                                 type="checkbox"
                                 checked={isChecked}
                                 onChange={() => handleToggleSelectOrder(o.id)}
-                                className="rounded text-[#F5B109]"
+                                className="rounded text-cheese"
                               />
                             </td>
-                            <td className="p-4 font-black text-[#F5B109]">{o.id}</td>
+                            <td className="p-4 font-black text-cheese">{o.id}</td>
                             <td className="p-4 text-cream/50">{o.time}</td>
-                            <td className="p-4 font-sans font-bold text-white">{o.customer}</td>
+                            <td className="p-4 font-sans font-medium text-white">{o.customer}</td>
                             <td className="p-4 font-sans text-cream/70 truncate max-w-xs">{o.items}</td>
                             <td className="p-4 font-sans text-xs">{o.payment}</td>
-                            <td className="p-4 font-sans font-bold text-[#F5B109]/80">{o.rider}</td>
+                            <td className="p-4 font-sans font-bold text-cheese/80">{o.rider}</td>
                             <td className="p-4 text-white font-bold">₹{o.total}</td>
                             <td className="p-4">
                               <span className={`px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase shrink-0 ${o.status === 'Pending' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' :
@@ -734,7 +734,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                               {o.status !== 'Delivered' && o.status !== 'Cancelled' && (
                                 <button
                                   onClick={() => handleAdvanceKanban(o.id)}
-                                  className="bg-[#222222] hover:bg-[#F5B109] hover:text-black border border-white/5 transition-all rounded py-1 px-2.5 text-[10px] uppercase font-mono font-black text-[#F5B109]"
+                                  className="bg-charcoal-800 hover:bg-cheese hover:text-black border border-white/5 transition-all rounded py-1 px-2.5 text-[10px] uppercase font-mono font-black text-cheese"
                                 >
                                   Advance Step →
                                 </button>
@@ -753,7 +753,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
           {activeTab === 3 && (
             <div className="space-y-6">
               {/* Kanban description row with live pulsating dot */}
-              <div className="flex items-center justify-between bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-xl text-xs">
+              <div className="flex items-center justify-between bg-charcoal p-4 border border-charcoal-border rounded-xl text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping" />
                   <span className="font-mono text-white">LIVE SAAS TRANSACTION STREAM ACTIVATED</span>
@@ -771,9 +771,9 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 ].map(col => {
                   const items = orders.filter(o => o.status === col.status);
                   return (
-                    <div key={col.status} className="bg-[#121212] border border-[#222222] rounded-2xl p-4 flex flex-col space-y-3 min-h-[460px]">
+                    <div key={col.status} className="bg-charcoal-900 border border-charcoal-800 rounded-2xl p-4 flex flex-col space-y-3 min-h-[460px]">
                       {/* Column Header */}
-                      <div className="flex justify-between items-center pb-2 border-b border-[#2C2C2C]">
+                      <div className="flex justify-between items-center pb-2 border-b border-charcoal-border">
                         <span className="text-xs uppercase tracking-widest font-black text-white">{col.title}</span>
                         <span className={`text-[10px] text-black ${col.countColor} font-mono font-black rounded-full px-2 py-0.5`}>
                           {items.length}
@@ -789,19 +789,19 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             const secs = elapsedTimers[card.id] || 0;
                             const isDelayed = secs > 600; // RED state if legacy exceeds 10 mins
                             return (
-                              <div key={card.id} className="bg-[#1E1E1E] border border-white/5 rounded-xl p-3 hover:border-[#F5B109]/30 transition-all shadow-lg space-y-2 relative">
+                              <div key={card.id} className="bg-charcoal border border-white/5 rounded-xl p-3 hover:border-cheese/30 transition-all shadow-lg space-y-2 relative">
                                 <div className="flex justify-between items-center">
-                                  <span className="text-xs font-black text-[#F5B109] font-mono">{card.id}</span>
+                                  <span className="text-xs font-black text-cheese font-mono">{card.id}</span>
                                   <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${isDelayed ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-white/5 text-emerald-400'
                                     }`}>
                                     ⌛ {formatTimer(secs)}
                                   </span>
                                 </div>
                                 <div>
-                                  <span className="text-xs font-bold text-white block">{card.customer}</span>
+                                  <span className="text-xs font-medium text-white block">{card.customer}</span>
                                   <span className="text-[11px] text-cream/60 block mt-0.5">{card.items}</span>
                                 </div>
-                                <div className="pt-2 border-t border-[#2C2C2C] flex justify-between items-center text-[10px]">
+                                <div className="pt-2 border-t border-charcoal-border flex justify-between items-center text-[10px]">
                                   <button
                                     onClick={() => handleCancelKanban(card.id)}
                                     className="text-red-400 hover:text-red-300 font-bold uppercase"
@@ -810,7 +810,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                                   </button>
                                   <button
                                     onClick={() => handleAdvanceKanban(card.id)}
-                                    className="bg-[#2C2C2C] hover:bg-[#F5B109] hover:text-black hover:border-transparent text-[#F5B109] text-[9px] uppercase font-black px-2 py-1 rounded transition-all"
+                                    className="bg-charcoal-border hover:bg-cheese hover:text-black hover:border-transparent text-cheese text-[9px] uppercase font-black px-2 py-1 rounded transition-all"
                                   >
                                     Advance →
                                   </button>
@@ -831,18 +831,18 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
           {activeTab === 4 && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 space-y-0">
               {/* Left Courier List */}
-              <div className="lg:col-span-4 bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-4 overflow-y-auto h-[480px] space-y-3">
-                <h4 className="text-xs uppercase tracking-widest font-black text-white pb-2 border-b border-[#2C2C2C]">ACTIVE DISPATCH RIDERS</h4>
+              <div className="lg:col-span-4 bg-charcoal border border-charcoal-border rounded-2xl p-4 overflow-y-auto h-[480px] space-y-3">
+                <h4 className="text-xs uppercase tracking-widest font-black text-white pb-2 border-b border-charcoal-border">ACTIVE DISPATCH RIDERS</h4>
                 {[
                   { name: 'Rider Vicky', activeJob: 'XP-7800', eta: '4 mins', phone: '+91 99012 34567', pulse: 'bg-emerald-500' },
                   { name: 'Rider Rahul', activeJob: 'XP-7796', eta: '9 mins', phone: '+91 91234 56711', pulse: 'bg-emerald-500' },
                   { name: 'Rider Amit', activeJob: 'Resting', eta: '--', phone: '+91 98765 43210', pulse: 'bg-amber-500' },
                 ].map((rider, idx) => (
-                  <div key={idx} className="bg-[#111111] p-3 border border-white/5 rounded-xl hover:border-[#F5B109]/30 transition-all select-none flex items-center justify-between">
+                  <div key={idx} className="bg-charcoal-black p-3 border border-white/5 rounded-xl hover:border-cheese/30 transition-all select-none flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-white block">{rider.name}</span>
+                      <span className="text-xs font-medium text-white block">{rider.name}</span>
                       <span className="text-[10px] text-cream/50 block mt-0.5">{rider.phone}</span>
-                      <span className="text-[9px] text-[#F5B109] font-mono block mt-1">LATEST ASSIGNED: {rider.activeJob}</span>
+                      <span className="text-[9px] text-cheese font-mono block mt-1">LATEST ASSIGNED: {rider.activeJob}</span>
                     </div>
                     <div className="text-right">
                       <span className="text-xs font-mono font-black text-white">{rider.eta}</span>
@@ -856,39 +856,39 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               </div>
 
               {/* Right Radar Area HUD screen */}
-              <div className="lg:col-span-8 bg-[#111111] border border-[#2C2C2C] rounded-2xl p-5 flex flex-col justify-between h-[480px] relative overflow-hidden">
+              <div className="lg:col-span-8 bg-charcoal-black border border-charcoal-border rounded-2xl p-5 flex flex-col justify-between h-[480px] relative overflow-hidden">
                 <div className="absolute inset-0 bg-radial-radar opacity-15 pointer-events-none" />
                 <div className="z-10 flex justify-between items-center">
-                  <span className="text-xs uppercase tracking-widest font-extrabold text-[#F5B109]">GPS BACKPLANE RADAR SCREEN (MOCK DESIGN)</span>
-                  <span className="text-[10px] bg-[#5D1113] px-2 py-0.5 border border-[#F5B109]/20 font-mono rounded text-white font-extrabold uppercase select-none">GRID LOCK: LIVE</span>
+                  <span className="text-xs uppercase tracking-widest font-extrabold text-cheese">GPS BACKPLANE RADAR SCREEN (MOCK DESIGN)</span>
+                  <span className="text-[10px] bg-burgundy px-2 py-0.5 border border-cheese/20 font-mono rounded text-white font-extrabold uppercase select-none">GRID LOCK: LIVE</span>
                 </div>
 
                 {/* Simulated Radar Map Center */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-[#F5B109]/10 rounded-full flex items-center justify-center">
-                  <div className="w-56 h-56 border border-[#F5B109]/15 rounded-full flex items-center justify-center">
-                    <div className="w-32 h-32 border border-[#F5B109]/20 rounded-full flex items-center justify-center">
-                      <div className="w-4 h-4 bg-[#F5B109] rounded-full animate-ping" />
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-cheese/10 rounded-full flex items-center justify-center">
+                  <div className="w-56 h-56 border border-cheese/15 rounded-full flex items-center justify-center">
+                    <div className="w-32 h-32 border border-cheese/20 rounded-full flex items-center justify-center">
+                      <div className="w-4 h-4 bg-cheese rounded-full animate-ping" />
                     </div>
                   </div>
 
                   {/* Pizza Express Marker Pins */}
                   <div className="absolute right-12 top-24 z-10 animate-float-levitate">
                     <div className="relative group cursor-pointer">
-                      <div className="bg-[#5D1113] text-[#F5B109] border border-cheese font-black text-[10px] px-2 py-1 rounded-xl shadow-lg flex items-center gap-1">
-                        <Truck className="w-3 h-3 text-[#F5B109]" fill="currentColor" />
+                      <div className="bg-burgundy text-cheese border border-cheese font-black text-[10px] px-2 py-1 rounded-xl shadow-lg flex items-center gap-1">
+                        <Truck className="w-3 h-3 text-cheese" fill="currentColor" />
                         <span>Vicky</span>
                       </div>
-                      <div className="w-2.5 h-2.5 bg-[#F5B109] rounded-full mx-auto mt-0.5 border border-[#111111]" />
+                      <div className="w-2.5 h-2.5 bg-cheese rounded-full mx-auto mt-0.5 border border-charcoal-black" />
                     </div>
                   </div>
 
                   <div className="absolute left-16 bottom-20 z-10 animate-pulse">
                     <div className="relative group cursor-pointer">
                       <div className="bg-zinc-800 text-white border border-white/20 font-black text-[10px] px-2 py-1 rounded-xl shadow-lg flex items-center gap-1">
-                        <Truck className="w-3 h-3 text-[#F5B109]" />
+                        <Truck className="w-3 h-3 text-cheese" />
                         <span>Rahul</span>
                       </div>
-                      <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full mx-auto mt-0.5 border border-[#111111]" />
+                      <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full mx-auto mt-0.5 border border-charcoal-black" />
                     </div>
                   </div>
                 </div>
@@ -912,18 +912,18 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     placeholder="Search name, phone or tier..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-lg py-2 pl-9 pr-4 text-xs font-mono text-white w-full focus:outline-none focus:border-[#F5B109]"
+                    className="bg-charcoal border border-charcoal-border rounded-lg py-2 pl-9 pr-4 text-xs font-mono text-white w-full focus:outline-none focus:border-cheese"
                   />
                   <Search className="w-4 h-4 text-cream/40 absolute left-3 top-1/2 -translate-y-1/2" />
                 </div>
-                <div className="text-xs uppercase text-[#F5B109] font-mono">5 ACTIVE RECORDS LOADED</div>
+                <div className="text-xs uppercase text-cheese font-mono">5 ACTIVE RECORDS LOADED</div>
               </div>
 
               {/* Table */}
-              <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden">
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-[#111111] border-b border-[#222222] text-cream/40 uppercase font-bold text-[10px] tracking-wider select-none">
+                    <tr className="bg-charcoal-black border-b border-charcoal-800 text-cream/40 uppercase font-bold text-[10px] tracking-wider select-none">
                       <th className="p-4">Customer ID</th>
                       <th className="p-4">Name</th>
                       <th className="p-4">Registered Mobile</th>
@@ -934,18 +934,18 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <th className="p-4 text-center">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#222222]">
+                  <tbody className="divide-y divide-charcoal-800">
                     {customers
                       .filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.tier.toLowerCase().includes(searchQuery.toLowerCase()))
                       .map(c => (
-                        <tr key={c.id} className="hover:bg-[#222222]/20 transition-all font-mono">
+                        <tr key={c.id} className="hover:bg-charcoal-800/20 transition-all font-mono">
                           <td className="p-4 font-bold text-cream/50">{c.id}</td>
                           <td className="p-4 font-sans font-black text-white">{c.name}</td>
                           <td className="p-4 text-cream/70">{c.phone}</td>
-                          <td className="p-4 text-center font-bold text-white">{c.orders}</td>
+                          <td className="p-4 text-center font-medium text-white">{c.orders}</td>
                           <td className="p-4 text-emerald-400 font-bold">₹{c.spend.toLocaleString()}</td>
                           <td className="p-4">
-                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${c.tier === 'VIP' ? 'bg-[#F2AE02]/10 text-[#F5B109] border border-[#F5B109]/30' :
+                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${c.tier === 'VIP' ? 'bg-yellow-500/10 text-cheese border border-cheese/30' :
                               c.tier === 'Returning' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
                                 'bg-zinc-600/10 text-zinc-400'
                               }`}>
@@ -956,7 +956,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           <td className="p-4 text-center">
                             <button
                               onClick={() => setSelectedCustomer(c)}
-                              className="text-[#F5B109] hover:underline uppercase text-[10px] font-black"
+                              className="text-cheese hover:underline uppercase text-[10px] font-black"
                             >
                               Explore Dossier →
                             </button>
@@ -969,11 +969,11 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
               {/* SLIDING REGISTER DETAIL DRAWER */}
               {selectedCustomer && (
-                <div className="fixed inset-y-0 right-0 w-full md:w-[480px] bg-[#111111]/95 backdrop-blur-xl border-l border-[#222222] shadow-[0_0_80px_rgba(0,0,0,0.8)] z-50 p-6 flex flex-col justify-between animate-slide-in">
+                <div className="fixed inset-y-0 right-0 w-full md:w-[480px] bg-charcoal-black/95 backdrop-blur-xl border-l border-charcoal-800 shadow-[0_0_80px_rgba(0,0,0,0.8)] z-50 p-6 flex flex-col justify-between animate-slide-in">
                   <div>
                     {/* Header line */}
-                    <div className="flex justify-between items-center pb-4 border-b border-[#2C2C2C]">
-                      <span className="text-[10px] uppercase font-mono text-[#F5B109]">Client Profile Explorer</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-charcoal-border">
+                      <span className="text-[10px] uppercase font-mono text-cheese">Client Profile Explorer</span>
                       <button onClick={() => setSelectedCustomer(null)} className="p-2 bg-white/5 rounded-full text-white hover:text-red-400 transition-colors">
                         <X className="w-5 h-5" />
                       </button>
@@ -982,28 +982,28 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     {/* Meta Detail Body */}
                     <div className="mt-6 space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-[#5D1113] rounded-2xl flex items-center justify-center border-2 border-[#F5B109] font-display text-2xl font-black text-white">
+                        <div className="w-16 h-16 bg-burgundy rounded-2xl flex items-center justify-center border-2 border-cheese font-display text-2xl font-black text-white">
                           {selectedCustomer.name.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-white">{selectedCustomer.name}</h3>
+                          <h3 className="text-xl font-medium text-white">{selectedCustomer.name}</h3>
                           <span className="text-xs text-cream/40 font-mono">{selectedCustomer.id} | Loyalty: {selectedCustomer.tier}</span>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-[#1E1E1E] p-3 rounded-xl border border-white/5">
+                        <div className="bg-charcoal p-3 rounded-xl border border-white/5">
                           <span className="text-[10px] text-cream/40 uppercase font-mono block">Lifetime Billings</span>
-                          <span className="text-lg font-mono font-bold text-white">₹{selectedCustomer.spend.toLocaleString()}</span>
+                          <span className="text-lg font-mono font-medium text-white">₹{selectedCustomer.spend.toLocaleString()}</span>
                         </div>
-                        <div className="bg-[#1E1E1E] p-3 rounded-xl border border-white/5">
+                        <div className="bg-charcoal p-3 rounded-xl border border-white/5">
                           <span className="text-[10px] text-cream/40 uppercase font-mono block">Aggregate orders</span>
-                          <span className="text-lg font-mono font-bold text-[#F5B109]">{selectedCustomer.orders} Meals</span>
+                          <span className="text-lg font-mono font-bold text-cheese">{selectedCustomer.orders} Meals</span>
                         </div>
                       </div>
 
-                      <div className="space-y-2 bg-[#1E1E1E] p-4 rounded-xl border border-white/5 text-xs text-cream/80">
-                        <strong className="text-white uppercase font-mono block text-[10px] pb-1 border-b border-[#262626]">CRM PREFERENCES</strong>
+                      <div className="space-y-2 bg-charcoal p-4 rounded-xl border border-white/5 text-xs text-cream/80">
+                        <strong className="text-white uppercase font-mono block text-[10px] pb-1 border-b border-charcoal-light">CRM PREFERENCES</strong>
                         <p><strong>Primary Address:</strong> sector 14, Penthouse Wing, Tech City, Gurgaon, India</p>
                         <p><strong>Topping Magnet:</strong> Sizzling Pepperoni, Roast Garlic Crown</p>
                         <p><strong>Drip Preference:</strong> Double extra cheese crusts always</p>
@@ -1013,7 +1013,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
                   <button
                     onClick={() => setSelectedCustomer(null)}
-                    className="w-full bg-[#5D1113] text-[#F8F3E7] font-extrabold uppercase py-3 rounded-xl border border-[#F5B109]/30 transition-all text-xs"
+                    className="w-full bg-burgundy text-cream font-extrabold uppercase py-3 rounded-xl border border-cheese/30 transition-all text-xs"
                   >
                     Close Dossier
                   </button>
@@ -1029,7 +1029,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 <span className="text-xs uppercase text-cream/50 tracking-w">Tweak your public recipes metadata</span>
                 <button
                   onClick={() => setShowAddMenuModal(true)}
-                  className="bg-[#F5B109] text-black hover:bg-yellow-400 font-black text-xs uppercase px-4 py-2.5 rounded-xl flex items-center gap-2"
+                  className="bg-cheese text-black hover:bg-yellow-400 font-black text-xs uppercase px-4 py-2.5 rounded-xl flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" /> Add Custom Recipe
                 </button>
@@ -1038,27 +1038,27 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               {/* Grid lists */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {menuItems.map(item => (
-                  <div key={item.id} className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden hover:border-[#F5B109]/30 transition-all flex flex-col justify-between">
-                    <div className="relative h-44 w-full bg-[#111111]">
+                  <div key={item.id} className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden hover:border-cheese/30 transition-all flex flex-col justify-between">
+                    <div className="relative h-44 w-full bg-charcoal-black">
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
-                      <span className="absolute top-3 right-3 bg-black/75 px-2 py-0.5 rounded text-[10px] font-mono font-bold text-[#F5B109]">
+                      <span className="absolute top-3 right-3 bg-black/75 px-2 py-0.5 rounded text-[10px] font-mono font-bold text-cheese">
                         {item.category.toUpperCase()}
                       </span>
                     </div>
 
                     <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
                       <div>
-                        <h4 className="text-sm font-bold text-white leading-tight">{item.name}</h4>
+                        <h4 className="text-sm font-medium text-white leading-tight">{item.name}</h4>
                         <p className="text-[11px] text-cream/50 mt-1.5 leading-tight">{item.desc}</p>
                       </div>
 
-                      <div className="pt-3 border-t border-[#2C2C2C] flex justify-between items-center">
-                        <span className="text-sm font-mono font-black text-[#F5B109]">₹{item.price}</span>
+                      <div className="pt-3 border-t border-charcoal-border flex justify-between items-center">
+                        <span className="text-sm font-mono font-black text-cheese">₹{item.price}</span>
                         <div className="flex items-center gap-2">
                           <label className="text-[10px] uppercase font-mono text-cream/40 font-bold">In Stock</label>
                           <input
@@ -1067,7 +1067,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             onChange={() => {
                               setMenuItems(prev => prev.map(m => m.id === item.id ? { ...m, active: !m.active } : m));
                             }}
-                            className="w-4 h-4 rounded text-[#F5B109] focus:ring-0 bg-[#222222]"
+                            className="w-4 h-4 rounded text-cheese focus:ring-0 bg-charcoal-800"
                           />
                         </div>
                       </div>
@@ -1079,8 +1079,8 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               {/* ADD DIALOG MODAL */}
               {showAddMenuModal && (
                 <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-                  <div className="bg-[#111111] border border-[#2C2C2C] rounded-2xl max-w-md w-full p-6 space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-[#222222]">
+                  <div className="bg-charcoal-black border border-charcoal-border rounded-2xl max-w-md w-full p-6 space-y-4">
+                    <div className="flex justify-between items-center pb-2 border-b border-charcoal-800">
                       <span className="text-sm font-display font-black text-white uppercase tracking-wider">CREATOR: BACKSTAGE PIZZA BUILDER</span>
                       <button onClick={() => setShowAddMenuModal(false)} className="text-cream/50 hover:text-white"><X className="w-5 h-5" /></button>
                     </div>
@@ -1093,7 +1093,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           placeholder="e.g. Sizzling Goat Cheese Extreme"
                           value={newMenuItem.name}
                           onChange={e => setNewMenuItem(prev => ({ ...prev, name: e.target.value }))}
-                          className="w-full bg-[#1E1E1E] border border-[#262626] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#F5B109]"
+                          className="w-full bg-charcoal border border-charcoal-light rounded-lg p-2.5 text-white focus:outline-none focus:border-cheese"
                         />
                       </div>
 
@@ -1105,7 +1105,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             placeholder="650"
                             value={newMenuItem.price}
                             onChange={e => setNewMenuItem(prev => ({ ...prev, price: e.target.value }))}
-                            className="w-full bg-[#1E1E1E] border border-[#262626] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#F5B109]"
+                            className="w-full bg-charcoal border border-charcoal-light rounded-lg p-2.5 text-white focus:outline-none focus:border-cheese"
                           />
                         </div>
                         <div className="space-y-1">
@@ -1113,7 +1113,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           <select
                             value={newMenuItem.category}
                             onChange={e => setNewMenuItem(prev => ({ ...prev, category: e.target.value }))}
-                            className="w-full bg-[#1E1E1E] border border-[#262626] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#F5B109]"
+                            className="w-full bg-charcoal border border-charcoal-light rounded-lg p-2.5 text-white focus:outline-none focus:border-cheese"
                           >
                             <option value="classic">Classic</option>
                             <option value="loaded">Loaded</option>
@@ -1130,7 +1130,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           rows={2}
                           value={newMenuItem.desc}
                           onChange={e => setNewMenuItem(prev => ({ ...prev, desc: e.target.value }))}
-                          className="w-full bg-[#1E1E1E] border border-[#262626] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#F5B109]"
+                          className="w-full bg-charcoal border border-charcoal-light rounded-lg p-2.5 text-white focus:outline-none focus:border-cheese"
                         />
                       </div>
                     </div>
@@ -1158,7 +1158,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             setNewMenuItem({ name: '', price: '', category: 'classic', desc: '', image: '' });
                           }
                         }}
-                        className="bg-[#F5B109] text-black font-black text-xs uppercase px-4 py-2 rounded-xl"
+                        className="bg-cheese text-black font-black text-xs uppercase px-4 py-2 rounded-xl"
                       >
                         Save Recipe
                       </button>
@@ -1174,8 +1174,8 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 space-y-0">
 
               {/* Creator coupon form */}
-              <div className="lg:col-span-5 bg-[#1E1E1E] p-5 border border-[#2C2C2C] rounded-2xl space-y-4 h-fit">
-                <h4 className="text-xs uppercase tracking-widest font-black text-[#F5B109] pb-2 border-b border-[#2C2C2C]">COUPON FACTORY SETTINGS</h4>
+              <div className="lg:col-span-5 bg-charcoal p-5 border border-charcoal-border rounded-2xl space-y-4 h-fit">
+                <h4 className="text-xs uppercase tracking-widest font-black text-cheese pb-2 border-b border-charcoal-border">COUPON FACTORY SETTINGS</h4>
                 <div className="space-y-3 text-xs">
                   <div className="flex gap-2">
                     <div className="flex-1 space-y-1">
@@ -1185,12 +1185,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         placeholder="e.g. WOODFIRE45"
                         value={newCoupon.code}
                         onChange={e => setNewCoupon(prev => ({ ...prev, code: e.target.value }))}
-                        className="w-full bg-[#111111] border border-[#262626] rounded-lg p-2.5 text-white text-xs font-mono"
+                        className="w-full bg-charcoal-black border border-charcoal-light rounded-lg p-2.5 text-white text-xs font-mono"
                       />
                     </div>
                     <button
                       onClick={handleGenerateCouponCode}
-                      className="self-end bg-[#2C2C2C] text-[#F5B109] hover:bg-[#F5B109] hover:text-black font-mono font-black text-xs px-3 py-3 rounded-lg border border-[#F5B109]/30"
+                      className="self-end bg-charcoal-border text-cheese hover:bg-cheese hover:text-black font-mono font-black text-xs px-3 py-3 rounded-lg border border-cheese/30"
                     >
                       Autogen
                     </button>
@@ -1204,7 +1204,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         placeholder="e.g. 15% or ₹100 Flat"
                         value={newCoupon.discount}
                         onChange={e => setNewCoupon(prev => ({ ...prev, discount: e.target.value }))}
-                        className="w-full bg-[#111111] border border-[#262626] rounded-lg p-2.5 text-white"
+                        className="w-full bg-charcoal-black border border-charcoal-light rounded-lg p-2.5 text-white"
                       />
                     </div>
                     <div className="space-y-1">
@@ -1212,7 +1212,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <select
                         value={newCoupon.type}
                         onChange={e => setNewCoupon(prev => ({ ...prev, type: e.target.value }))}
-                        className="w-full bg-[#111111] border border-[#262626] rounded-lg p-2.5 text-white"
+                        className="w-full bg-charcoal-black border border-charcoal-light rounded-lg p-2.5 text-white"
                       >
                         <option value="Percentage">Percentage</option>
                         <option value="Flat">Flat Discount</option>
@@ -1228,7 +1228,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         placeholder="499"
                         value={newCoupon.minOrder}
                         onChange={e => setNewCoupon(prev => ({ ...prev, minOrder: e.target.value }))}
-                        className="w-full bg-[#111111] border border-[#262626] rounded-lg p-2.5 text-white font-mono"
+                        className="w-full bg-charcoal-black border border-charcoal-light rounded-lg p-2.5 text-white font-mono"
                       />
                     </div>
                     <div className="space-y-1">
@@ -1238,7 +1238,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         placeholder="2026-06-30"
                         value={newCoupon.expiry}
                         onChange={e => setNewCoupon(prev => ({ ...prev, expiry: e.target.value }))}
-                        className="w-full bg-[#111111] border border-[#262626] rounded-lg p-2.5 text-white font-mono"
+                        className="w-full bg-charcoal-black border border-charcoal-light rounded-lg p-2.5 text-white font-mono"
                       />
                     </div>
                   </div>
@@ -1258,7 +1258,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         setNewCoupon({ code: '', discount: '', type: 'Percentage', minOrder: '', expiry: '' });
                       }
                     }}
-                    className="w-full bg-[#F5B109] text-black font-black uppercase text-xs tracking-wider py-3 rounded-xl transition-all"
+                    className="w-full bg-cheese text-black font-black uppercase text-xs tracking-wider py-3 rounded-xl transition-all"
                   >
                     Deploy Active Campaign Code
                   </button>
@@ -1266,14 +1266,14 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               </div>
 
               {/* Coupons List Table */}
-              <div className="lg:col-span-7 bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-2xl overflow-x-auto text-xs space-y-3">
+              <div className="lg:col-span-7 bg-charcoal p-4 border border-charcoal-border rounded-2xl overflow-x-auto text-xs space-y-3">
                 <div className="flex justify-between items-center">
                   <h4 className="text-xs font-black uppercase text-white">REVENUE PROMO CAMPAIGN REGISTRY</h4>
                   <span className="text-[10px] text-cream/40 font-mono">TRACKING: CTR PERFORMANCE</span>
                 </div>
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-[#111111] text-cream/40 border-b border-[#2C2C2C] font-bold text-[10px] uppercase">
+                    <tr className="bg-charcoal-black text-cream/40 border-b border-charcoal-border font-bold text-[10px] uppercase">
                       <th className="p-3">CODE</th>
                       <th className="p-3">VALUE</th>
                       <th className="p-3">MIN CART</th>
@@ -1282,10 +1282,10 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <th className="p-3">STATUS</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#222222] font-mono">
+                  <tbody className="divide-y divide-charcoal-800 font-mono">
                     {coupons.map((c, idx) => (
-                      <tr key={idx} className="hover:bg-[#1a1a1a]">
-                        <td className="p-3 text-[#F5B109] font-black">{c.code}</td>
+                      <tr key={idx} className="hover:bg-charcoal-gray">
+                        <td className="p-3 text-cheese font-black">{c.code}</td>
                         <td className="p-3 text-white">{c.discount}</td>
                         <td className="p-3">₹{c.minOrder}</td>
                         <td className="p-3 text-emerald-400 font-bold">{c.uses} Uses</td>
@@ -1307,11 +1307,11 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
           {/* VIEW 8: SALES ANALYTICS */}
           {activeTab === 8 && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-xl flex-wrap gap-3">
-                <span className="text-xs uppercase text-[#F5B109] font-mono">DASHBOARD TRADING HIGHLIGHTS IN INR</span>
+              <div className="flex justify-between items-center bg-charcoal p-4 border border-charcoal-border rounded-xl flex-wrap gap-3">
+                <span className="text-xs uppercase text-cheese font-mono">DASHBOARD TRADING HIGHLIGHTS IN INR</span>
                 <div className="flex gap-2 text-xs uppercase font-extrabold font-mono">
                   {['Today', 'This Week', 'This Month', 'Custom Ranges'].map(p => (
-                    <button key={p} className="p-2 bg-[#111111] hover:bg-[#F5B109] hover:text-black rounded transition-all">
+                    <button key={p} className="p-2 bg-charcoal-black hover:bg-cheese hover:text-black rounded transition-all">
                       {p}
                     </button>
                   ))}
@@ -1321,27 +1321,27 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 {/* Custom area SVG Chart (yellow opacity gradient) */}
-                <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5">
+                <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5">
                   <h4 className="text-xs uppercase tracking-widest font-black text-white mb-4">REVENUE TRENDS OVER TIME</h4>
                   <div className="h-64">
-                    <svg viewBox="0 0 500 200" className="w-full h-full text-[#F5B109]">
+                    <svg viewBox="0 0 500 200" className="w-full h-full text-cheese">
                       <defs>
                         <linearGradient id="yellowArea" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#F5B109" stopOpacity="0.4" />
-                          <stop offset="100%" stopColor="#F5B109" stopOpacity="0" />
+                          <stop offset="0%" stopColor="var(--color-cheese)" stopOpacity="0.4" />
+                          <stop offset="100%" stopColor="var(--color-cheese)" stopOpacity="0" />
                         </linearGradient>
                       </defs>
                       <path d="M0 180 C 100 120, 150 160, 250 80 C 350 40, 400 90, 500 20 L 500 200 L 0 200 Z" fill="url(#yellowArea)" />
-                      <path d="M0 180 C 100 120, 150 160, 250 80 C 350 40, 400 90, 500 20" fill="none" stroke="#F5B109" strokeWidth="3" />
+                      <path d="M0 180 C 100 120, 150 160, 250 80 C 350 40, 400 90, 500 20" fill="none" stroke="var(--color-cheese)" strokeWidth="3" />
                     </svg>
                   </div>
                 </div>
 
                 {/* Horizontal bar charts representing Top pizzas */}
-                <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5 space-y-4">
+                <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
                   <h4 className="text-xs uppercase tracking-widest font-black text-white">TOP SELLING RECIPES CHART</h4>
                   {[
-                    { name: 'Loaded Pepperoni Explosion', pct: '85%', color: 'bg-[#F5B109]' },
+                    { name: 'Loaded Pepperoni Explosion', pct: '85%', color: 'bg-cheese' },
                     { name: 'Woodfire Marinara Jumbos', pct: '64%', color: 'bg-emerald-500' },
                     { name: 'Spicy Garlic Zing Crust', pct: '48%', color: 'bg-blue-500' },
                     { name: 'Double Herb Overload', pct: '32%', color: 'bg-red-500' },
@@ -1349,9 +1349,9 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     <div key={idx} className="space-y-1 text-xs">
                       <div className="flex justify-between items-center text-white font-bold">
                         <span>{p.name}</span>
-                        <span className="font-mono text-[#F5B109]">{p.pct}</span>
+                        <span className="font-mono text-cheese">{p.pct}</span>
                       </div>
-                      <div className="w-full h-2 bg-[#111111] rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-charcoal-black rounded-full overflow-hidden">
                         <div className={`h-full ${p.color}`} style={{ width: p.pct }} />
                       </div>
                     </div>
@@ -1369,17 +1369,17 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 <span className="text-xs uppercase text-cream/40 font-mono tracking-wider">AGGREGATE LEADERBOARD RATINGS FOR ON-DUTY STAFF</span>
                 <button
                   onClick={() => setShowAddStaffModal(true)}
-                  className="bg-[#F5B109] text-black font-black uppercase text-xs px-4 py-2 rounded-xl"
+                  className="bg-cheese text-black font-black uppercase text-xs px-4 py-2 rounded-xl"
                 >
                   Register New Crew Member
                 </button>
               </div>
 
               {/* Table list */}
-              <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl overflow-hidden">
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-[#111111] text-cream/40 border-b border-[#2C2C2C] font-bold text-[10px] uppercase">
+                    <tr className="bg-charcoal-black text-cream/40 border-b border-charcoal-border font-bold text-[10px] uppercase">
                       <th className="p-4">Staff ID</th>
                       <th className="p-4">Name</th>
                       <th className="p-4">Business Role</th>
@@ -1388,12 +1388,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <th className="p-4">Scorecard Rating</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#222222] font-mono">
+                  <tbody className="divide-y divide-charcoal-800 font-mono">
                     {staff.map((member, idx) => (
-                      <tr key={idx} className="hover:bg-[#1a1a1a]">
+                      <tr key={idx} className="hover:bg-charcoal-gray">
                         <td className="p-4 font-bold text-cream/50">{member.id}</td>
                         <td className="p-4 font-sans font-black text-white flex items-center gap-2">
-                          {idx === 0 && <span className="text-[#F5B109]">🏆</span>}
+                          {idx === 0 && <span className="text-cheese">🏆</span>}
                           <span>{member.name}</span>
                         </td>
                         <td className="p-4 font-sans text-cream/70">{member.role}</td>
@@ -1403,7 +1403,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             {member.status}
                           </span>
                         </td>
-                        <td className="p-4 text-center font-bold text-white">{member.ordersToday} Workings</td>
+                        <td className="p-4 text-center font-medium text-white">{member.ordersToday} Workings</td>
                         <td className="p-4 text-emerald-400 font-extrabold">⭐ {member.rating.toFixed(1)} / 5.0</td>
                       </tr>
                     ))}
@@ -1414,9 +1414,9 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               {/* Add staff modal */}
               {showAddStaffModal && (
                 <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
-                  <div className="bg-[#111111] border border-[#2C2C2C] rounded-2xl max-w-sm w-full p-6 space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-[#222222]">
-                      <span className="text-xs font-black uppercase tracking-widest text-[#F5B109]">RECRUIT STAFF MEMBERS</span>
+                  <div className="bg-charcoal-black border border-charcoal-border rounded-2xl max-w-sm w-full p-6 space-y-4">
+                    <div className="flex justify-between items-center pb-2 border-b border-charcoal-800">
+                      <span className="text-xs font-black uppercase tracking-widest text-cheese">RECRUIT STAFF MEMBERS</span>
                       <button onClick={() => setShowAddStaffModal(false)} className="text-cream/40"><X className="w-5 h-5" /></button>
                     </div>
                     <div className="space-y-3 text-xs">
@@ -1427,7 +1427,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                           placeholder="e.g. Ramesh Deshmukh"
                           value={newStaff.name}
                           onChange={e => setNewStaff(prev => ({ ...prev, name: e.target.value }))}
-                          className="w-full bg-[#1E1E1E] border border-[#2c2c2c] p-2.5 rounded text-white"
+                          className="w-full bg-charcoal border border-[#2c2c2c] p-2.5 rounded text-white"
                         />
                       </div>
                       <div className="space-y-1">
@@ -1435,7 +1435,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                         <select
                           value={newStaff.role}
                           onChange={e => setNewStaff(prev => ({ ...prev, role: e.target.value }))}
-                          className="w-full bg-[#1E1E1E] border border-[#2c2c2c] p-2.5 rounded text-white"
+                          className="w-full bg-charcoal border border-[#2c2c2c] p-2.5 rounded text-white"
                         >
                           <option value="Rider Dispatcher">Rider Dispatcher</option>
                           <option value="Head Pizza Artisan">Head Pizza Artisan</option>
@@ -1460,7 +1460,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                             setNewStaff({ name: '', role: 'Rider Dispatcher', status: 'On Duty' });
                           }
                         }}
-                        className="bg-[#F5B109] text-black font-bold px-3 py-1.5 rounded"
+                        className="bg-cheese text-black font-bold px-3 py-1.5 rounded"
                       >
                         Enlist Staff
                       </button>
@@ -1476,21 +1476,21 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
             <div className="space-y-6">
               {/* KPIs Header */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-2xl flex justify-between items-center">
+                <div className="bg-charcoal p-4 border border-charcoal-border rounded-2xl flex justify-between items-center">
                   <div>
                     <span className="text-[10px] text-cream/40 font-mono uppercase">AVERAGE RECIPE PREPARATION TIME</span>
                     <h5 className="text-2xl font-bold font-display text-white mt-1">11.4 Minutes</h5>
                   </div>
-                  <Clock className="w-8 h-8 text-[#F5B109]" />
+                  <Clock className="w-8 h-8 text-cheese" />
                 </div>
-                <div className="bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-2xl flex justify-between items-center">
+                <div className="bg-charcoal p-4 border border-charcoal-border rounded-2xl flex justify-between items-center">
                   <div>
                     <span className="text-[10px] text-cream/40 font-mono uppercase">CONVEYOR QUEUE METADATA LOAD</span>
-                    <h5 className="text-2xl font-bold font-display text-[#F5B109] mt-1">3 Active Jigs</h5>
+                    <h5 className="text-2xl font-bold font-display text-cheese mt-1">3 Active Jigs</h5>
                   </div>
-                  <Layers className="w-8 h-8 text-[#F5B109]" />
+                  <Layers className="w-8 h-8 text-cheese" />
                 </div>
-                <div className="bg-[#1E1E1E] p-4 border border-[#2C2C2C] rounded-2xl flex justify-between items-center">
+                <div className="bg-charcoal p-4 border border-charcoal-border rounded-2xl flex justify-between items-center">
                   <div>
                     <span className="text-[10px] text-cream/40 font-mono uppercase">HEAT BACKPLANE OVERALL THERMAL</span>
                     <h5 className="text-2xl font-bold font-display text-emerald-400 mt-1">850°F (STABLE)</h5>
@@ -1506,16 +1506,16 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   { name: 'STATION 2: CONVEYOR BARBECUE SLIDER 1', status: 'Idle (no queue)', pulseColor: 'bg-amber-400', load: 'NO QUEUE LOGGED', temp: '422°F' },
                   { name: 'STATION 3: GARNISH COLD VEGGIE DEPOT', status: 'Active (green pulse)', pulseColor: 'bg-green-500', load: '12 active tickets', temp: '38°F' },
                 ].map((station, idx) => (
-                  <div key={idx} className="bg-[#111111] border border-[#222222] p-4 rounded-2xl space-y-4">
+                  <div key={idx} className="bg-charcoal-black border border-charcoal-800 p-4 rounded-2xl space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-[10px] uppercase font-mono tracking-wider font-black text-[#F5B109] block truncate max-w-[180px]">{station.name}</span>
+                      <span className="text-[10px] uppercase font-mono tracking-wider font-black text-cheese block truncate max-w-[180px]">{station.name}</span>
                       <div className="flex items-center gap-1.5 shrink-0">
                         <span className={`w-2.5 h-2.5 rounded-full ${station.pulseColor} animate-pulse`} />
                         <span className="text-[9px] font-mono text-cream/30">ONLINE STATUS</span>
                       </div>
                     </div>
 
-                    <div className="bg-[#1E1E1E] p-3 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
+                    <div className="bg-charcoal p-3 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
                       <p className="text-white"><strong>Oven Temp Core:</strong> <span className="text-yellow-400 font-bold">{station.temp}</span></p>
                       <p className="text-cream/70"><strong>Payload Capacity:</strong> {station.load}</p>
                       <p className="text-cream/50"><strong>System status flags:</strong> OK_SYSTEM_NORMAL_FIBER</p>
@@ -1528,19 +1528,19 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
           {/* VIEW 11: ALERT GATEWAY (NOTIFICATIONS) */}
           {activeTab === 11 && (
-            <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-5 space-y-4">
-              <div className="flex justify-between items-center border-b border-[#2C2C2C] pb-3">
-                <span className="text-xs uppercase tracking-widest font-extrabold text-[#F5B109]">SYSTEM CONTROL ALERTS CENTER</span>
+            <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
+              <div className="flex justify-between items-center border-b border-charcoal-border pb-3">
+                <span className="text-xs uppercase tracking-widest font-extrabold text-cheese">SYSTEM CONTROL ALERTS CENTER</span>
                 <div className="flex gap-2">
                   <button
                     onClick={handleMarkAllRead}
-                    className="bg-[#2C2C2C] hover:bg-[#F5B109] hover:text-black font-bold uppercase py-1 px-3 rounded text-xs transition-colors"
+                    className="bg-charcoal-border hover:bg-cheese hover:text-black font-bold uppercase py-1 px-3 rounded text-xs transition-colors"
                   >
                     Mark all read
                   </button>
                   <button
                     onClick={() => setNotifications([])}
-                    className="bg-[#5D1113] hover:bg-red-600 font-bold uppercase py-1 px-3 rounded text-xs transition-colors"
+                    className="bg-burgundy hover:bg-red-600 font-bold uppercase py-1 px-3 rounded text-xs transition-colors"
                   >
                     Flush Feed
                   </button>
@@ -1553,7 +1553,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   <div className="text-center py-10 font-mono text-cream/20">All clear. No notifications logs.</div>
                 ) : (
                   notifications.map(n => (
-                    <div key={n.id} className={`p-4 rounded-xl border flex items-center justify-between text-xs ${n.read ? 'bg-[#151515] border-[#222222] text-cream/50' : 'bg-[#5D1113]/20 border-[#F5B109]/30 text-white'
+                    <div key={n.id} className={`p-4 rounded-xl border flex items-center justify-between text-xs ${n.read ? 'bg-charcoal-dark border-charcoal-800 text-cream/50' : 'bg-burgundy/20 border-cheese/30 text-white'
                       }`}>
                       <div className="flex items-center gap-3">
                         <span className={`px-2 py-0.5 rounded text-[8px] font-mono font-black uppercase ${n.type === 'Orders' ? 'bg-amber-500/10 text-amber-500' : 'bg-red-500/10 text-red-400'
@@ -1574,24 +1574,24 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                 {/* Single metric with sparkline & comparison */}
-                <div className="bg-[#2c2c2cb9] backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(245,177,9,0.15)] space-y-3 flex flex-col justify-between">
+                <div className="bg-charcoal-border/70 backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(245,177,9,0.15)] space-y-3 flex flex-col justify-between">
                   <div>
                     <span className="text-[9px] font-mono uppercase tracking-widest text-cream/50 font-black">Variant A: COMPACT WITH PROGRESS BAR</span>
                     <h6 className="text-3xl font-display font-black text-white mt-1">₹42,890</h6>
                   </div>
                   <div className="space-y-2">
                     <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className="w-4/5 h-full bg-[#F5B109]" />
+                      <div className="w-4/5 h-full bg-cheese" />
                     </div>
                     <div className="flex justify-between items-center text-[10px] font-mono text-cream/40">
                       <span>STABLE COMPILIANCE AT 80%</span>
-                      <span className="text-[#F5B109]">↑ 5%</span>
+                      <span className="text-cheese">↑ 5%</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Sparkling progress variant */}
-                <div className="bg-[#2c2c2cb9] backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(34,197,94,0.15)] space-y-3 flex flex-col justify-between">
+                <div className="bg-charcoal-border/70 backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(34,197,94,0.15)] space-y-3 flex flex-col justify-between">
                   <div>
                     <span className="text-[9px] font-mono uppercase tracking-widest text-cream/50 font-black">Variant B: SPARKLING COMPARISON</span>
                     <h6 className="text-3xl font-display font-black text-white mt-1">4.96 Stars</h6>
@@ -1603,12 +1603,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                 </div>
 
                 {/* Flat monochrome status */}
-                <div className="bg-[#2c2c2cb9] backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(239,68,68,0.15)] space-y-3 flex flex-col justify-between">
+                <div className="bg-charcoal-border/70 backdrop-blur-md border border-white/5 p-4 rounded-2xl shadow-[0_4px_20px_rgba(239,68,68,0.15)] space-y-3 flex flex-col justify-between">
                   <div>
-                    <span className="text-[9px] font-mono uppercase tracking-widest text-[#F5B109] font-black">Variant C: ATTENTION GLOW CARDS</span>
+                    <span className="text-[9px] font-mono uppercase tracking-widest text-cheese font-black">Variant C: ATTENTION GLOW CARDS</span>
                     <h6 className="text-3xl font-display font-black text-white mt-1">2 Oven Alerts</h6>
                   </div>
-                  <div className="bg-[#111111]/80 border border-red-500/20 px-2 py-1.5 rounded-lg text-[10px] font-mono text-red-400">
+                  <div className="bg-charcoal-black/80 border border-red-500/20 px-2 py-1.5 rounded-lg text-[10px] font-mono text-red-400">
                     ⚠️ CONVEYOR HEAT BARRIER OVERRUN
                   </div>
                 </div>
@@ -1619,8 +1619,8 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
           {/* VIEW 13: SYSTEM SETTINGS */}
           {activeTab === 13 && (
-            <div className="bg-[#1E1E1E] border border-[#2C2C2C] rounded-2xl p-6 space-y-6">
-              <h4 className="text-xs uppercase tracking-widest font-black text-[#F5B109] pb-2 border-b border-[#2C2C2C]">STORE ENGINE PROPERTIES</h4>
+            <div className="bg-charcoal border border-charcoal-border rounded-2xl p-6 space-y-6">
+              <h4 className="text-xs uppercase tracking-widest font-black text-cheese pb-2 border-b border-charcoal-border">STORE ENGINE PROPERTIES</h4>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
                 <div className="space-y-4">
@@ -1629,7 +1629,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     <input
                       type="text"
                       defaultValue="Pizza Xpert Woodfire Gourmet Gurgaon"
-                      className="w-full bg-[#111111] border border-[#2C2C2C] p-3 rounded-lg text-white"
+                      className="w-full bg-charcoal-black border border-charcoal-border p-3 rounded-lg text-white"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1637,7 +1637,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     <input
                       type="text"
                       defaultValue="support@pizzaxpert.saas"
-                      className="w-full bg-[#111111] border border-[#2C2C2C] p-3 rounded-lg text-white font-mono"
+                      className="w-full bg-charcoal-black border border-charcoal-border p-3 rounded-lg text-white font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1645,7 +1645,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                     <input
                       type="text"
                       defaultValue="06AAAAA0000A1Z5"
-                      className="w-full bg-[#111111] border border-[#2C2C2C] p-3 rounded-lg text-white font-mono"
+                      className="w-full bg-charcoal-black border border-charcoal-border p-3 rounded-lg text-white font-mono"
                     />
                   </div>
                 </div>
@@ -1657,7 +1657,7 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <input
                         type="text"
                         defaultValue="11:00 AM"
-                        className="w-full bg-[#111111] border border-[#2C2C2C] p-3 rounded-lg text-white font-mono"
+                        className="w-full bg-charcoal-black border border-charcoal-border p-3 rounded-lg text-white font-mono"
                       />
                     </div>
                     <div className="space-y-1">
@@ -1665,31 +1665,31 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                       <input
                         type="text"
                         defaultValue="03:00 AM"
-                        className="w-full bg-[#111111] border border-[#2C2C2C] p-3 rounded-lg text-white font-mono"
+                        className="w-full bg-charcoal-black border border-charcoal-border p-3 rounded-lg text-white font-mono"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2 pt-2">
-                    <label className="text-[#F5B109] uppercase font-mono block font-black">LOGISTICS LIMIT VALUES</label>
+                    <label className="text-cheese uppercase font-mono block font-black">LOGISTICS LIMIT VALUES</label>
                     <div className="p-3 bg-zinc-800/20 border border-white/5 rounded-xl space-y-2">
                       <div className="flex justify-between items-center text-[11px]">
                         <span>Base delivery radius locking limit</span>
-                        <span className="font-bold text-white">5.0 Kilometers</span>
+                        <span className="font-medium text-white">5.0 Kilometers</span>
                       </div>
                       <div className="flex justify-between items-center text-[11px]">
                         <span>Surge price multiplier factor</span>
-                        <span className="font-bold text-[#F5B109]">1.5x Multiplier</span>
+                        <span className="font-bold text-cheese">1.5x Multiplier</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#2C2C2C] flex justify-end">
+              <div className="pt-4 border-t border-charcoal-border flex justify-end">
                 <button
                   onClick={() => alert('Properties saved locally to local config database.')}
-                  className="bg-[#F5B109] text-black font-black uppercase text-xs px-6 py-3 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
+                  className="bg-cheese text-black font-black uppercase text-xs px-6 py-3 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
                 >
                   Apply properties Override
                 </button>

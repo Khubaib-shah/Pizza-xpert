@@ -16,7 +16,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
   );
 
   return (
-    <footer className="relative bg-[#111111] bg-grain text-cream/70 py-16 px-4 md:px-6 overflow-hidden border-t border-white/5">
+    <footer className="relative bg-charcoal-black bg-grain text-cream/70 py-16 px-4 md:px-6 overflow-hidden border-t border-white/5">
 
       <div className="max-w-7xl mx-auto space-y-12 relative z-10 text-left">
 
@@ -41,7 +41,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
                   key={sIdx}
                   href={soc.href}
                   onClick={(e) => e.preventDefault()}
-                  className="w-10 h-10 rounded-xl bg-[#1e1e1e] hover:bg-cheese text-cheese hover:text-charcoal border border-white/5 flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow-md"
+                  className="w-10 h-10 rounded-xl bg-charcoal hover:bg-cheese text-cheese hover:text-charcoal border border-white/5 flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow-md"
                   title="Follow Pizza Xpert"
                 >
                   {soc.icon}
@@ -52,10 +52,10 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
 
           {/* Column 2: Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-display text-lg font-bold tracking-widest text-[#F5B109] uppercase">
+            <h3 className="font-display text-lg font-medium tracking-wide text-cheese uppercase">
               QUICK SECTIONS
             </h3>
-            <ul className="space-y-2.5 font-sans text-xs font-bold uppercase tracking-wider">
+            <ul className="space-y-2.5 font-sans text-xs font-medium uppercase tracking-wider">
               <li>
                 <button onClick={() => onScrollToElement('home')} className="hover:text-cheese transition-colors cursor-pointer text-left">
                   HOMEPAGE PORTAL
@@ -86,10 +86,10 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
 
           {/* Column 3: Order Info */}
           <div className="space-y-4">
-            <h3 className="font-display text-lg font-bold tracking-widest text-[#F5B109] uppercase">
+            <h3 className="font-display text-lg font-medium tracking-wide text-cheese uppercase">
               LOGISTICAL INFO
             </h3>
-            <ul className="space-y-2.5 font-sans text-xs font-bold uppercase tracking-wider">
+            <ul className="space-y-2.5 font-sans text-xs font-medium uppercase tracking-wider">
               <li>
                 <a href="#delivery" onClick={(e) => e.preventDefault()} className="hover:text-cheese transition-colors">
                   Delivery Zone Boundaries
@@ -114,7 +114,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
 
           {/* Column 4: Contact & Details */}
           <div className="space-y-4">
-            <h3 className="font-display text-lg font-bold tracking-widest text-[#F5B109] uppercase">
+            <h3 className="font-display text-lg font-medium tracking-wide text-cheese uppercase">
               CONTACT & IN-HANDS
             </h3>
             <ul className="space-y-3 font-sans text-xs text-cream/60 font-semibold">
@@ -140,7 +140,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
         </div>
 
         {/* Bottom copyright & secure digital cards */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans font-bold text-cream/40 uppercase tracking-wider">
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans font-medium text-cream/40 uppercase tracking-wider">
 
           <div>
             © {new Date().getFullYear()} PIZZA XPERT BRAND LLC. EXPERTISE IN EVERY SLICE!
@@ -151,7 +151,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
             {['Visa', 'Mastercard', 'EasyPaisa', 'COD (Hand Cash)'].map((pm, idx) => (
               <span
                 key={idx}
-                className="px-2.5 py-1 bg-[#1e1e1e] border border-white/5 rounded text-[10px] text-cream/60 tracking-widest font-mono"
+                className="px-2.5 py-1 bg-charcoal border border-white/5 rounded text-[10px] text-cream/60 tracking-wide font-mono"
               >
                 {pm}
               </span>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChefHat, Search, ShoppingBag, Menu, X, Trash2, Sliders } from 'lucide-react';
+import { ChefHat, Search, ShoppingBag, Menu, X, Trash2, Sliders, User } from 'lucide-react';
 import { CartItem } from '../types';
 import Logo from './Logo';
 
@@ -31,6 +31,23 @@ export default function Navbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+        if (localSearch) {
+          onScrollToElement('menu');
+        }
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, searchQuery, onSearchChange, onScrollToElement]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,30 +111,13 @@ export default function Navbar({
           <div className="flex items-center gap-2 md:gap-4">
 
             {/* Search Input Toggle */}
-            <div className="relative">
-              {searchOpen && (
-                <input
-                  type="text"
-                  placeholder="Search craft pizzas..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    onSearchChange(e.target.value);
-                    if (e.target.value) {
-                      onScrollToElement('menu');
-                    }
-                  }}
-                  className="bg-charcoal/95 border border-cream/10 rounded-lg py-1.5 pl-3 pr-8 text-xs text-cream focus:outline-none focus:border-cheese w-36 md:w-52 transition-all font-sans"
-                  autoFocus
-                />
-              )}
-              <button
-                onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2 hover:bg-white/5 rounded-full text-cream/90 hover:text-cheese transition-colors"
-                title="Search menu"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-            </div>
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="p-2 hover:bg-white/5 rounded-full text-cream/90 hover:text-cheese transition-colors"
+              title="Search menu"
+            >
+              <Search className="w-5 h-5" />
+            </button>
 
             {/* Cart Widget Trigger */}
             <button
@@ -133,14 +133,13 @@ export default function Navbar({
               )}
             </button>
 
-            {/* Admin Backstage Portal Trigger */}
+            {/* User Profile / Admin Portal Trigger */}
             <button
               onClick={onToggleAdmin}
-              className="bg-[#111111]/90 hover:bg-[#F5B109] text-[#F5B109] hover:text-black border border-[#F5B109]/30 rounded-xl py-2.5 px-4 font-sans font-bold text-xs uppercase tracking-wide transition-all duration-300 cursor-pointer flex items-center gap-1.5"
-              title="Enter Admin backplane"
+              className="p-2 hover:bg-white/5 rounded-full text-cream/90 hover:text-cheese transition-colors cursor-pointer"
+              title="User Profile"
             >
-              <Sliders className="w-3.5 h-3.5" />
-              <span>Admin Deck</span>
+              <User className="w-5 h-5" />
             </button>
 
             {/* CTA Order Button */}
@@ -161,6 +160,42 @@ export default function Navbar({
 
           </div>
         </div>
+
+        {/* Expanded Big Search Bar below header */}
+        {searchOpen && (
+          <div className="absolute left-0 right-0 top-full bg-charcoal border-b border-white/10 shadow-2xl animate-fade-in origin-top">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6 flex items-center">
+              <Search className="w-6 h-6 text-cheese mr-4" />
+              <input
+                type="text"
+                placeholder="Search for craft pizzas, flavors, sizes..."
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                className="w-full bg-transparent border-none text-cream text-sm md:text-lg focus:outline-none focus:ring-0 font-display tracking-wide placeholder:text-cream/30"
+                autoFocus
+              />
+              {localSearch && (
+                <button
+                  onClick={() => {
+                    setLocalSearch('');
+                    onSearchChange('');
+                  }}
+                  className="p-2 mr-2 hover:bg-white/10 rounded-full text-cream/70 hover:text-white transition-colors"
+                  title="Clear search"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+              <button
+                onClick={() => setSearchOpen(false)}
+                className="p-2 hover:bg-white/10 rounded-full text-tomato transition-colors"
+                title="Close search"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Mobile Nav slide-in Overlay */}
@@ -186,7 +221,7 @@ export default function Navbar({
               <button
                 key={index}
                 onClick={() => handleNavClick(item)}
-                className="font-sans font-bold text-2xl tracking-wide text-[#F8F3E7] hover:text-cheese transition-colors py-2 uppercase border-b border-white/5"
+                className="font-sans font-bold text-2xl tracking-wide text-cream hover:text-cheese transition-colors py-2 uppercase border-b border-white/5"
               >
                 {item.label}
               </button>
@@ -208,10 +243,10 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onToggleAdmin();
               }}
-              className="w-full bg-[#111111] border border-[#F5B109]/30 text-[#F5B109] font-sans font-bold text-sm tracking-wide py-4 rounded-xl transition-all uppercase flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-charcoal-black border border-white/10 text-cream/90 hover:text-cheese font-sans font-bold text-sm tracking-wide py-4 rounded-xl transition-all uppercase flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Sliders className="w-4 h-4 text-[#F5B109]" />
-              <span>Admin Deck</span>
+              <User className="w-5 h-5" />
+              <span>Profile</span>
             </button>
             <div className="text-center text-[11px] text-cream/40 font-mono">
               SUPPORT: 1-800-PIZZA-XPERT

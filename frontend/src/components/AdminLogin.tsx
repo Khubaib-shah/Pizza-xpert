@@ -26,12 +26,12 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
   };
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] flex items-center justify-center p-4">
-      <div className="bg-[#111111] border border-[#2C2C2C] rounded-2xl p-8 w-full max-w-md shadow-2xl">
+    <div className="min-h-screen bg-charcoal-gray flex items-center justify-center p-4">
+      <div className="bg-charcoal-black border border-charcoal-border rounded-2xl p-8 w-full max-w-md shadow-2xl">
         <div className="flex flex-col items-center mb-8">
           <Logo />
           <h2 className="text-xl font-black text-white mt-4 uppercase tracking-widest flex items-center gap-2">
-            <ShieldCheck className="text-[#F5B109] w-6 h-6" />
+            <ShieldCheck className="text-cheese w-6 h-6" />
             Admin Portal
           </h2>
         </div>
@@ -49,7 +49,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-[#1A1A1A] border border-[#2C2C2C] rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-[#F5B109]"
+              className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-cheese"
               placeholder="Enter username"
               required
             />
@@ -60,7 +60,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#1A1A1A] border border-[#2C2C2C] rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-[#F5B109]"
+              className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-cheese"
               placeholder="Enter password"
               required
             />
@@ -69,7 +69,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#F5B109] hover:bg-yellow-400 text-black font-black uppercase tracking-widest py-3 rounded-lg transition-colors mt-2"
+            className="w-full bg-cheese hover:bg-yellow-400 text-black font-black uppercase tracking-widest py-3 rounded-lg transition-colors mt-2"
           >
             {loading ? 'Authenticating...' : 'Secure Login'}
           </button>

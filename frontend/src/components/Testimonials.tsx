@@ -12,7 +12,7 @@ export default function Testimonials() {
     }).catch(() => { });
   }, []);
   return (
-    <section className="relative bg-[#F8F3E7] bg-grain py-20 px-4 md:px-6 overflow-hidden text-charcoal">
+    <section className="relative bg-cream bg-grain py-20 px-4 md:px-6 overflow-hidden text-charcoal">
 
       {/* Decorative Warm Backglowing element */}
       <div className="absolute top-0 left-0 right-0 h-4 bg-tomato/10 pointer-events-none" />
@@ -21,7 +21,7 @@ export default function Testimonials() {
 
         {/* Title sections */}
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5D1113] text-[#F5B109] rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy text-cheese rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
             💬 FEAST REVIEWS
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-bold text-charcoal tracking-wide uppercase leading-none">
@@ -38,7 +38,7 @@ export default function Testimonials() {
           {testimonials.map((test) => (
             <div
               key={String(test.id || (test as any)._id)}
-              className="group relative bg-[#ffffff]/90 rounded-[24px] p-7 md:p-8 border border-[#e8dfc9] hover:border-[#5D1113]/30 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between shadow-xl shadow-[#ece3cb]/50 hover:shadow-2xl"
+              className="group relative bg-white/90 rounded-[24px] p-7 md:p-8 border border-cream/20 hover:border-burgundy/30 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between shadow-xl shadow-cream/30/50 hover:shadow-2xl"
             >
               {/* Massive quotation marks behind content */}
               <div className="absolute top-4 right-6 font-display text-7xl md:text-8xl text-cheese/20 group-hover:text-cheese/45 transition-colors select-none pointer-events-none z-0">
@@ -61,14 +61,14 @@ export default function Testimonials() {
               </div>
 
               {/* Author Footer block */}
-              <div className="flex items-center gap-4.5 pt-5 mt-6 border-t border-[#f0e7d0] relative z-10 text-left">
+              <div className="flex items-center gap-4.5 pt-5 mt-6 border-t border-cream/40 relative z-10 text-left">
                 {/* Initials circle */}
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display text-lg font-black text-white shadow-md ${test.avatarColor}`}>
                   {test.avatarInitials}
                 </div>
 
                 <div>
-                  <h3 className="font-display text-lg font-black text-charcoal uppercase leading-none tracking-tight">
+                  <h3 className="font-display text-lg font-black text-charcoal uppercase leading-none tracking-wide">
                     {test.name}
                   </h3>
                   <p className="font-mono text-[10px] text-tomato/70 uppercase tracking-widest font-black mt-0.5 leading-none">

@@ -6,7 +6,7 @@ interface CTABannerProps {
 
 export default function CTABanner({ onScrollToElement }: CTABannerProps) {
   return (
-    <section className="relative bg-[#5D1113] bg-grain py-24 px-4 md:px-6 overflow-hidden">
+    <section className="relative bg-burgundy bg-grain py-24 px-4 md:px-6 overflow-hidden">
       
       {/* CHEESE DRIP SVG TOP BORDER PANEL (Transitions from dark grey into the deep burgundy) */}
       <div className="absolute top-0 left-0 right-0 w-full overflow-hidden leading-none z-10 select-none">
@@ -18,12 +18,12 @@ export default function CTABanner({ onScrollToElement }: CTABannerProps) {
           {/* Main Cheese Drip Path */}
           <path
             d="M0,0 C150,90 280,110 420,50 C550,0 670,100 810,60 C980,10 1110,120 1250,40 C1380,-20 1440,40 1440,40 L1440,0 L0,0 Z"
-            fill="#F5B109"
+            fill="var(--color-cheese)"
           />
           {/* Underlying orange sauce shadow depth path */}
           <path
             d="M0,0 C150,110 280,120 420,65 C550,10 670,115 810,75 C980,25 1110,135 1250,55 C1380,-10 1440,55 1440,55 L1440,0 L0,0 Z"
-            fill="#E6890A"
+            fill="var(--color-cheese-dark)"
             opacity="0.3"
           />
         </svg>
@@ -35,13 +35,13 @@ export default function CTABanner({ onScrollToElement }: CTABannerProps) {
       <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8 relative z-20 pt-10">
         
         {/* Spark decoration */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/35 rounded-full text-[#F5B109] font-sans text-xs font-black uppercase tracking-widest border border-[#F5B109]/10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/35 rounded-full text-cheese font-sans text-xs font-black uppercase tracking-widest border border-cheese/10">
           <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
           INSTANT RELIEF AWAITS
         </div>
 
         {/* Content Heading */}
-        <h2 className="font-display text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-tight uppercase leading-none select-none">
+        <h2 className="font-display text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-wide uppercase leading-none select-none">
           HUNGRY? <br className="sm:hidden" />
           LET'S <span className="text-cheese text-glow-gold">FIX THAT</span>.
         </h2>
@@ -55,7 +55,7 @@ export default function CTABanner({ onScrollToElement }: CTABannerProps) {
         <div className="pt-2">
           <button
             onClick={() => onScrollToElement('menu')}
-            className="group bg-[#F5B109] text-charcoal hover:bg-white hover:text-burgundy font-sans font-black text-base md:text-lg uppercase tracking-[3px] py-4.5 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 btn-cheese-shadow inline-flex items-center gap-3 cursor-pointer"
+            className="group bg-cheese text-charcoal hover:bg-white hover:text-burgundy font-sans font-black text-base md:text-lg uppercase tracking-[3px] py-4.5 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 btn-cheese-shadow inline-flex items-center gap-3 cursor-pointer"
           >
             ORDER NOW
             <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1.5" />

@@ -7,9 +7,9 @@ interface LogoProps {
 }
 
 export default function Logo({ variant = 'light', className = '', iconOnly = false }: LogoProps) {
-  // Brand colors: Burgundy (#5D1113) for structure, Yellow (#F5B109) for highlights & details
-  const textColor1 = variant === 'light' ? 'text-white' : 'text-[#5D1113]';
-  const textColor2 = variant === 'light' ? 'text-[#F5B109]' : 'text-[#F5B109]';
+  // Brand colors: Burgundy (var(--color-burgundy)) for structure, Yellow (var(--color-cheese)) for highlights & details
+  const textColor1 = variant === 'light' ? 'text-white' : 'text-burgundy';
+  const textColor2 = variant === 'light' ? 'text-cheese' : 'text-cheese';
 
   return (
     <div className={`flex items-center gap-2 select-none ${className}`}>
@@ -21,7 +21,7 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* Symmetrical sharp backdrop */}
-        <circle cx="20" cy="20" r="17" fill="#5D1113" className="opacity-40" />
+        <circle cx="20" cy="20" r="17" fill="var(--color-burgundy)" className="opacity-40" />
 
         {/* Diagonal Line 1: Structural Clean White Bar (Left-Top to Right-Bottom) */}
         <line
@@ -29,7 +29,7 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
           y1="10"
           x2="30"
           y2="30"
-          stroke="#5D1113"
+          stroke="var(--color-burgundy)"
           strokeWidth="6"
           strokeLinecap="round"
         />
@@ -52,8 +52,8 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
              C 34 16, 34 19.5, 32 22 
              L 11 29 
              Z"
-          fill="#5D1113"
-          stroke="#F5B109"
+          fill="var(--color-burgundy)"
+          stroke="var(--color-cheese)"
           strokeWidth="2"
           strokeLinejoin="bevel"
         />
@@ -65,7 +65,7 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
              C 16 28.5, 14 27.5, 15 26 
              C 16 24.5, 17.5 24, 19 21
              Z"
-          fill="#F5B109"
+          fill="var(--color-cheese)"
         />
 
         {/* Classic golden crust outline curve at the top-right cap */}
@@ -73,15 +73,15 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
           d="M 25.5 14.5
              C 28 12.5, 31.5 12.5, 33 14
              C 34.5 15.5, 34.5 19, 32.5 21.5"
-          stroke="#F5B109"
+          stroke="var(--color-cheese)"
           strokeWidth="3.5"
           strokeLinecap="round"
         />
 
         {/* Tiny gourmet pepperoni circles placed precisely on the slice cross-section */}
-        <circle cx="28.5" cy="18" r="2.2" fill="#E63946" stroke="#F5B109" strokeWidth="0.5" />
-        <circle cx="21" cy="22" r="1.8" fill="#E63946" stroke="#F5B109" strokeWidth="0.5" />
-        <circle cx="25" cy="23.5" r="1.4" fill="#E63946" stroke="#F5B109" strokeWidth="0.4" />
+        <circle cx="28.5" cy="18" r="2.2" fill="var(--color-tomato)" stroke="var(--color-cheese)" strokeWidth="0.5" />
+        <circle cx="21" cy="22" r="1.8" fill="var(--color-tomato)" stroke="var(--color-cheese)" strokeWidth="0.5" />
+        <circle cx="25" cy="23.5" r="1.4" fill="var(--color-tomato)" stroke="var(--color-cheese)" strokeWidth="0.4" />
       </svg>
 
       {!iconOnly && (
@@ -94,7 +94,7 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
               Xpert
             </span>
           </div>
-          <span className="text-[8px] md:text-[9px] font-sans font-bold text-[#F5B109] tracking-[1.2px] uppercase mt-0.5 leading-none">
+          <span className="text-[8px] md:text-[9px] font-sans font-bold text-cheese tracking-[1.2px] uppercase mt-0.5 leading-none">
             Expertise In Every Slice
           </span>
         </div>

@@ -22,13 +22,14 @@ import Footer from "./components/Footer";
 import CartSidebar from "./components/CartSidebar";
 import OrderTracker from "./components/OrderTracker";
 import Preloader from "./components/Preloader";
+import WaveDivider from "./components/WaveDivider";
 
 // Lazy load AdminPanel for code splitting
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
 import useImagePreloader from "./hooks/useImagePreloader";
-import heroBgMain from "./assets/images/hero_deal_bg_1780278334343.png";
-import heroBgOven from "./assets/images/pizza_oven_1780276189628.png";
-import heroBgPepperoni from "./assets/images/pizza_pepperoni_1780276165703.png";
+import heroBgMain from "./assets/images/1.png";
+import heroBgOven from "./assets/images/2.png";
+import heroBgPepperoni from "./assets/images/1.png";
 import { CartItem, SimulatedOrder, Deal, OrderStage } from "./types";
 
 export default function App() {
@@ -45,7 +46,7 @@ export default function App() {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("veg");
   const [cartOpen, setCartOpen] = useState(false);
   const [trackerOpen, setTrackerOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -251,6 +252,8 @@ export default function App() {
             {/* ━━ HERO SECTION (2) ━━ */}
             <Hero onScrollToElement={handleScrollToElement} />
 
+            <WaveDivider className="mt-[-1px] relative z-20" />
+
             {/* ━━ CATEGORIES SECTION (5) ━━ */}
             <Categories
               selectedCategory={selectedCategory}
@@ -263,6 +266,7 @@ export default function App() {
               onAddToCart={handleAddToCart}
               searchQuery={searchQuery}
               selectedCategory={selectedCategory}
+              onCategoryVisible={setSelectedCategory}
             />
 
             {/* ━━ POPULAR COUPON DEALS (4) ━━ */}
@@ -317,7 +321,7 @@ export default function App() {
 
             {/* ━━ INTERACTIVE SUCCESS FLOATING ALERTS ━━ */}
             {toast && toast.visible && (
-              <div className="fixed bottom-6 left-6 z-50 bg-[#1e1e1e] border-2 border-cheese rounded-2xl p-4 shadow-[0_12px_40px_rgba(245,177,9,0.5)] max-w-sm animate-fade-in flex items-center gap-3 select-none">
+              <div className="fixed bottom-6 left-6 z-50 bg-charcoal border-2 border-cheese rounded-2xl p-4 shadow-[0_12px_40px_rgba(245,177,9,0.5)] max-w-sm animate-fade-in flex items-center gap-3 select-none">
                 <div className="w-9 h-9 bg-burgundy rounded-xl flex items-center justify-center border border-tomato/30 flex-shrink-0 animate-bounce">
                   <Bell className="w-5 h-5 text-cheese" />
                 </div>

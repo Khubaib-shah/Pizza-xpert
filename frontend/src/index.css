@@ -13,13 +13,24 @@
   --color-cream: #F8F3E7;
   --color-charcoal: #1E1E1E;
   --color-olive: #6BAA75;
+  --color-charcoal-light: #262626;
+  --color-charcoal-dark: #151515;
+  --color-charcoal-black: #111111;
+  --color-charcoal-gray: #1a1a1a;
+  --color-charcoal-muted: #333333;
+  --color-charcoal-border: #2C2C2C;
+  --color-charcoal-800: #222222;
+  --color-charcoal-900: #0A0A0A;
+  --color-black-pure: #0f0f0f;
+  --color-burgundy-dark: #3B0B0C;
+  --color-cheese-dark: #E6890A;
 }
 
 /* Custom CSS variables & Global rules */
 @layer base {
   body {
-    background-color: #1E1E1E;
-    color: #F8F3E7;
+    background-color: var(--color-charcoal);
+    color: var(--color-cream);
     font-family: "Montserrat", sans-serif;
     overflow-x: hidden;
   }
@@ -37,17 +48,26 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1E1E1E;
+  background: var(--color-charcoal);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #5D1113;
+  background: var(--color-burgundy);
   border-radius: 999px;
-  border: 2px solid #1E1E1E;
+  border: 2px solid var(--color-charcoal);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #F5B109;
+  background: var(--color-cheese);
+}
+
+/* Utility to hide scrollbar but allow scrolling */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Interactive custom animation rules */
@@ -81,6 +101,7 @@
 
 .animate-ticker-scroller {
   animation: ticker-scroll 42s linear infinite;
+  will-change: transform;
 }
 
 /* Cheese Glow highlights */
@@ -120,11 +141,11 @@
 
 .u-form-input {
   width: 100%;
-  background: #151515;
+  background: var(--color-charcoal-dark);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 0.75rem;
   padding: 0.75rem 0.85rem;
-  color: #f8f3e7;
+  color: var(--color-cream);
   font-size: 0.92rem;
   line-height: 1.35;
   outline: none;
@@ -132,12 +153,12 @@
 }
 
 .u-form-input:focus {
-  border-color: #f5b109;
+  border-color: var(--color-cheese);
   box-shadow: 0 0 0 4px rgba(245, 177, 9, 0.12);
 }
 
 .u-button-primary {
-  background: #e63946;
+  background: var(--color-tomato);
   color: #ffffff;
   border-radius: 1rem;
   padding: 1rem 1.25rem;
@@ -147,8 +168,8 @@
 }
 
 .u-button-primary:hover {
-  background: #f5b109;
-  color: #1e1e1e;
+  background: var(--color-cheese);
+  color: var(--color-charcoal);
 }
 
 .card-pizza-shadow {
@@ -161,11 +182,11 @@
 
 /* Text glow effects — use GPU-compositable color-only glow, avoid text-shadow during scroll */
 .text-glow-gold {
-  color: #F5B109;
+  color: var(--color-cheese);
 }
 
 .text-glow-red {
-  color: #E63946;
+  color: var(--color-tomato);
 }
 
 /* Scroll performance: promote interactive cards to their own GPU layer */
@@ -198,15 +219,17 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 0%;
+  height: 100%;
   background-color: var(--color-cheese);
-  transition: ease-out 0.3s;
+  transition: transform ease-out 0.3s;
+  transform: scaleY(0);
+  transform-origin: bottom;
   z-index: -1;
   border-radius: inherit;
 }
 
 .btn-primary-anim:hover::before {
-  height: 100%;
+  transform: scaleY(1);
 }
 
 .btn-primary-anim:hover {
@@ -237,8 +260,9 @@
   width: calc(100% + 4px);
   height: calc(100% + 4px);
   background-color: var(--color-charcoal);
-  transition: 0.3s ease-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   transform: scaleY(1);
+  transform-origin: top;
   z-index: -1;
   border-radius: inherit;
 }
@@ -251,15 +275,15 @@
   width: calc(100% + 4px);
   height: 50%;
   background-color: var(--color-charcoal);
-  transition: 0.3s ease-out;
+  transition: transform 0.3s ease-out;
   transform: scaleY(1);
+  transform-origin: top;
   z-index: -1;
   border-radius: inherit;
 }
 
 .btn-secondary-anim:hover::before {
-  transform: translateY(-25px);
-  height: 0;
+  transform: translateY(-25px) scaleY(0);
 }
 
 .btn-secondary-anim:hover::after {
