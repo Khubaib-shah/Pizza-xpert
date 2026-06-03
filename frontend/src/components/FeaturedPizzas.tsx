@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star, Clock, Flame, Sliders, Check, Plus, Minus, X, Info, Loader2 } from 'lucide-react';
 import { Pizza, PizzaCustomization, CartItem } from '../types';
-import {
-  AVAILABLE_SIZES,
-  AVAILABLE_CRUSTS,
-  AVAILABLE_SAUCES,
-  TOPPAN_UPGRADE_COSTS,
-  CATEGORIES
-} from '../data';
-import { fetchPizzas } from '../services/api';
+import { fetchPizzas, fetchMenuConfig, fetchCategories } from '../services/api';
 
 interface FeaturedPizzasProps {
   onAddToCart: (item: Omit<CartItem, 'id'>) => void;
@@ -28,15 +21,27 @@ export default function FeaturedPizzas({
   const [error, setError] = useState('');
   const [customizingPizza, setCustomizingPizza] = useState<Pizza | null>(null);
 
+  // Dynamic menu config from backend
+  const [menuConfig, setMenuConfig] = useState<any>(null);
+  // API categories
+  const [apiCategories, setApiCategories] = useState<any[]>([]);
+
   useEffect(() => {
     fetchPizzas()
       .then((res) => {
-        // Map MongoDB _id to id for compatibility with types.ts
         const mapped = res.data.map((p: any) => ({ ...p, id: p._id }));
         setPizzas(mapped);
       })
       .catch(() => setError('Failed to load pizzas. Please try again.'))
       .finally(() => setLoading(false));
+
+    fetchMenuConfig()
+      .then((res) => setMenuConfig(res.data))
+      .catch(() => console.warn('Menu config not available, using defaults'));
+
+    fetchCategories()
+      .then((res) => setApiCategories(res.data))
+      .catch(() => console.warn('Categories not available, falling back'));
   }, []);
 
   useEffect(() => {
@@ -58,10 +63,22 @@ export default function FeaturedPizzas({
     return () => observer.disconnect();
   }, [onCategoryVisible, pizzas]);
 
+  // Derive menu options: use API data if available, else fall back to defaults
+  const availableSizes = menuConfig?.sizes?.filter((s: any) => s.isAvailable).map((s: any) => s.name) ||
+    ['Personal (8")', 'Medium (12")', 'Monster (16")'];
+  const availableCrusts = menuConfig?.crusts?.filter((c: any) => c.isAvailable).map((c: any) => c.name) ||
+    ['Classic Hand-Tossed', 'Crispy Thin Crust', 'Stuffed Cheese Crust', 'Gluten-Free Pan'];
+  const availableSauces = menuConfig?.sauces?.filter((s: any) => s.isAvailable).map((s: any) => s.name) ||
+    ['Deep Tomato Marinara', 'Spicy Garlic Chili', 'Zesty Smoky BBQ', 'Creamy White Alfredo'];
+  const availableToppings: Record<string, number> = menuConfig?.toppings
+    ? Object.fromEntries(menuConfig.toppings.filter((t: any) => t.isAvailable).map((t: any) => [t.name, t.price]))
+    : { 'Sizzling Pepperoni': 200, 'Artisan Sausage': 225, 'Grilled Herb Chicken': 200, 'Sautéed Mushrooms': 125, 'Greek Feta Chunks': 150 };
+  const extraCheesePrice = menuConfig?.extraCheesePrice ?? 200;
+
   // Customization Form States
-  const [size, setSize] = useState<PizzaCustomization['size']>('Medium (12")');
-  const [crust, setCrust] = useState<PizzaCustomization['crust']>('Classic Hand-Tossed');
-  const [sauce, setSauce] = useState<PizzaCustomization['sauce']>('Deep Tomato Marinara');
+  const [size, setSize] = useState<string>(availableSizes[1] || 'Medium (12")');
+  const [crust, setCrust] = useState<string>(availableCrusts[0] || 'Classic Hand-Tossed');
+  const [sauce, setSauce] = useState<string>(availableSauces[0] || 'Deep Tomato Marinara');
   const [extraCheese, setExtraCheese] = useState(false);
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
   const [activeStep, setActiveStep] = useState(1);
@@ -104,27 +121,37 @@ export default function FeaturedPizzas({
     }
   };
 
-  // Calculate current customized cost
+  // Calculate current customized cost dynamically using API config
   const calculateCustomizedPrice = () => {
     if (!customizingPizza) return 0;
     let price = customizingPizza.price;
 
-    // Size pricing adjustment
-    if (size === 'Personal (8")') price -= 3.00;
-    if (size === 'Monster (16")') price += 5.00;
+    // Size pricing adjustment (from menuConfig)
+    if (menuConfig?.sizes) {
+      const sizeConfig = menuConfig.sizes.find((s: any) => s.name === size);
+      if (sizeConfig) price += sizeConfig.priceModifier;
+    } else {
+      if (size === 'Personal (8")') price -= 300;
+      if (size === 'Monster (16")') price += 500;
+    }
 
-    // Crust pricing adjustment
-    if (crust === 'Stuffed Cheese Crust') price += 3.50;
+    // Crust pricing adjustment (from menuConfig)
+    if (menuConfig?.crusts) {
+      const crustConfig = menuConfig.crusts.find((c: any) => c.name === crust);
+      if (crustConfig) price += crustConfig.priceModifier;
+    } else {
+      if (crust === 'Stuffed Cheese Crust') price += 350;
+    }
 
     // Extra Cheese
-    if (extraCheese) price += 2.00;
+    if (extraCheese) price += extraCheesePrice;
 
     // Premium Toppings sum
     selectedToppings.forEach((topping) => {
-      price += TOPPAN_UPGRADE_COSTS[topping] || 0;
+      price += availableToppings[topping] || 0;
     });
 
-    return Number(price.toFixed(2));
+    return Math.round(price);
   };
 
   // Save customize and Add to cart
@@ -202,22 +229,30 @@ export default function FeaturedPizzas({
         {/* Menu Sections by Category */}
         {searchMatchedPizzas.length > 0 ? (
           <div className="space-y-20">
-            {CATEGORIES.filter(c => c.id !== 'all').map((category) => {
+            {(apiCategories.length > 0 ? apiCategories : [
+              { slug: 'veg', name: 'Veg Decor' },
+              { slug: 'non-veg', name: 'Meat Crown' },
+              { slug: 'cheesy', name: 'Cheese Drip' },
+              { slug: 'bbq', name: 'Sweet BBQ' },
+              { slug: 'spicy', name: 'Spicy Fire' },
+              { slug: 'classic', name: 'Classic Herb' },
+              { slug: 'loaded', name: 'Lava Loaded' },
+            ]).filter(c => c.slug !== 'all').map((category) => {
               const categoryPizzas = searchMatchedPizzas.filter((pizza) => {
-                if (category.id === 'veg') return pizza.isVeg === true;
-                if (category.id === 'non-veg') return pizza.isVeg === false;
-                if (category.id === 'spicy') return pizza.isSpicy === true;
-                if (category.id === 'cheesy') return pizza.category === 'cheesy';
-                if (category.id === 'bbq') return pizza.category === 'bbq';
-                if (category.id === 'loaded') return pizza.category === 'loaded';
-                if (category.id === 'classic') return pizza.category === 'classic' || pizza.tags.includes('CLASSIC HERB');
+                if (category.slug === 'veg') return pizza.isVeg === true;
+                if (category.slug === 'non-veg') return pizza.isVeg === false;
+                if (category.slug === 'spicy') return pizza.isSpicy === true;
+                if (category.slug === 'cheesy') return pizza.category === 'cheesy';
+                if (category.slug === 'bbq') return pizza.category === 'bbq';
+                if (category.slug === 'loaded') return pizza.category === 'loaded';
+                if (category.slug === 'classic') return pizza.category === 'classic' || pizza.tags?.includes('CLASSIC HERB');
                 return false;
               });
 
               if (categoryPizzas.length === 0) return null;
 
               return (
-                <div key={category.id} id={`category-${category.id}`} className="menu-category-section scroll-mt-32">
+                <div key={category.slug || category._id} id={`category-${category.slug}`} className="menu-category-section scroll-mt-32">
                   <h3 className="font-display text-2xl md:text-3xl font-bold text-cheese uppercase mb-8 border-b border-white/10 pb-3 flex items-center gap-3">
                     {category.name}
                   </h3>
@@ -426,7 +461,7 @@ export default function FeaturedPizzas({
 
                   {activeStep === 1 && (
                     <div className="p-4 pt-0 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
-                      {AVAILABLE_SIZES.map((s) => (
+                      {availableSizes.map((s: string) => (
                         <button
                           key={s}
                           onClick={() => { setSize(s); setActiveStep(2); }}
@@ -437,7 +472,11 @@ export default function FeaturedPizzas({
                           <div className={`font-sans font-bold text-xs uppercase ${size === s ? 'text-cheese' : 'text-cream/90'}`}>{s.split(' ')[0]}</div>
                           <div className="font-sans text-[10px] text-cream/50 mt-1">{s.split(' ')[1] || 'Standard'}</div>
                           <div className="font-mono text-[10px] font-bold text-cream/40 mt-2">
-                            {s.includes('8') ? '-Rs.3.00' : s.includes('16') ? '+Rs.5.00' : 'Included'}
+                            {(() => {
+                              const sc = menuConfig?.sizes?.find((x: any) => x.name === s);
+                              if (!sc || sc.priceModifier === 0) return 'Included';
+                              return (sc.priceModifier > 0 ? '+' : '') + 'Rs.' + sc.priceModifier;
+                            })()}
                           </div>
                         </button>
                       ))}
@@ -457,9 +496,10 @@ export default function FeaturedPizzas({
 
                   {activeStep === 2 && (
                     <div className="p-4 pt-0 grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in">
-                      {AVAILABLE_CRUSTS.map((c) => {
-                        const isPremium = c === 'Stuffed Cheese Crust';
-                        const isRecommended = c === 'Classic Hand-Tossed';
+                      {availableCrusts.map((c: string) => {
+                        const crustConfig = menuConfig?.crusts?.find((x: any) => x.name === c);
+                        const isPremium = crustConfig?.isPremium || false;
+                        const isRecommended = crustConfig?.isRecommended || false;
                         return (
                           <button
                             key={c}
@@ -469,7 +509,7 @@ export default function FeaturedPizzas({
                           >
                             {crust === c && <Check className="absolute top-3 right-3 w-4 h-4 text-cheese" />}
                             {isRecommended && <span className="inline-block px-2 py-0.5 bg-olive/20 text-olive text-[9px] font-black uppercase rounded-md mb-2">Recommended</span>}
-                            {isPremium && <span className="inline-block px-2 py-0.5 bg-cheese/20 text-cheese text-[9px] font-black uppercase rounded-md mb-2">Premium +Rs.3.50</span>}
+                            {isPremium && crustConfig?.priceModifier > 0 && <span className="inline-block px-2 py-0.5 bg-cheese/20 text-cheese text-[9px] font-black uppercase rounded-md mb-2">Premium +Rs.{crustConfig.priceModifier}</span>}
 
                             <div className={`font-sans font-bold text-xs uppercase ${crust === c ? 'text-cheese' : 'text-cream/90'}`}>{c}</div>
                           </button>
@@ -491,7 +531,7 @@ export default function FeaturedPizzas({
 
                   {activeStep === 3 && (
                     <div className="p-4 pt-0 grid grid-cols-2 gap-3 animate-fade-in">
-                      {AVAILABLE_SAUCES.map((sa) => (
+                      {availableSauces.map((sa: string) => (
                         <button
                           key={sa}
                           onClick={() => { setSauce(sa); setActiveStep(4); }}
@@ -531,7 +571,7 @@ export default function FeaturedPizzas({
                               <div className="font-sans text-[10px] text-cream/50 mt-0.5">Extra heavy layer of Wisconsin whole milk cheese</div>
                             </div>
                           </div>
-                          <span className="font-mono text-xs font-normal text-cheese">+Rs.2.00</span>
+                          <span className="font-mono text-xs font-normal text-cheese">+Rs.{extraCheesePrice}</span>
                         </label>
                       </div>
 
@@ -539,7 +579,7 @@ export default function FeaturedPizzas({
                       <div>
                         <h5 className="font-sans text-[10px] font-black text-cream/50 uppercase tracking-widest mb-3">Additional Toppings</h5>
                         <div className="flex flex-col gap-2">
-                          {Object.keys(TOPPAN_UPGRADE_COSTS).map((top) => {
+                          {Object.entries(availableToppings).map(([top, topPrice]) => {
                             const isSelected = selectedToppings.includes(top);
                             return (
                               <button
@@ -557,7 +597,7 @@ export default function FeaturedPizzas({
                                   <div className={`font-sans font-bold text-[11px] uppercase ${isSelected ? 'text-cheese' : 'text-cream/90'}`}>{top}</div>
                                 </div>
                                 <div className="font-mono text-[10px] font-normal text-cream/40">
-                                  +Rs{TOPPAN_UPGRADE_COSTS[top].toFixed(2)}
+                                  +Rs.{topPrice}
                                 </div>
                               </button>
                             );

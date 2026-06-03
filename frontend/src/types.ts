@@ -16,9 +16,9 @@ export interface Pizza {
 }
 
 export interface PizzaCustomization {
-  size: 'Personal (8")' | 'Medium (12")' | 'Monster (16")';
-  crust: 'Classic Hand-Tossed' | 'Crispy Thin Crust' | 'Stuffed Cheese Crust' | 'Gluten-Free Pan';
-  sauce: 'Deep Tomato Marinara' | 'Spicy Garlic Chili' | 'Zesty Smoky BBQ' | 'Creamy White Alfredo';
+  size: string;
+  crust: string;
+  sauce: string;
   extraCheese: boolean;
   extraToppings: string[];
 }

@@ -29,11 +29,29 @@ import {
   X,
   Sparkles,
   Award,
-  DollarSign
+  DollarSign,
+  Image,
+  Tag,
+  Sliders,
+  Trash2,
+  Edit2,
+  Save,
+  RefreshCw,
+  ToggleLeft,
+  ToggleRight,
+  Pizza
 } from 'lucide-react';
 import Logo from './Logo';
 import AdminLogin from './AdminLogin';
-import { fetchOrders, fetchCustomers, fetchStaff, fetchCoupons, fetchAnalytics, updateOrderStage, createStaff, createCoupon } from '../services/api';
+import {
+  fetchOrders, fetchCustomers, fetchStaff, fetchCoupons, fetchAnalytics,
+  updateOrderStage, createStaff, createCoupon,
+  fetchHeroSlidesAdmin, createHeroSlide, updateHeroSlide, deleteHeroSlide,
+  fetchMenuConfigAdmin, updateMenuConfig,
+  fetchCategoriesAdmin, createCategory, updateCategory, deleteCategory,
+  fetchDealsAdmin, createDeal, updateDeal, deleteDeal,
+  fetchPizzas, createPizza, updatePizza, deletePizza
+} from '../services/api';
 
 interface AdminPanelProps {
   onBackToStore: () => void;
@@ -102,8 +120,32 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
   const [newStaff, setNewStaff] = useState({ name: '', role: 'Rider Dispatcher', status: 'On Duty' });
 
-  // Timers and auto-refresh simulated state
   const [elapsedTimers, setElapsedTimers] = useState<Record<string, number>>({});
+
+  // ── Dynamic Content State ───────────────────────────────────────────
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
+  const [editingSlide, setEditingSlide] = useState<any | null>(null);
+  const [slideForm, setSlideForm] = useState({ id: '', title: '', subtitle: '', tagline: '', items: '', backgroundImg: '', ctaLabel: 'Order Now', isActive: true, order: 0, badgeTopLine: '', badgePriceLine: '', badgeBottomLine: '' });
+  const [showSlideModal, setShowSlideModal] = useState(false);
+
+  const [menuConfig, setMenuConfig] = useState<any>(null);
+  const [menuConfigDraft, setMenuConfigDraft] = useState<any>(null);
+  const [savingMenuConfig, setSavingMenuConfig] = useState(false);
+
+  const [categories, setCategories] = useState<any[]>([]);
+  const [categoryForm, setCategoryForm] = useState({ slug: '', name: '', iconName: 'Flame', order: 0 });
+  const [editingCategory, setEditingCategory] = useState<any | null>(null);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  const [adminDeals, setAdminDeals] = useState<any[]>([]);
+  const [dealForm, setDealForm] = useState({ title: '', discountBadge: '', description: '', originalPrice: '', dealPrice: '', endsInSeconds: '86400', isLimited: false, isActive: true });
+  const [editingDeal, setEditingDeal] = useState<any | null>(null);
+  const [showDealModal, setShowDealModal] = useState(false);
+
+  const [adminPizzas, setAdminPizzas] = useState<any[]>([]);
+  const [pizzaForm, setPizzaForm] = useState({ name: '', tagline: '', description: '', price: '', category: 'spicy', isVeg: false, isSpicy: false, isPopular: false, image: '' });
+  const [editingPizza, setEditingPizza] = useState<any | null>(null);
+  const [showPizzaModal, setShowPizzaModal] = useState(false);
 
   // API data loading
   useEffect(() => {
@@ -142,13 +184,20 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
 
     fetchCoupons().then(res => setCoupons(res.data.map((c: any) => ({
       code: c.code,
-      discount: c.discountType === 'Percentage' ? `${c.discountValue}%` : `₨${c.discountValue} Flat`,
+      discount: c.discountType === 'Percentage' ? `${c.discountValue}%` : `Rs.${c.discountValue} Flat`,
       type: c.discountType,
       minOrder: c.minOrderAmount,
       uses: c.uses,
       expiry: new Date(c.expiryDate).toLocaleDateString(),
       status: c.status,
     })))).catch(() => { });
+
+    // Load new dynamic content
+    fetchHeroSlidesAdmin().then(res => setHeroSlides(res.data)).catch(() => {});
+    fetchMenuConfigAdmin().then(res => { setMenuConfig(res.data); setMenuConfigDraft(res.data); }).catch(() => {});
+    fetchCategoriesAdmin().then(res => setCategories(res.data)).catch(() => {});
+    fetchDealsAdmin().then(res => setAdminDeals(res.data)).catch(() => {});
+    fetchPizzas().then(res => setAdminPizzas(res.data)).catch(() => {});
   }, [authToken]);
 
   useEffect(() => {
@@ -278,6 +327,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
               { id: 11, label: 'Alert Gateway', icon: Bell },
               { id: 12, label: 'Widget Library', icon: Sparkles },
               { id: 13, label: 'System Settings', icon: Settings },
+              // ── Dynamic Content ──
+              { id: 14, label: 'Hero Carousel', icon: Image },
+              { id: 15, label: 'Toppings & Config', icon: Sliders },
+              { id: 16, label: 'Categories', icon: Tag },
+              { id: 17, label: 'Deals Manager', icon: DollarSign },
+              { id: 18, label: 'Pizza Manager', icon: Pizza },
             ].map(item => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -357,7 +412,12 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   'Kitchen Oven status',
                   'Realtime Alert gateway',
                   'Widget Library',
-                  'System Settings'
+                  'System Settings',
+                  'Hero Carousel Manager',
+                  'Toppings & Menu Config',
+                  'Categories Manager',
+                  'Deals Manager',
+                  'Pizza Manager',
                 ][activeTab - 1]}
               </span>
             </h1>
@@ -1694,6 +1754,740 @@ export default function AdminPanel({ onBackToStore }: AdminPanelProps) {
                   Apply properties Override
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* VIEW 14: HERO CAROUSEL MANAGER */}
+          {activeTab === 14 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-display font-black text-white uppercase tracking-widest">Hero Carousel Slides</h2>
+                  <p className="text-xs text-cream/40 mt-1 font-mono">Manage the slides shown on the homepage hero section</p>
+                </div>
+                <button
+                  onClick={() => { setEditingSlide(null); setSlideForm({ id: '', title: '', subtitle: '', tagline: '', items: '', backgroundImg: '', ctaLabel: 'Order Now', isActive: true, order: 0, badgeTopLine: '', badgePriceLine: '', badgeBottomLine: '' }); setShowSlideModal(true); }}
+                  className="flex items-center gap-2 bg-cheese text-black font-black text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Add Slide
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {heroSlides.length === 0 && (
+                  <div className="col-span-3 text-center py-20 bg-charcoal border border-charcoal-border rounded-2xl">
+                    <Image className="w-8 h-8 text-cream/20 mx-auto mb-3" />
+                    <p className="text-cream/40 font-mono text-sm">No slides yet. Add your first hero slide!</p>
+                  </div>
+                )}
+                {heroSlides.map((slide: any) => (
+                  <div key={slide._id} className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden group hover:border-cheese/40 transition-all">
+                    <div className="relative h-36 bg-charcoal-dark">
+                      {slide.backgroundImg ? (
+                        <img src={slide.backgroundImg} alt={slide.title} className="w-full h-full object-cover opacity-60" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Image className="w-10 h-10 text-cream/10" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent" />
+                      <div className="absolute bottom-3 left-3">
+                        <div className="text-[9px] font-mono text-cheese uppercase font-black">{slide.tagline}</div>
+                        <div className="text-sm font-display font-black text-white uppercase">{slide.title}</div>
+                      </div>
+                      <div className="absolute top-2 right-2">
+                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold ${slide.isActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+                          {slide.isActive ? 'LIVE' : 'HIDDEN'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <div className="text-xs text-cream/50 font-mono">{slide.subtitle}</div>
+                      <div className="flex flex-wrap gap-1">
+                        {(slide.items || []).slice(0, 3).map((item: string, i: number) => (
+                          <span key={i} className="text-[9px] bg-charcoal-dark text-cream/60 px-2 py-0.5 rounded-full border border-white/5">{item}</span>
+                        ))}
+                      </div>
+                      <div className="flex gap-2 pt-1">
+                        <button
+                          onClick={() => {
+                            setEditingSlide(slide);
+                            setSlideForm({ ...slide, items: (slide.items || []).join(', ') });
+                            setShowSlideModal(true);
+                          }}
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 text-[10px] font-black uppercase py-2 rounded-lg transition-all cursor-pointer"
+                        >
+                          <Edit2 className="w-3 h-3" /> Edit
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (!confirm('Delete this slide?')) return;
+                            await deleteHeroSlide(slide._id);
+                            setHeroSlides(prev => prev.filter(s => s._id !== slide._id));
+                          }}
+                          className="p-2 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg transition-all cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Slide Modal */}
+              {showSlideModal && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
+                    <div className="p-5 border-b border-charcoal-border flex items-center justify-between">
+                      <h3 className="font-display font-black text-white uppercase text-sm tracking-widest">{editingSlide ? 'Edit Slide' : 'Add New Slide'}</h3>
+                      <button onClick={() => setShowSlideModal(false)} className="text-cream/40 hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      {[
+                        { label: 'Slide ID (slug)', key: 'id', placeholder: 'e.g. cozy-deal' },
+                        { label: 'Main Title', key: 'title', placeholder: 'e.g. 2 Jumbo Pizzas' },
+                        { label: 'Subtitle', key: 'subtitle', placeholder: 'e.g. Cozy Night Deal' },
+                        { label: 'Top Tagline', key: 'tagline', placeholder: 'e.g. 🔥 LIMITED OFFER' },
+                        { label: 'CTA Button Label', key: 'ctaLabel', placeholder: 'e.g. Order Now' },
+                        { label: 'Background Image URL', key: 'backgroundImg', placeholder: '/src/assets/images/...' },
+                        { label: 'Badge Top Line', key: 'badgeTopLine', placeholder: 'e.g. TOP SELLING' },
+                        { label: 'Badge Price', key: 'badgePriceLine', placeholder: 'e.g. Rs.1650' },
+                        { label: 'Badge Bottom Line', key: 'badgeBottomLine', placeholder: 'e.g. DEAL' },
+                      ].map(f => (
+                        <div key={f.key} className="space-y-1">
+                          <label className="text-[10px] font-mono font-black text-cream/40 uppercase">{f.label}</label>
+                          <input
+                            type="text"
+                            value={(slideForm as any)[f.key]}
+                            onChange={e => setSlideForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+                            placeholder={f.placeholder}
+                            className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-cream/20 focus:outline-none focus:border-cheese font-mono"
+                          />
+                        </div>
+                      ))}
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono font-black text-cream/40 uppercase">Combo Items (comma-separated)</label>
+                        <textarea
+                          value={slideForm.items}
+                          onChange={e => setSlideForm(prev => ({ ...prev, items: e.target.value }))}
+                          placeholder="2 Jumbo Pizzas, Free Chilled Soda, 3 Garlic Dips"
+                          rows={2}
+                          className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-cream/20 focus:outline-none focus:border-cheese font-mono resize-none"
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-mono font-black text-cream/40 uppercase">Active / Visible</label>
+                        <button
+                          onClick={() => setSlideForm(prev => ({ ...prev, isActive: !prev.isActive }))}
+                          className={`flex items-center gap-2 text-xs font-bold cursor-pointer ${slideForm.isActive ? 'text-emerald-400' : 'text-cream/30'}`}
+                        >
+                          {slideForm.isActive ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
+                          {slideForm.isActive ? 'Live' : 'Hidden'}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-charcoal-border flex gap-3">
+                      <button onClick={() => setShowSlideModal(false)} className="flex-1 border border-charcoal-border text-cream/50 hover:text-white py-2.5 rounded-xl text-xs font-black uppercase transition-all cursor-pointer">Cancel</button>
+                      <button
+                        onClick={async () => {
+                          const payload = { ...slideForm, items: slideForm.items.split(',').map(s => s.trim()).filter(Boolean) };
+                          if (editingSlide) {
+                            const res = await updateHeroSlide(editingSlide._id, payload);
+                            setHeroSlides(prev => prev.map(s => s._id === editingSlide._id ? res.data : s));
+                          } else {
+                            const res = await createHeroSlide(payload);
+                            setHeroSlides(prev => [...prev, res.data]);
+                          }
+                          setShowSlideModal(false);
+                        }}
+                        className="flex-1 bg-cheese text-black font-black uppercase text-xs py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <Save className="w-4 h-4" /> {editingSlide ? 'Update Slide' : 'Add Slide'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VIEW 15: TOPPINGS & MENU CONFIG */}
+          {activeTab === 15 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-display font-black text-white uppercase tracking-widest">Toppings & Menu Config</h2>
+                  <p className="text-xs text-cream/40 mt-1 font-mono">Manage toppings, sizes, crusts, sauces & pricing</p>
+                </div>
+                <button
+                  onClick={async () => {
+                    if (!menuConfigDraft) return;
+                    setSavingMenuConfig(true);
+                    const res = await updateMenuConfig(menuConfigDraft);
+                    setMenuConfig(res.data);
+                    setMenuConfigDraft(res.data);
+                    setSavingMenuConfig(false);
+                    alert('Menu config saved!');
+                  }}
+                  disabled={savingMenuConfig}
+                  className="flex items-center gap-2 bg-cheese text-black font-black text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer disabled:opacity-50"
+                >
+                  <Save className="w-4 h-4" /> {savingMenuConfig ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+
+              {!menuConfigDraft ? (
+                <div className="bg-charcoal border border-charcoal-border rounded-2xl p-10 text-center">
+                  <RefreshCw className="w-8 h-8 text-cream/20 mx-auto mb-3 animate-spin" />
+                  <p className="text-cream/40 font-mono text-sm">Loading config...</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                  {/* Toppings */}
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-mono font-black text-cream/60 uppercase tracking-widest">Toppings ({menuConfigDraft.toppings?.length || 0})</h3>
+                      <button
+                        onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, toppings: [...(prev.toppings || []), { name: 'New Topping', price: 100, isAvailable: true }] }))}
+                        className="text-[10px] bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 px-2 py-1 rounded-lg font-black uppercase cursor-pointer"
+                      >
+                        <Plus className="w-3 h-3 inline" /> Add
+                      </button>
+                    </div>
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                      {(menuConfigDraft.toppings || []).map((topping: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 bg-charcoal-dark border border-white/5 rounded-xl p-2.5">
+                          <input
+                            type="text"
+                            value={topping.name}
+                            onChange={e => {
+                              const t = [...menuConfigDraft.toppings];
+                              t[i] = { ...t[i], name: e.target.value };
+                              setMenuConfigDraft((prev: any) => ({ ...prev, toppings: t }));
+                            }}
+                            className="flex-1 bg-transparent text-xs text-white font-mono focus:outline-none min-w-0"
+                          />
+                          <span className="text-cream/30 font-mono text-[10px]">Rs.</span>
+                          <input
+                            type="number"
+                            value={topping.price}
+                            onChange={e => {
+                              const t = [...menuConfigDraft.toppings];
+                              t[i] = { ...t[i], price: Number(e.target.value) };
+                              setMenuConfigDraft((prev: any) => ({ ...prev, toppings: t }));
+                            }}
+                            className="w-16 bg-transparent text-xs text-cheese font-mono text-right focus:outline-none"
+                          />
+                          <button
+                            onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, toppings: prev.toppings.filter((_: any, idx: number) => idx !== i) }))}
+                            className="text-red-400/50 hover:text-red-400 cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs">
+                      <span className="text-cream/40 font-mono">Extra Cheese (base price)</span>
+                      <div className="flex items-center gap-1">
+                        <span className="text-cream/30 font-mono">Rs.</span>
+                        <input
+                          type="number"
+                          value={menuConfigDraft.extraCheesePrice || 200}
+                          onChange={e => setMenuConfigDraft((prev: any) => ({ ...prev, extraCheesePrice: Number(e.target.value) }))}
+                          className="w-16 bg-charcoal-dark border border-white/5 rounded-lg px-2 py-1 text-cheese font-mono text-xs text-right focus:outline-none focus:border-cheese"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sizes */}
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
+                    <h3 className="text-xs font-mono font-black text-cream/60 uppercase tracking-widest">Sizes</h3>
+                    <div className="space-y-2">
+                      {(menuConfigDraft.sizes || []).map((s: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 bg-charcoal-dark border border-white/5 rounded-xl p-2.5">
+                          <input
+                            type="text"
+                            value={s.name}
+                            onChange={e => { const arr = [...menuConfigDraft.sizes]; arr[i] = { ...arr[i], name: e.target.value }; setMenuConfigDraft((prev: any) => ({ ...prev, sizes: arr })); }}
+                            className="flex-1 bg-transparent text-xs text-white font-mono focus:outline-none"
+                          />
+                          <span className="text-cream/30 font-mono text-[10px]">±Rs.</span>
+                          <input
+                            type="number"
+                            value={s.priceModifier}
+                            onChange={e => { const arr = [...menuConfigDraft.sizes]; arr[i] = { ...arr[i], priceModifier: Number(e.target.value) }; setMenuConfigDraft((prev: any) => ({ ...prev, sizes: arr })); }}
+                            className="w-20 bg-transparent text-xs text-cheese font-mono text-right focus:outline-none"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Crusts */}
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-mono font-black text-cream/60 uppercase tracking-widest">Crusts</h3>
+                      <button
+                        onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, crusts: [...(prev.crusts || []), { name: 'New Crust', priceModifier: 0, isPremium: false, isRecommended: false, isAvailable: true }] }))}
+                        className="text-[10px] bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 px-2 py-1 rounded-lg font-black uppercase cursor-pointer"
+                      >
+                        <Plus className="w-3 h-3 inline" /> Add
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {(menuConfigDraft.crusts || []).map((c: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 bg-charcoal-dark border border-white/5 rounded-xl p-2.5">
+                          <input
+                            type="text"
+                            value={c.name}
+                            onChange={e => { const arr = [...menuConfigDraft.crusts]; arr[i] = { ...arr[i], name: e.target.value }; setMenuConfigDraft((prev: any) => ({ ...prev, crusts: arr })); }}
+                            className="flex-1 bg-transparent text-xs text-white font-mono focus:outline-none"
+                          />
+                          <span className="text-[9px] text-cream/30">±Rs.</span>
+                          <input
+                            type="number"
+                            value={c.priceModifier}
+                            onChange={e => { const arr = [...menuConfigDraft.crusts]; arr[i] = { ...arr[i], priceModifier: Number(e.target.value) }; setMenuConfigDraft((prev: any) => ({ ...prev, crusts: arr })); }}
+                            className="w-16 bg-transparent text-xs text-cheese font-mono text-right focus:outline-none"
+                          />
+                          <button onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, crusts: prev.crusts.filter((_: any, idx: number) => idx !== i) }))} className="text-red-400/50 hover:text-red-400 cursor-pointer"><X className="w-3.5 h-3.5" /></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Sauces */}
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-mono font-black text-cream/60 uppercase tracking-widest">Sauces</h3>
+                      <button
+                        onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, sauces: [...(prev.sauces || []), { name: 'New Sauce', isAvailable: true }] }))}
+                        className="text-[10px] bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 px-2 py-1 rounded-lg font-black uppercase cursor-pointer"
+                      >
+                        <Plus className="w-3 h-3 inline" /> Add
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {(menuConfigDraft.sauces || []).map((s: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 bg-charcoal-dark border border-white/5 rounded-xl p-2.5">
+                          <input
+                            type="text"
+                            value={s.name}
+                            onChange={e => { const arr = [...menuConfigDraft.sauces]; arr[i] = { ...arr[i], name: e.target.value }; setMenuConfigDraft((prev: any) => ({ ...prev, sauces: arr })); }}
+                            className="flex-1 bg-transparent text-xs text-white font-mono focus:outline-none"
+                          />
+                          <button onClick={() => setMenuConfigDraft((prev: any) => ({ ...prev, sauces: prev.sauces.filter((_: any, idx: number) => idx !== i) }))} className="text-red-400/50 hover:text-red-400 cursor-pointer"><X className="w-3.5 h-3.5" /></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VIEW 16: CATEGORIES MANAGER */}
+          {activeTab === 16 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-display font-black text-white uppercase tracking-widest">Categories</h2>
+                  <p className="text-xs text-cream/40 mt-1 font-mono">Add, edit, or remove menu categories</p>
+                </div>
+                <button
+                  onClick={() => { setEditingCategory(null); setCategoryForm({ slug: '', name: '', iconName: 'Flame', order: 0 }); setShowCategoryModal(true); }}
+                  className="flex items-center gap-2 bg-cheese text-black font-black text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Add Category
+                </button>
+              </div>
+
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="bg-charcoal-dark border-b border-charcoal-border text-cream/40 uppercase font-bold text-[10px] tracking-wider">
+                      <th className="p-4">Order</th>
+                      <th className="p-4">Slug</th>
+                      <th className="p-4">Name</th>
+                      <th className="p-4">Icon</th>
+                      <th className="p-4">Items</th>
+                      <th className="p-4">Status</th>
+                      <th className="p-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-charcoal-border">
+                    {categories.length === 0 && (
+                      <tr><td colSpan={7} className="p-10 text-center text-cream/30 font-mono">No categories found.</td></tr>
+                    )}
+                    {categories.map((cat: any) => (
+                      <tr key={cat._id} className="hover:bg-charcoal-dark/50 transition-colors">
+                        <td className="p-4 font-mono text-cream/50">{cat.order}</td>
+                        <td className="p-4 font-mono text-cheese font-bold">{cat.slug}</td>
+                        <td className="p-4 text-white font-bold uppercase">{cat.name}</td>
+                        <td className="p-4 text-cream/60 font-mono text-[10px]">{cat.iconName}</td>
+                        <td className="p-4 text-cream/60">{cat.itemCount}</td>
+                        <td className="p-4">
+                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold border ${cat.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                            {cat.isActive ? 'Active' : 'Hidden'}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => { setEditingCategory(cat); setCategoryForm({ slug: cat.slug, name: cat.name, iconName: cat.iconName, order: cat.order }); setShowCategoryModal(true); }}
+                              className="p-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 rounded-lg cursor-pointer transition-all"
+                            >
+                              <Edit2 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={async () => {
+                                if (!confirm('Delete this category?')) return;
+                                await deleteCategory(cat._id);
+                                setCategories(prev => prev.filter(c => c._id !== cat._id));
+                              }}
+                              className="p-1.5 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg cursor-pointer transition-all"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {showCategoryModal && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl w-full max-w-md">
+                    <div className="p-5 border-b border-charcoal-border flex items-center justify-between">
+                      <h3 className="font-display font-black text-white uppercase text-sm tracking-widest">{editingCategory ? 'Edit Category' : 'Add Category'}</h3>
+                      <button onClick={() => setShowCategoryModal(false)} className="text-cream/40 hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      {[
+                        { label: 'Slug (unique ID)', key: 'slug', placeholder: 'e.g. spicy' },
+                        { label: 'Display Name', key: 'name', placeholder: 'e.g. SPICY FIRE' },
+                        { label: 'Lucide Icon Name', key: 'iconName', placeholder: 'e.g. Flame, Leaf, Layers' },
+                      ].map(f => (
+                        <div key={f.key} className="space-y-1">
+                          <label className="text-[10px] font-mono font-black text-cream/40 uppercase">{f.label}</label>
+                          <input
+                            type="text"
+                            value={(categoryForm as any)[f.key]}
+                            onChange={e => setCategoryForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+                            placeholder={f.placeholder}
+                            className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-cream/20 focus:outline-none focus:border-cheese font-mono"
+                          />
+                        </div>
+                      ))}
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono font-black text-cream/40 uppercase">Display Order</label>
+                        <input
+                          type="number"
+                          value={categoryForm.order}
+                          onChange={e => setCategoryForm(prev => ({ ...prev, order: Number(e.target.value) }))}
+                          className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cheese font-mono"
+                        />
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-charcoal-border flex gap-3">
+                      <button onClick={() => setShowCategoryModal(false)} className="flex-1 border border-charcoal-border text-cream/50 hover:text-white py-2.5 rounded-xl text-xs font-black uppercase transition-all cursor-pointer">Cancel</button>
+                      <button
+                        onClick={async () => {
+                          if (editingCategory) {
+                            const res = await updateCategory(editingCategory._id, categoryForm);
+                            setCategories(prev => prev.map(c => c._id === editingCategory._id ? res.data : c));
+                          } else {
+                            const res = await createCategory(categoryForm);
+                            setCategories(prev => [...prev, res.data]);
+                          }
+                          setShowCategoryModal(false);
+                        }}
+                        className="flex-1 bg-cheese text-black font-black uppercase text-xs py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <Save className="w-4 h-4" /> {editingCategory ? 'Update' : 'Create'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VIEW 17: DEALS MANAGER */}
+          {activeTab === 17 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-display font-black text-white uppercase tracking-widest">Popular Deals</h2>
+                  <p className="text-xs text-cream/40 mt-1 font-mono">Manage the deals shown on the homepage</p>
+                </div>
+                <button
+                  onClick={() => { setEditingDeal(null); setDealForm({ title: '', discountBadge: '', description: '', originalPrice: '', dealPrice: '', endsInSeconds: '86400', isLimited: false, isActive: true }); setShowDealModal(true); }}
+                  className="flex items-center gap-2 bg-cheese text-black font-black text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Add Deal
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {adminDeals.length === 0 && (
+                  <div className="col-span-3 text-center py-20 bg-charcoal border border-charcoal-border rounded-2xl">
+                    <DollarSign className="w-8 h-8 text-cream/20 mx-auto mb-3" />
+                    <p className="text-cream/40 font-mono text-sm">No deals yet. Create your first deal!</p>
+                  </div>
+                )}
+                {adminDeals.map((deal: any) => (
+                  <div key={deal._id} className="bg-charcoal border border-charcoal-border rounded-2xl p-5 space-y-3 hover:border-cheese/40 transition-all">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[9px] font-mono font-black bg-burgundy/30 text-cheese px-2 py-0.5 rounded-full border border-cheese/20">{deal.discountBadge}</span>
+                        <h3 className="font-display font-black text-white uppercase text-sm mt-2">{deal.title}</h3>
+                      </div>
+                      <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold border shrink-0 ${deal.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                        {deal.isActive ? 'Active' : 'Off'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-cream/50 font-sans leading-relaxed">{deal.description}</p>
+                    <div className="flex items-center gap-3 pt-1">
+                      <div className="text-cream/30 text-xs line-through font-mono">Rs.{deal.originalPrice}</div>
+                      <div className="text-cheese font-display text-xl font-black">Rs.{deal.dealPrice}</div>
+                    </div>
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        onClick={() => { setEditingDeal(deal); setDealForm({ title: deal.title, discountBadge: deal.discountBadge, description: deal.description, originalPrice: String(deal.originalPrice), dealPrice: String(deal.dealPrice), endsInSeconds: String(deal.endsInSeconds), isLimited: deal.isLimited, isActive: deal.isActive }); setShowDealModal(true); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 text-[10px] font-black uppercase py-2 rounded-lg transition-all cursor-pointer"
+                      >
+                        <Edit2 className="w-3 h-3" /> Edit
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this deal?')) return;
+                          await deleteDeal(deal._id);
+                          setAdminDeals(prev => prev.filter(d => d._id !== deal._id));
+                        }}
+                        className="p-2 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg transition-all cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {showDealModal && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                    <div className="p-5 border-b border-charcoal-border flex items-center justify-between">
+                      <h3 className="font-display font-black text-white uppercase text-sm tracking-widest">{editingDeal ? 'Edit Deal' : 'Create Deal'}</h3>
+                      <button onClick={() => setShowDealModal(false)} className="text-cream/40 hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      {[
+                        { label: 'Deal Title', key: 'title', placeholder: 'e.g. COZY DEAL' },
+                        { label: 'Discount Badge', key: 'discountBadge', placeholder: 'e.g. 50% OFF or BEST VALUE' },
+                        { label: 'Description', key: 'description', placeholder: 'What does this deal include?' },
+                        { label: 'Original Price (Rs.)', key: 'originalPrice', placeholder: '3500', type: 'number' },
+                        { label: 'Deal Price (Rs.)', key: 'dealPrice', placeholder: '1650', type: 'number' },
+                        { label: 'Countdown (seconds)', key: 'endsInSeconds', placeholder: '86400', type: 'number' },
+                      ].map(f => (
+                        <div key={f.key} className="space-y-1">
+                          <label className="text-[10px] font-mono font-black text-cream/40 uppercase">{f.label}</label>
+                          <input
+                            type={f.type || 'text'}
+                            value={(dealForm as any)[f.key]}
+                            onChange={e => setDealForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+                            placeholder={f.placeholder}
+                            className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-cream/20 focus:outline-none focus:border-cheese font-mono"
+                          />
+                        </div>
+                      ))}
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-mono font-black text-cream/40 uppercase">Active</label>
+                        <button onClick={() => setDealForm(prev => ({ ...prev, isActive: !prev.isActive }))} className={`text-xs font-bold cursor-pointer ${dealForm.isActive ? 'text-emerald-400' : 'text-cream/30'}`}>
+                          {dealForm.isActive ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-charcoal-border flex gap-3">
+                      <button onClick={() => setShowDealModal(false)} className="flex-1 border border-charcoal-border text-cream/50 hover:text-white py-2.5 rounded-xl text-xs font-black uppercase transition-all cursor-pointer">Cancel</button>
+                      <button
+                        onClick={async () => {
+                          const payload = { ...dealForm, originalPrice: Number(dealForm.originalPrice), dealPrice: Number(dealForm.dealPrice), endsInSeconds: Number(dealForm.endsInSeconds) };
+                          if (editingDeal) {
+                            const res = await updateDeal(editingDeal._id, payload);
+                            setAdminDeals(prev => prev.map(d => d._id === editingDeal._id ? res.data : d));
+                          } else {
+                            const res = await createDeal(payload);
+                            setAdminDeals(prev => [...prev, res.data]);
+                          }
+                          setShowDealModal(false);
+                        }}
+                        className="flex-1 bg-cheese text-black font-black uppercase text-xs py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <Save className="w-4 h-4" /> {editingDeal ? 'Update Deal' : 'Create Deal'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VIEW 18: PIZZA MANAGER */}
+          {activeTab === 18 && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-display font-black text-white uppercase tracking-widest">Pizza Manager</h2>
+                  <p className="text-xs text-cream/40 mt-1 font-mono">Add, edit, or deactivate menu pizzas</p>
+                </div>
+                <button
+                  onClick={() => { setEditingPizza(null); setPizzaForm({ name: '', tagline: '', description: '', price: '', category: 'spicy', isVeg: false, isSpicy: false, isPopular: false, image: '' }); setShowPizzaModal(true); }}
+                  className="flex items-center gap-2 bg-cheese text-black font-black text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Add Pizza
+                </button>
+              </div>
+
+              <div className="bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="bg-charcoal-dark border-b border-charcoal-border text-cream/40 uppercase font-bold text-[10px] tracking-wider">
+                      <th className="p-4">Name</th>
+                      <th className="p-4">Category</th>
+                      <th className="p-4">Price</th>
+                      <th className="p-4">Rating</th>
+                      <th className="p-4">Flags</th>
+                      <th className="p-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-charcoal-border">
+                    {adminPizzas.length === 0 && (
+                      <tr><td colSpan={6} className="p-10 text-center text-cream/30 font-mono">No pizzas found. Seed the database or add one!</td></tr>
+                    )}
+                    {adminPizzas.map((pizza: any) => (
+                      <tr key={pizza._id} className="hover:bg-charcoal-dark/50 transition-colors">
+                        <td className="p-4">
+                          <div className="font-bold text-white">{pizza.name}</div>
+                          <div className="text-cream/40 text-[10px] font-mono mt-0.5">{pizza.tagline}</div>
+                        </td>
+                        <td className="p-4">
+                          <span className="text-[9px] bg-charcoal-dark border border-white/5 text-cream/60 px-2 py-0.5 rounded-full font-mono uppercase">{pizza.category}</span>
+                        </td>
+                        <td className="p-4 text-cheese font-mono font-bold">Rs.{pizza.price}</td>
+                        <td className="p-4 text-cream/60 font-mono">⭐ {pizza.rating}</td>
+                        <td className="p-4">
+                          <div className="flex gap-1 flex-wrap">
+                            {pizza.isSpicy && <span className="text-[8px] bg-red-500/10 text-red-400 border border-red-400/20 px-1.5 py-0.5 rounded-full">Spicy</span>}
+                            {pizza.isVeg && <span className="text-[8px] bg-green-500/10 text-green-400 border border-green-400/20 px-1.5 py-0.5 rounded-full">Veg</span>}
+                            {pizza.isPopular && <span className="text-[8px] bg-cheese/10 text-cheese border border-cheese/20 px-1.5 py-0.5 rounded-full">Popular</span>}
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => { setEditingPizza(pizza); setPizzaForm({ name: pizza.name, tagline: pizza.tagline, description: pizza.description, price: String(pizza.price), category: pizza.category, isVeg: pizza.isVeg, isSpicy: pizza.isSpicy, isPopular: pizza.isPopular, image: pizza.image }); setShowPizzaModal(true); }}
+                              className="p-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 rounded-lg cursor-pointer transition-all"
+                            >
+                              <Edit2 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={async () => {
+                                if (!confirm('Delete this pizza?')) return;
+                                await deletePizza(pizza._id);
+                                setAdminPizzas(prev => prev.filter(p => p._id !== pizza._id));
+                              }}
+                              className="p-1.5 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg cursor-pointer transition-all"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {showPizzaModal && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                  <div className="bg-charcoal border border-charcoal-border rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                    <div className="p-5 border-b border-charcoal-border flex items-center justify-between">
+                      <h3 className="font-display font-black text-white uppercase text-sm tracking-widest">{editingPizza ? 'Edit Pizza' : 'Add Pizza'}</h3>
+                      <button onClick={() => setShowPizzaModal(false)} className="text-cream/40 hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      {[
+                        { label: 'Pizza Name', key: 'name', placeholder: 'e.g. Tikka Supreme' },
+                        { label: 'Tagline', key: 'tagline', placeholder: 'e.g. Authentic Karachi flavor' },
+                        { label: 'Description', key: 'description', placeholder: 'Full description of the pizza' },
+                        { label: 'Image URL', key: 'image', placeholder: '/src/assets/images/...' },
+                        { label: 'Price (Rs.)', key: 'price', placeholder: '1850', type: 'number' },
+                      ].map(f => (
+                        <div key={f.key} className="space-y-1">
+                          <label className="text-[10px] font-mono font-black text-cream/40 uppercase">{f.label}</label>
+                          <input
+                            type={f.type || 'text'}
+                            value={(pizzaForm as any)[f.key]}
+                            onChange={e => setPizzaForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+                            placeholder={f.placeholder}
+                            className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-cream/20 focus:outline-none focus:border-cheese font-mono"
+                          />
+                        </div>
+                      ))}
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono font-black text-cream/40 uppercase">Category</label>
+                        <select
+                          value={pizzaForm.category}
+                          onChange={e => setPizzaForm(prev => ({ ...prev, category: e.target.value }))}
+                          className="w-full bg-charcoal-dark border border-charcoal-border rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cheese font-mono"
+                        >
+                          {['spicy', 'veg', 'cheesy', 'bbq', 'classic', 'loaded'].map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div className="flex gap-4">
+                        {[{ label: 'Veg', key: 'isVeg' }, { label: 'Spicy', key: 'isSpicy' }, { label: 'Popular', key: 'isPopular' }].map(f => (
+                          <label key={f.key} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={(pizzaForm as any)[f.key]}
+                              onChange={e => setPizzaForm(prev => ({ ...prev, [f.key]: e.target.checked }))}
+                              className="rounded text-cheese"
+                            />
+                            <span className="text-xs text-cream/60 font-mono">{f.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-charcoal-border flex gap-3">
+                      <button onClick={() => setShowPizzaModal(false)} className="flex-1 border border-charcoal-border text-cream/50 hover:text-white py-2.5 rounded-xl text-xs font-black uppercase transition-all cursor-pointer">Cancel</button>
+                      <button
+                        onClick={async () => {
+                          const payload = { ...pizzaForm, price: Number(pizzaForm.price) };
+                          if (editingPizza) {
+                            const res = await updatePizza(editingPizza._id, payload);
+                            setAdminPizzas(prev => prev.map(p => p._id === editingPizza._id ? res.data : p));
+                          } else {
+                            const res = await createPizza(payload);
+                            setAdminPizzas(prev => [...prev, res.data]);
+                          }
+                          setShowPizzaModal(false);
+                        }}
+                        className="flex-1 bg-cheese text-black font-black uppercase text-xs py-2.5 rounded-xl hover:bg-yellow-400 transition-all cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <Save className="w-4 h-4" /> {editingPizza ? 'Update Pizza' : 'Add Pizza'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

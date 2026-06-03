@@ -10,6 +10,10 @@ import couponRoutes from './routes/coupon.routes.js';
 import staffRoutes from './routes/staff.routes.js';
 import contentRoutes from './routes/content.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import heroSlideRoutes from './routes/heroSlide.routes.js';
+import menuConfigRoutes from './routes/menuConfig.routes.js';
+import categoryRoutes from './routes/category.routes.js';
+import dealRoutes from './routes/deal.routes.js';
 
 dotenv.config();
 
@@ -32,6 +36,10 @@ app.use('/api/coupons', couponRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/hero-slides', heroSlideRoutes);
+app.use('/api/menu-config', menuConfigRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/deals', dealRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

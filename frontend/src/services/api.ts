@@ -42,6 +42,11 @@ export const fetchLandingContent = () => {
   }
   return cache.get('/content')!;
 };
+
+export const fetchCategories = () => api.get('/categories');
+export const fetchMenuConfig = () => api.get('/menu-config');
+export const fetchHeroSlides = () => api.get('/hero-slides');
+
 export const placeOrder = (orderData: object) => api.post('/orders', orderData);
 
 // ── Admin Endpoints (JWT protected) ─────────────────────────────
@@ -60,5 +65,32 @@ export const fetchCoupons = () => api.get('/coupons');
 export const createCoupon = (data: object) => api.post('/coupons', data);
 
 export const fetchAnalytics = () => api.get('/analytics');
+
+// ── Admin: Hero Slides ────────────────────────────────────────────
+export const fetchHeroSlidesAdmin = () => api.get('/hero-slides/admin');
+export const createHeroSlide = (data: object) => api.post('/hero-slides', data);
+export const updateHeroSlide = (id: string, data: object) => api.put(`/hero-slides/${id}`, data);
+export const deleteHeroSlide = (id: string) => api.delete(`/hero-slides/${id}`);
+
+// ── Admin: Menu Config ───────────────────────────────────────────
+export const fetchMenuConfigAdmin = () => api.get('/menu-config');
+export const updateMenuConfig = (data: object) => api.put('/menu-config', data);
+
+// ── Admin: Categories ────────────────────────────────────────────
+export const fetchCategoriesAdmin = () => api.get('/categories/admin');
+export const createCategory = (data: object) => api.post('/categories', data);
+export const updateCategory = (id: string, data: object) => api.put(`/categories/${id}`, data);
+export const deleteCategory = (id: string) => api.delete(`/categories/${id}`);
+
+// ── Admin: Deals ─────────────────────────────────────────────────
+export const fetchDealsAdmin = () => api.get('/deals/admin');
+export const createDeal = (data: object) => api.post('/deals', data);
+export const updateDeal = (id: string, data: object) => api.put(`/deals/${id}`, data);
+export const deleteDeal = (id: string) => api.delete(`/deals/${id}`);
+
+// ── Admin: Pizza CRUD ─────────────────────────────────────────────
+export const createPizza = (data: object) => api.post('/pizzas', data);
+export const updatePizza = (id: string, data: object) => api.put(`/pizzas/${id}`, data);
+export const deletePizza = (id: string) => api.delete(`/pizzas/${id}`);
 
 export default api;
