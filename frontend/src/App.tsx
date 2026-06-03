@@ -1,51 +1,68 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Sparkles, ShoppingBag, ShieldCheck, CheckSquare, Bell, ArrowUp } from 'lucide-react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import FeaturedPizzas from './components/FeaturedPizzas';
-import PopularDeals from './components/PopularDeals';
-import Categories from './components/Categories';
-import WhyChooseUs from './components/WhyChooseUs';
-import Testimonials from './components/Testimonials';
-import DeliveryProcess from './components/DeliveryProcess';
-import AppPromo from './components/AppPromo';
-import CTABanner from './components/CTABanner';
-import Footer from './components/Footer';
-import CartSidebar from './components/CartSidebar';
-import OrderTracker from './components/OrderTracker';
-import AdminPanel from './components/AdminPanel';
-import Preloader from './components/Preloader';
-import useImagePreloader from './hooks/useImagePreloader';
-import heroBgMain from './assets/images/hero_deal_bg_1780278334343.png';
-import heroBgOven from './assets/images/pizza_oven_1780276189628.png';
-import heroBgPepperoni from './assets/images/pizza_pepperoni_1780276165703.png';
-import { CartItem, SimulatedOrder, Deal, OrderStage } from './types';
+import { useState, useEffect, lazy, Suspense } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import {
+  Sparkles,
+  ShoppingBag,
+  ShieldCheck,
+  CheckSquare,
+  Bell,
+  ArrowUp,
+} from "lucide-react";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import FeaturedPizzas from "./components/FeaturedPizzas";
+import PopularDeals from "./components/PopularDeals";
+import Categories from "./components/Categories";
+import WhyChooseUs from "./components/WhyChooseUs";
+import Testimonials from "./components/Testimonials";
+import DeliveryProcess from "./components/DeliveryProcess";
+import AppPromo from "./components/AppPromo";
+import CTABanner from "./components/CTABanner";
+import Footer from "./components/Footer";
+import CartSidebar from "./components/CartSidebar";
+import OrderTracker from "./components/OrderTracker";
+import Preloader from "./components/Preloader";
+
+// Lazy load AdminPanel for code splitting
+const AdminPanel = lazy(() => import("./components/AdminPanel"));
+import useImagePreloader from "./hooks/useImagePreloader";
+import heroBgMain from "./assets/images/hero_deal_bg_1780278334343.png";
+import heroBgOven from "./assets/images/pizza_oven_1780276189628.png";
+import heroBgPepperoni from "./assets/images/pizza_pepperoni_1780276165703.png";
+import { CartItem, SimulatedOrder, Deal, OrderStage } from "./types";
 
 export default function App() {
   const navigate = useNavigate();
   // State definitions
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('pizzaxpert_cart');
+    const saved = localStorage.getItem("pizzaxpert_cart");
     return saved ? JSON.parse(saved) : [];
   });
 
   const [activeOrder, setActiveOrder] = useState<SimulatedOrder | null>(() => {
-    const saved = localStorage.getItem('pizzaxpert_active_order');
+    const saved = localStorage.getItem("pizzaxpert_active_order");
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [cartOpen, setCartOpen] = useState(false);
   const [trackerOpen, setTrackerOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Success Toast system state
-  const [toast, setToast] = useState<{ id: number; message: string; visible: boolean } | null>(null);
+  const [toast, setToast] = useState<{
+    id: number;
+    message: string;
+    visible: boolean;
+  } | null>(null);
   const [appReady, setAppReady] = useState(false);
 
-  const assetsReady = useImagePreloader([heroBgMain, heroBgOven, heroBgPepperoni]);
+  const assetsReady = useImagePreloader([
+    heroBgMain,
+    heroBgOven,
+    heroBgPepperoni,
+  ]);
 
   useEffect(() => {
     if (assetsReady) {
@@ -57,14 +74,17 @@ export default function App() {
 
   // Sync state with localStorage
   useEffect(() => {
-    localStorage.setItem('pizzaxpert_cart', JSON.stringify(cart));
+    localStorage.setItem("pizzaxpert_cart", JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
     if (activeOrder) {
-      localStorage.setItem('pizzaxpert_active_order', JSON.stringify(activeOrder));
+      localStorage.setItem(
+        "pizzaxpert_active_order",
+        JSON.stringify(activeOrder),
+      );
     } else {
-      localStorage.removeItem('pizzaxpert_active_order');
+      localStorage.removeItem("pizzaxpert_active_order");
     }
   }, [activeOrder]);
 
@@ -77,8 +97,8 @@ export default function App() {
         setShowScrollTop(false);
       }
     };
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
   // Toast notifier trigger
@@ -86,14 +106,16 @@ export default function App() {
     const id = Date.now();
     setToast({ id, message, visible: true });
     setTimeout(() => {
-      setToast((prev) => (prev?.id === id ? { ...prev, visible: false } : prev));
+      setToast((prev) =>
+        prev?.id === id ? { ...prev, visible: false } : prev,
+      );
     }, 3000);
   };
 
   // Add Item to cart (recalculated and stacked with hash match)
-  const handleAddToCart = (item: Omit<CartItem, 'id'>) => {
+  const handleAddToCart = (item: Omit<CartItem, "id">) => {
     // Generate unique identification signature based on full ingredient customizations
-    const customHash = `${item.pizza.id}-${item.customization.size}-${item.customization.crust}-${item.customization.sauce}-${item.customization.extraCheese ? 'ex-ch' : 'no-ch'}-${item.customization.extraToppings.sort().join(',')}`;
+    const customHash = `${item.pizza.id}-${item.customization.size}-${item.customization.crust}-${item.customization.sauce}-${item.customization.extraCheese ? "ex-ch" : "no-ch"}-${item.customization.extraToppings.sort().join(",")}`;
 
     setCart((prevCart) => {
       const existingIdx = prevCart.findIndex((c) => c.id === customHash);
@@ -115,55 +137,56 @@ export default function App() {
     const mockPizzaSpecial = {
       id: `special-deal-${deal.id}`,
       name: deal.title,
-      tagline: 'PREMIUM BUNDLE DEAL',
+      tagline: "PREMIUM BUNDLE DEAL",
       description: deal.description,
       price: deal.dealPrice,
-      image: '/src/assets/images/pizza_hero_1780276120368.png', // hero design
-      category: 'loaded',
+      image: "/src/assets/images/pizza_hero_1780276120368.png", // hero design
+      category: "loaded",
       isVeg: false,
       isSpicy: false,
       isPopular: true,
       rating: 5.0,
       reviewsCount: 999,
-      cookingTime: '15-20 min',
-      tags: ['BARGAIN BUNDLE', deal.discountBadge]
+      cookingTime: "15-20 min",
+      tags: ["BARGAIN BUNDLE", deal.discountBadge],
     };
 
     const defaultCustomization = {
       size: 'Monster (16")' as any,
-      crust: 'Classic Hand-Tossed' as any,
-      sauce: 'Deep Tomato Marinara' as any,
+      crust: "Classic Hand-Tossed" as any,
+      sauce: "Deep Tomato Marinara" as any,
       extraCheese: true,
-      extraToppings: ['Sizzling Pepperoni', 'Double Herb Cheese']
+      extraToppings: ["Sizzling Pepperoni", "Double Herb Cheese"],
     };
 
     handleAddToCart({
       pizza: mockPizzaSpecial,
       quantity: 1,
       customization: defaultCustomization,
-      pricePerItem: deal.dealPrice
+      pricePerItem: deal.dealPrice,
     });
 
     showNotification(`⚡ Claimed: ${deal.title} Promo Basket!`);
   };
 
   const handleUpdateQuantity = (id: string, delta: number) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) => {
-          if (item.id === id) {
-            const nextQty = item.quantity + delta;
-            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((item) => {
+            if (item.id === id) {
+              const nextQty = item.quantity + delta;
+              return nextQty > 0 ? { ...item, quantity: nextQty } : null;
+            }
+            return item;
+          })
+          .filter(Boolean) as CartItem[],
     );
   };
 
   const handleRemoveItem = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-    showNotification('🗑️ Item removed from platter.');
+    showNotification("🗑️ Item removed from platter.");
   };
 
   // On Checkout Completion
@@ -171,7 +194,7 @@ export default function App() {
     setActiveOrder(order);
     setCart([]); // Clear cart basket database
     setTrackerOpen(true); // Automatically trigger live monitoring radar
-    showNotification('🚀 TRANSFERRED! Pizza oven fired up!');
+    showNotification("🚀 TRANSFERRED! Pizza oven fired up!");
   };
 
   // Handle live tracking stage increments from simulated dispatchers
@@ -188,7 +211,7 @@ export default function App() {
   const handleScrollToElement = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -201,119 +224,135 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/" element={
-        <div className="relative min-h-screen bg-charcoal bg-grain text-cream select-none antialiased">
+      <Route
+        path="/"
+        element={
+          <div className="relative min-h-screen bg-charcoal bg-grain text-cream select-none antialiased">
+            {/* ━━ NAVBAR SECTION (1) ━━ */}
+            <Navbar
+              cart={cart}
+              cartCount={cartCount}
+              onCartToggle={() => setCartOpen(!cartOpen)}
+              onTrackOrderToggle={() => {
+                if (activeOrder) {
+                  setTrackerOpen(true);
+                } else {
+                  showNotification(
+                    "🤔 You don’t have an active dispatch order to track. Grab pizza first!",
+                  );
+                }
+              }}
+              onScrollToElement={handleScrollToElement}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onToggleAdmin={() => navigate("/admin")}
+            />
 
-          {/* ━━ NAVBAR SECTION (1) ━━ */}
-          <Navbar
-            cart={cart}
-            cartCount={cartCount}
-            onCartToggle={() => setCartOpen(!cartOpen)}
-            onTrackOrderToggle={() => {
-              if (activeOrder) {
-                setTrackerOpen(true);
-              } else {
-                showNotification('🤔 You don’t have an active dispatch order to track. Grab pizza first!');
-              }
-            }}
-            onScrollToElement={handleScrollToElement}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onToggleAdmin={() => navigate('/admin')}
-          />
+            {/* ━━ HERO SECTION (2) ━━ */}
+            <Hero onScrollToElement={handleScrollToElement} />
 
-          {/* ━━ HERO SECTION (2) ━━ */}
-          <Hero onScrollToElement={handleScrollToElement} />
+            {/* ━━ CATEGORIES SECTION (5) ━━ */}
+            <Categories
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+              onScrollToElement={handleScrollToElement}
+            />
 
-          {/* ━━ CATEGORIES SECTION (5) ━━ */}
-          <Categories
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            onScrollToElement={handleScrollToElement}
-          />
+            {/* ━━ FEATURED SIGNATURE MENU (3) ━━ */}
+            <FeaturedPizzas
+              onAddToCart={handleAddToCart}
+              searchQuery={searchQuery}
+              selectedCategory={selectedCategory}
+            />
 
-          {/* ━━ FEATURED SIGNATURE MENU (3) ━━ */}
-          <FeaturedPizzas
-            onAddToCart={handleAddToCart}
-            searchQuery={searchQuery}
-            selectedCategory={selectedCategory}
-          />
+            {/* ━━ POPULAR COUPON DEALS (4) ━━ */}
+            <PopularDeals onAddSpecialDealToCart={handleAddSpecialDealToCart} />
 
-          {/* ━━ POPULAR COUPON DEALS (4) ━━ */}
-          <PopularDeals onAddSpecialDealToCart={handleAddSpecialDealToCart} />
+            {/* ━━ WHY CHOOSE US (6) ━━ */}
+            <WhyChooseUs />
 
-          {/* ━━ WHY CHOOSE US (6) ━━ */}
-          <WhyChooseUs />
+            {/* ━━ TESTIMONIALS REVIEWS (7) ━━ */}
+            <Testimonials />
 
-          {/* ━━ TESTIMONIALS REVIEWS (7) ━━ */}
-          <Testimonials />
+            {/* ━━ LOGISTICS COURIER STEPS (8) ━━ */}
+            <DeliveryProcess />
 
-          {/* ━━ LOGISTICS COURIER STEPS (8) ━━ */}
-          <DeliveryProcess />
+            {/* ━━ MOBILE PROMOTIONS (9) ━━ */}
+            <AppPromo />
 
-          {/* ━━ MOBILE PROMOTIONS (9) ━━ */}
-          <AppPromo />
+            {/* ━━ CTA CONVERSION BANNER (10) ━━ */}
+            <CTABanner onScrollToElement={handleScrollToElement} />
 
-          {/* ━━ CTA CONVERSION BANNER (10) ━━ */}
-          <CTABanner onScrollToElement={handleScrollToElement} />
+            {/* ━━ FOOTER INDEX (11) ━━ */}
+            <Footer
+              onScrollToElement={handleScrollToElement}
+              onTrackOrderToggle={() => {
+                if (activeOrder) {
+                  setTrackerOpen(true);
+                } else {
+                  showNotification(
+                    "🤔 Please place an order first to track live!",
+                  );
+                }
+              }}
+            />
 
-          {/* ━━ FOOTER INDEX (11) ━━ */}
-          <Footer
-            onScrollToElement={handleScrollToElement}
-            onTrackOrderToggle={() => {
-              if (activeOrder) {
-                setTrackerOpen(true);
-              } else {
-                showNotification('🤔 Please place an order first to track live!');
-              }
-            }}
-          />
+            {/* ━━ SHOPPING BASKET DRAWER OVERLAY ━━ */}
+            <CartSidebar
+              isOpen={cartOpen}
+              onClose={() => setCartOpen(false)}
+              cart={cart}
+              onUpdateQuantity={handleUpdateQuantity}
+              onRemoveItem={handleRemoveItem}
+              onCheckout={handleCheckoutComplete}
+            />
 
-          {/* ━━ SHOPPING BASKET DRAWER OVERLAY ━━ */}
-          <CartSidebar
-            isOpen={cartOpen}
-            onClose={() => setCartOpen(false)}
-            cart={cart}
-            onUpdateQuantity={handleUpdateQuantity}
-            onRemoveItem={handleRemoveItem}
-            onCheckout={handleCheckoutComplete}
-          />
+            {/* ━━ LIVE PIZZA DISPATCH RADAR RADAR ━━ */}
+            <OrderTracker
+              isOpen={trackerOpen}
+              onClose={() => setTrackerOpen(false)}
+              order={activeOrder}
+              onAdvanceStage={handleAdvanceStage}
+            />
 
-          {/* ━━ LIVE PIZZA DISPATCH RADAR RADAR ━━ */}
-          <OrderTracker
-            isOpen={trackerOpen}
-            onClose={() => setTrackerOpen(false)}
-            order={activeOrder}
-            onAdvanceStage={handleAdvanceStage}
-          />
-
-          {/* ━━ INTERACTIVE SUCCESS FLOATING ALERTS ━━ */}
-          {toast && toast.visible && (
-            <div className="fixed bottom-6 left-6 z-50 bg-[#1e1e1e] border-2 border-cheese rounded-2xl p-4 shadow-[0_12px_40px_rgba(245,177,9,0.5)] max-w-sm animate-fade-in flex items-center gap-3 select-none">
-              <div className="w-9 h-9 bg-burgundy rounded-xl flex items-center justify-center border border-tomato/30 flex-shrink-0 animate-bounce">
-                <Bell className="w-5 h-5 text-cheese" />
+            {/* ━━ INTERACTIVE SUCCESS FLOATING ALERTS ━━ */}
+            {toast && toast.visible && (
+              <div className="fixed bottom-6 left-6 z-50 bg-[#1e1e1e] border-2 border-cheese rounded-2xl p-4 shadow-[0_12px_40px_rgba(245,177,9,0.5)] max-w-sm animate-fade-in flex items-center gap-3 select-none">
+                <div className="w-9 h-9 bg-burgundy rounded-xl flex items-center justify-center border border-tomato/30 flex-shrink-0 animate-bounce">
+                  <Bell className="w-5 h-5 text-cheese" />
+                </div>
+                <div>
+                  <div className="font-display text-sm font-black text-white uppercase select-none">
+                    PIZZA XPERT RADAR
+                  </div>
+                  <p className="font-sans text-[11px] font-bold text-cheese uppercase tracking-wider mt-0.5 leading-tight">
+                    {toast.message}
+                  </p>
+                </div>
               </div>
-              <div>
-                <div className="font-display text-sm font-black text-white uppercase select-none">PIZZA XPERT RADAR</div>
-                <p className="font-sans text-[11px] font-bold text-cheese uppercase tracking-wider mt-0.5 leading-tight">{toast.message}</p>
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* ━━ BACK TO TOP CORNER FLOATER ━━ */}
-          {showScrollTop && (
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-burgundy hover:bg-tomato text-cheese hover:text-white border border-cheese/10 shadow-2xl flex items-center justify-center transition-all cursor-pointer transform hover:-translate-y-1"
-              title="Back to top of lobby"
-            >
-              <ArrowUp className="w-5 h-5" />
-            </button>
-          )}
-
-        </div>
-      } />
-      <Route path="/admin" element={<AdminPanel onBackToStore={() => navigate('/')} />} />
+            {/* ━━ BACK TO TOP CORNER FLOATER ━━ */}
+            {showScrollTop && (
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-burgundy hover:bg-tomato text-cheese hover:text-white border border-cheese/10 shadow-2xl flex items-center justify-center transition-all cursor-pointer transform hover:-translate-y-1"
+                title="Back to top of lobby"
+              >
+                <ArrowUp className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <Suspense fallback={<Preloader />}>
+            <AdminPanel onBackToStore={() => navigate("/")} />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 }
