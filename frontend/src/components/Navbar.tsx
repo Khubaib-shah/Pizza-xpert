@@ -100,7 +100,7 @@ export default function Navbar({
               <button
                 key={index}
                 onClick={() => handleNavClick(item)}
-                className="font-sans font-bold text-sm tracking-wide text-cream/80 hover:text-cheese transition-colors uppercase cursor-pointer"
+                className="font-sans font-medium text-sm tracking-wide text-cream/80 hover:text-cheese transition-colors uppercase cursor-pointer"
               >
                 {item.label}
               </button>
@@ -127,7 +127,7 @@ export default function Navbar({
             >
               <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-tomato text-white font-sans text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-bounce border-2 border-charcoal">
+                <span className="absolute -top-1 -right-1 bg-tomato text-white font-sans text-[10px] font-medium w-5 h-5 rounded-full flex items-center justify-center animate-bounce border-2 border-charcoal">
                   {cartCount}
                 </span>
               )}
@@ -145,7 +145,7 @@ export default function Navbar({
             {/* CTA Order Button */}
             <button
               onClick={() => onScrollToElement('menu')}
-              className="hidden sm:block bg-burgundy text-cheese hover:bg-tomato hover:text-white font-sans font-bold text-xs uppercase tracking-wide py-2.5 px-5 rounded-xl border border-cheese/20 transition-all duration-300 cursor-pointer"
+              className="hidden sm:block bg-burgundy text-cheese hover:bg-tomato hover:text-white font-sans font-medium text-xs uppercase tracking-wide py-2.5 px-5 rounded-xl border border-cheese/20 transition-all duration-300 cursor-pointer"
             >
               Order Now
             </button>
@@ -221,7 +221,7 @@ export default function Navbar({
               <button
                 key={index}
                 onClick={() => handleNavClick(item)}
-                className="font-sans font-bold text-2xl tracking-wide text-cream hover:text-cheese transition-colors py-2 uppercase border-b border-white/5"
+                className="font-sans font-medium text-2xl tracking-wide text-cream hover:text-cheese transition-colors py-2 uppercase border-b border-white/5"
               >
                 {item.label}
               </button>
@@ -234,7 +234,7 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onScrollToElement('menu');
               }}
-              className="w-full bg-burgundy hover:bg-tomato text-cheese hover:text-white font-sans font-bold text-sm tracking-wide py-4 rounded-xl transition-all uppercase"
+              className="w-full bg-burgundy hover:bg-tomato text-cheese hover:text-white font-sans font-medium text-sm tracking-wide py-4 rounded-xl transition-all uppercase"
             >
               Instant Cheesiness
             </button>
@@ -243,7 +243,7 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onToggleAdmin();
               }}
-              className="w-full bg-charcoal-black border border-white/10 text-cream/90 hover:text-cheese font-sans font-bold text-sm tracking-wide py-4 rounded-xl transition-all uppercase flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-charcoal-black border border-white/10 text-cream/90 hover:text-cheese font-sans font-medium text-sm tracking-wide py-4 rounded-xl transition-all uppercase flex items-center justify-center gap-2 cursor-pointer"
             >
               <User className="w-5 h-5" />
               <span>Profile</span>

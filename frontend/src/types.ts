@@ -38,8 +38,9 @@ export interface Deal {
   description: string;
   originalPrice: number;
   dealPrice: number;
-  endsInSeconds: number; // dynamically counted down
+  validUntil: string;
   isLimited: boolean;
+  image?: string;
 }
 
 export interface Category {

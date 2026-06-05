@@ -35,13 +35,13 @@ export default function CTABanner({ onScrollToElement }: CTABannerProps) {
       <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8 relative z-20 pt-10">
         
         {/* Spark decoration */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/35 rounded-full text-cheese font-sans text-xs font-black uppercase tracking-widest border border-cheese/10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/35 rounded-full text-cheese font-sans text-xs font-medium uppercase tracking-widest border border-cheese/10">
           <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
           INSTANT RELIEF AWAITS
         </div>
 
         {/* Content Heading */}
-        <h2 className="font-display text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-wide uppercase leading-none select-none">
+        <h2 className="font-display text-5xl sm:text-6xl md:text-8xl font-medium text-white tracking-wide uppercase leading-none select-none">
           HUNGRY? <br className="sm:hidden" />
           LET'S <span className="text-cheese text-glow-gold">FIX THAT</span>.
         </h2>
@@ -55,7 +55,7 @@ export default function CTABanner({ onScrollToElement }: CTABannerProps) {
         <div className="pt-2">
           <button
             onClick={() => onScrollToElement('menu')}
-            className="group bg-cheese text-charcoal hover:bg-white hover:text-burgundy font-sans font-black text-base md:text-lg uppercase tracking-[3px] py-4.5 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 btn-cheese-shadow inline-flex items-center gap-3 cursor-pointer"
+            className="group bg-cheese text-charcoal hover:bg-white hover:text-burgundy font-sans font-medium text-base md:text-lg uppercase tracking-[3px] py-4.5 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 btn-cheese-shadow inline-flex items-center gap-3 cursor-pointer"
           >
             ORDER NOW
             <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1.5" />

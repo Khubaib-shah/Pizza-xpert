@@ -112,29 +112,35 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
             </ul>
           </div>
 
-          {/* Column 4: Contact & Details */}
+          {/* Column 4: Contact & Sitemap */}
           <div className="space-y-4">
             <h3 className="font-display text-lg font-medium tracking-wide text-cheese uppercase">
-              CONTACT & IN-HANDS
+              CONTACT & SITEMAP
             </h3>
-            <ul className="space-y-3 font-sans text-xs text-cream/60 font-semibold">
+            <ul className="space-y-3 font-sans text-xs text-cream/60 font-semibold mb-4">
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-cheese flex-shrink-0" />
-                <span>HOTLINE: 1-800-PIZZA-XPERT (749-929)</span>
+                <span>1-800-PIZZA-XPERT</span>
               </li>
               <li className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-cheese flex-shrink-0" />
-                <span>847 Artisan Ave, Oven District, NY 10013</span>
+                <span>847 Artisan Ave, NY 10013</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-cheese flex-shrink-0" />
                 <span>hq@pizzaxpert.com</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-cheese flex-shrink-0" />
-                <span>Open Daily: 10:00 AM - 04:00 AM</span>
-              </li>
             </ul>
+
+            <h4 className="font-display text-sm font-medium tracking-wide text-white uppercase pt-2 border-t border-white/5">
+              SEO SITEMAP LINKS
+            </h4>
+            <div className="grid grid-cols-2 gap-2 font-sans text-[10px] uppercase font-medium">
+              <a href="/" className="hover:text-cheese transition-colors text-cream/50">Best Pizza Home</a>
+              <a href="#menu" className="hover:text-cheese transition-colors text-cream/50">Gourmet Menu</a>
+              <a href="#deals" className="hover:text-cheese transition-colors text-cream/50">Discount Offers</a>
+              <a href="/admin/orders" className="hover:text-cheese transition-colors text-cream/50">Admin Panel</a>
+            </div>
           </div>
 
         </div>

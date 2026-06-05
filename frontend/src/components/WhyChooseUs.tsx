@@ -39,7 +39,7 @@ export default function WhyChooseUs() {
 
         {/* Title sections */}
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-burgundy/50 text-cheese rounded-full text-xs font-bold uppercase tracking-wide border border-white/5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-burgundy/50 text-cheese rounded-full text-xs font-medium uppercase tracking-wide border border-white/5">
             🛡 THE PIZZA XPERT GUARANTEE
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase leading-none">
@@ -61,7 +61,7 @@ export default function WhyChooseUs() {
             >
 
               {/* Corner Small Stat Badge watermark */}
-              <div className="absolute top-4 right-4 font-mono text-[9px] font-black text-cheese/20 group-hover:text-cheese/50 transition-colors duration-200 uppercase tracking-widest">
+              <div className="absolute top-4 right-4 font-mono text-[9px] font-medium text-cheese/20 group-hover:text-cheese/50 transition-colors duration-200 uppercase tracking-widest">
                 {feat.stat}
               </div>
 

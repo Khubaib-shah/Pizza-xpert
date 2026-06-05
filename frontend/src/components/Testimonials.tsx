@@ -1,86 +1,121 @@
-import { useState, useEffect } from 'react';
-import { Star, MessageSquare, Loader2 } from 'lucide-react';
-import { Testimonial } from '../types';
-import { fetchLandingContent } from '../services/api';
+import { useState, useEffect } from "react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { Testimonial } from "../types";
+import { fetchLandingContent } from "../services/api";
+import { IMAGE_MAP } from "../data";
+
+const PIZZA_IMAGES = [
+  IMAGE_MAP.pepperoni,
+  IMAGE_MAP.cheesePull,
+  IMAGE_MAP.ovenBaked,
+  IMAGE_MAP.bbq,
+  IMAGE_MAP.veggie,
+  IMAGE_MAP.spicy,
+];
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetchLandingContent().then((res) => {
-      setTestimonials(res.data.testimonials || []);
-    }).catch(() => { });
+    fetchLandingContent()
+      .then((res) => {
+        setTestimonials(res.data.testimonials || []);
+      })
+      .catch(() => {});
   }, []);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
+    );
+  };
+
+  const gridStyle = {
+    backgroundImage: `linear-gradient(rgba(235, 87, 87, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(235, 87, 87, 0.15) 1px, transparent 1px)`,
+    backgroundSize: "60px 60px",
+    backgroundColor: "#FDF8F2",
+  };
+
+  if (testimonials.length === 0) return null;
+
+  const currentTestimonial = testimonials[currentIndex];
+  // Assign a consistent pizza image to each testimonial index
+  const assignedImage = PIZZA_IMAGES[currentIndex % PIZZA_IMAGES.length];
+
   return (
-    <section className="relative bg-cream bg-grain py-20 px-4 md:px-6 overflow-hidden text-charcoal">
+    <section className="relative pt-20 pb-64 overflow-hidden" style={gridStyle}>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        {/* Carousel Card */}
+        <div className="max-w-5xl mx-auto bg-tomato rounded-[48px] p-8 md:p-4 shadow-[0_20px_50px_rgba(235,87,87,0.4)] transition-all duration-500 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
+          {/* Subtle background glow or element in the card */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
 
-      {/* Decorative Warm Backglowing element */}
-      <div className="absolute top-0 left-0 right-0 h-4 bg-tomato/10 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-
-        {/* Title sections */}
-        <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy text-cheese rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
-            💬 FEAST REVIEWS
+          {/* Left: Image */}
+          <div className="w-full md:w-2/5  flex-shrink-0 relative z-10">
+            <img
+              src={assignedImage}
+              alt="Customer enjoyment"
+              className="w-full aspect-square object-cover rounded-[32px] shadow-xl border-4 border-white/10"
+            />
           </div>
-          <h2 className="font-display text-4xl md:text-6xl font-bold text-charcoal tracking-wide uppercase leading-none">
-            CRAFTED FOR REAL <span className="text-burgundy text-glow-red">PIZZA</span> LOVERS
-          </h2>
-          <div className="w-16 h-1 bg-burgundy mx-auto rounded-full" />
-          <p className="font-sans text-charcoal/75 text-xs md:text-sm max-w-sm mx-auto font-bold uppercase tracking-wider">
-            Verified ratings uploaded directly from metropolitan food forums and gourmet tables.
-          </p>
-        </div>
 
-        {/* 3 Review Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {testimonials.map((test) => (
-            <div
-              key={String(test.id || (test as any)._id)}
-              className="group relative bg-white/90 rounded-[24px] p-7 md:p-8 border border-cream/20 hover:border-burgundy/30 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between shadow-xl shadow-cream/30/50 hover:shadow-2xl"
-            >
-              {/* Massive quotation marks behind content */}
-              <div className="absolute top-4 right-6 font-display text-7xl md:text-8xl text-cheese/20 group-hover:text-cheese/45 transition-colors select-none pointer-events-none z-0">
-                “
-              </div>
+          {/* Right: Content */}
+          <div className="w-full md:w-3/5 text-white relative z-10 flex flex-col h-full justify-center">
+            <h3 className="font-display text-3xl md:text-4xl lg:text-2xl font-medium leading-wide mb-8">
+              "{currentTestimonial.quote}"
+            </h3>
 
-              <div className="space-y-5 relative z-10 text-left">
-                {/* Stars and rating block */}
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: test.rating }).map((_, sIdx) => (
-                    <Star key={sIdx} className="w-4.5 h-4.5 fill-cheese text-cheese" />
-                  ))}
-                  <span className="font-sans text-xs font-black text-charcoal/50 ml-1">5.0 SCORE</span>
-                </div>
-
-                {/* Review quote cursive-style italic blend */}
-                <p className="font-sans text-xs md:text-sm font-semibold italic text-charcoal/80 leading-tight">
-                  "{test.quote}"
+            <div className="flex flex-col md:flex-row md:items-end justify-between mt-auto gap-6">
+              {/* Author & Stars */}
+              <div>
+                <p className="font-sans text-lg font-bold tracking-wide mb-2">
+                  - {currentTestimonial.name}
                 </p>
-              </div>
-
-              {/* Author Footer block */}
-              <div className="flex items-center gap-4.5 pt-5 mt-6 border-t border-cream/40 relative z-10 text-left">
-                {/* Initials circle */}
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display text-lg font-black text-white shadow-md ${test.avatarColor}`}>
-                  {test.avatarInitials}
-                </div>
-
-                <div>
-                  <h3 className="font-display text-lg font-black text-charcoal uppercase leading-none tracking-wide">
-                    {test.name}
-                  </h3>
-                  <p className="font-mono text-[10px] text-tomato/70 uppercase tracking-widest font-black mt-0.5 leading-none">
-                    📍 {test.location}
-                  </p>
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${i < currentTestimonial.rating ? "fill-white text-white" : "fill-white/30 text-white/30"}`}
+                    />
+                  ))}
                 </div>
               </div>
 
+              {/* Carousel Controls */}
+              <div className="flex items-center gap-4 bg-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                <button
+                  onClick={handlePrev}
+                  className="size-8 rounded-full flex items-center justify-center bg-white text-tomato hover:bg-cream transition-colors shadow-md"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                <span className="font-sans font-bold text-lg tracking-widest min-w-[3rem] text-center">
+                  {currentIndex + 1}/{testimonials.length}
+                </span>
+                <button
+                  onClick={handleNext}
+                  className="size-8 rounded-full flex items-center justify-center bg-white text-tomato hover:bg-cream transition-colors shadow-md"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
+      </div>
 
+      {/* Floating Stacked Pizzas Overlapping the bottom */}
+      <div className="absolute -bottom-30 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-[500px] md:w-[700px] lg:w-[800px]">
+        <img
+          src="/assets/stacked_pizzas.png"
+          alt="Stacked Pizzas"
+          className="w-full h-auto drop-shadow-[0_30px_40px_rgba(0,0,0,0.4)] scale-150"
+        />
       </div>
     </section>
   );

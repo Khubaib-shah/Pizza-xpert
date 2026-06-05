@@ -29,10 +29,10 @@ export default function DeliveryProcess() {
 
         {/* Header section titles */}
         <div className="text-center space-y-4 mb-20">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-burgundy/50 text-cheese rounded-full text-xs font-black uppercase tracking-widest border border-white/5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-burgundy/50 text-cheese rounded-full text-xs font-medium uppercase tracking-widest border border-white/5">
             ⚡ WARP DISPATCH LOGISTICS
           </div>
-          <h2 className="font-display text-4xl md:text-6xl font-black text-white tracking-wide uppercase leading-none">
+          <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase leading-none">
             OUR <span className="text-cheese text-glow-gold">DELIVERY</span> PROCESS
           </h2>
           <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
@@ -59,7 +59,7 @@ export default function DeliveryProcess() {
                   {renderStepIcon(step.iconName)}
 
                   {/* Absolute dark counter circle */}
-                  <span className="absolute -bottom-1 -right-1 bg-charcoal text-cheese font-mono text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md border border-cheese/40">
+                  <span className="absolute -bottom-1 -right-1 bg-charcoal text-cheese font-mono text-xs font-medium w-6 h-6 rounded-full flex items-center justify-center shadow-md border border-cheese/40">
                     {step.step}
                   </span>
                 </div>

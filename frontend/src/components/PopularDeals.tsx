@@ -18,11 +18,12 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
       const fetchedDeals: Deal[] = (res.data.deals || []).map((d: any) => ({ ...d, id: d._id }));
       setDeals(fetchedDeals);
       const times: Record<string, number> = {};
-      fetchedDeals.forEach((deal) => { times[deal.id] = deal.endsInSeconds; });
+      fetchedDeals.forEach((deal) => { 
+        times[deal.id] = Math.max(0, Math.floor((new Date(deal.validUntil).getTime() - Date.now()) / 1000));
+      });
       setDealTimes(times);
     }).catch(() => { });
   }, []);
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,10 +33,6 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
         Object.keys(next).forEach((id) => {
           if (next[id] > 0) {
             next[id] -= 1;
-            updated = true;
-          } else {
-            const deal = deals.find((d) => d.id === id);
-            next[id] = deal?.endsInSeconds || 3600;
             updated = true;
           }
         });
@@ -47,10 +44,17 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
   }, [deals]);
 
   const formatTime = (totalSec: number) => {
-    const hours = Math.floor(totalSec / 3600);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    
+    if (days > 0) {
+      return `${days}d ${formattedTime}`;
+    }
+    return formattedTime;
   };
 
   const handleGrabDeal = (deal: Deal) => {
@@ -74,16 +78,16 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
 
         {/* Header content */}
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-charcoal/40 text-cheese rounded-full text-xs font-bold uppercase tracking-wide border border-white/5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-charcoal/40 text-cheese rounded-full text-xs font-medium uppercase tracking-wide border border-white/5">
             <Sparkles className="w-3.5 h-3.5 text-cheese animate-pulse" />
-            LOCKED BARGAIN DEALS
+            EXCLUSIVE OFFERS
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase">
             POPULAR <span className="text-cheese text-glow-gold">OFFERS</span> & DEALS
           </h2>
           <div className="w-16 h-1 bg-cheese mx-auto rounded-full" />
-          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-lg mx-auto font-medium uppercase tracking-wider">
-            Tick-down combos formulated for ultimate group cheesiness or lone gamers. Claim instantly before timers freeze!
+          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-lg mx-auto font-medium tracking-wider">
+            Delicious combos perfect for sharing with family and friends. Grab these limited-time deals before they're gone!
           </p>
         </div>
 
@@ -97,48 +101,62 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
             return (
               <div
                 key={deal.id}
-                className="group relative bg-cheese rounded-[24px] p-6 flex flex-col justify-between shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(245,177,9,0.3)] text-charcoal border border-cheese-dark/35"
+                className="group relative bg-cheese rounded-[24px] overflow-hidden flex flex-col shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(245,177,9,0.3)] text-charcoal border border-cheese-dark/35"
               >
-                {/* LIMITED TIME CORNER TAG */}
-                {isLimited && (
-                  <div className="absolute -top-3 -right-2 z-20 bg-tomato text-white text-[9px] font-black tracking-widest py-1.5 px-3 rounded-full uppercase shadow-md flex items-center gap-1 border border-white/20 rotate-[5deg]">
-                    <Tag className="w-3 h-3" /> LIMIT PIECE
+                {/* Ribbon Discount Badge */}
+                <div 
+                  className="absolute top-6 left-0 z-30 bg-burgundy text-cheese font-display text-sm md:text-lg font-medium py-1.5 pl-2 pr-6 uppercase tracking-wider"
+                  style={{ clipPath: 'polygon(0% 0%, 100% 0%, 85% 50%, 100% 100%, 0% 100%)' }}
+                >
+                  {deal.discountBadge}
+                </div>
+
+                {/* Deal Image (if provided) */}
+                {deal.image && (
+                  <div className="h-40 w-full overflow-hidden bg-charcoal relative">
+                    <img src={deal.image} alt={deal.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
                   </div>
                 )}
 
+                <div className="p-4 flex flex-col justify-between flex-1 relative">
+                  {/* LIMITED TIME CORNER TAG */}
+                  {isLimited && (
+                    <div className="absolute top-4 right-4 z-20 bg-tomato text-white text-[9px] font-medium tracking-widest py-1.5 px-3 rounded-full uppercase shadow-md flex items-center gap-1 border border-white/20 rotate-[5deg]">
+                      <Tag className="w-3 h-3" /> LIMIT PIECE
+                    </div>
+                  )}
+
                 {/* Card Header Stamp */}
                 <div className="space-y-3 text-left">
-                  <div className="inline-block bg-charcoal text-cheese font-display text-[22px] font-black px-4.5 py-1 rounded-xl shadow-md uppercase tracking-wider">
-                    {deal.discountBadge}
-                  </div>
 
-                  <h3 className="font-display text-2xl md:text-3xl font-black text-charcoal leading-none uppercase tracking-wide">
+                  <h3 className="font-display text-2xl md:text-3xl font-medium text-charcoal leading-none uppercase tracking-wide">
                     {deal.title}
                   </h3>
 
-                  <p className="font-sans text-xs text-charcoal/80 font-bold leading-tight line-clamp-3">
+                  <p className="font-sans text-xs text-charcoal/80 font-medium leading-relaxed whitespace-pre-line">
                     {deal.description}
                   </p>
                 </div>
 
                 {/* Card pricing and timer logic */}
-                <div className="mt-6 pt-5 border-t border-charcoal/10 space-y-4">
+                <div className="mt-4 pt-4 border-t border-charcoal/10 space-y-4">
 
                   {/* Countdown Timer with interactive glowing block */}
                   <div className="flex items-center gap-2 px-3 py-2 bg-charcoal/10 rounded-xl border border-charcoal/5 justify-center">
                     <Timer className="w-4 h-4 text-burgundy animate-spin" style={{ animationDuration: '4s' }} />
-                    <span className="font-mono text-xs font-black tracking-widest text-burgundy uppercase">
+                    <span className="font-mono text-xs font-medium tracking-widest text-burgundy uppercase">
                       ENDS: {formatTime(timeRemaining)}
                     </span>
                   </div>
 
                   {/* Pricing row */}
                   <div className="flex items-baseline justify-center gap-2">
-                    <span className="font-sans text-xs font-bold line-through text-charcoal/50">
-                      ${deal.originalPrice.toFixed(2)}
+                    <span className="font-sans text-xs font-medium line-through text-charcoal/50">
+                      Rs.{deal.originalPrice.toFixed(2)}
                     </span>
                     <span className="font-display text-4xl font-extrabold text-burgundy">
-                      ${deal.dealPrice.toFixed(2)}
+                      Rs.{deal.dealPrice.toFixed(2)}
                     </span>
                   </div>
 
@@ -146,7 +164,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                   <button
                     onClick={() => handleGrabDeal(deal)}
                     disabled={isClaimed}
-                    className={`w-full py-3.5 px-4 rounded-xl font-sans font-black text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
+                    className={`w-full py-3.5 px-4 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
                       ? 'bg-olive text-white'
                       : 'bg-charcoal text-cheese hover:bg-burgundy hover:text-white'
                       }`}
@@ -161,6 +179,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                     )}
                   </button>
 
+                </div>
                 </div>
               </div>
             );

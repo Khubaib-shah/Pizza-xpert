@@ -3,6 +3,7 @@ import { X, Trash2, Plus, Minus, CreditCard, ChevronRight, ShoppingBag, Bike } f
 import { CartItem, SimulatedOrder, OrderStage } from '../types';
 import { TextInput, PhoneInput } from './form';
 import { isAlphaName, isPakistaniPhone, sanitizeNameInput, isRequired } from '../utils/validation';
+import { placeOrder } from '../services/api';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -43,12 +44,12 @@ export default function CartSidebar({
 
   // Pricing math sum
   const subtotal = cart.reduce((acc, item) => acc + item.pricePerItem * item.quantity, 0);
-  const tax = Number((subtotal * 0.08).toFixed(2));
-  const deliveryFee = subtotal > 25 || subtotal === 0 ? 0.00 : 3.99; // Free over $25
-  const grandTotal = Number((subtotal + tax + deliveryFee).toFixed(2));
+  const tax = 0; // GST disabled as requested
+  const deliveryFee = subtotal === 0 ? 0 : 150; // Minimum 150 delivery
+  const grandTotal = subtotal + tax + deliveryFee;
 
   // Validate and Submit Checkout Form
-  const handleSubmitOrder = (e: FormEvent) => {
+  const handleSubmitOrder = async (e: FormEvent) => {
     e.preventDefault();
     const validationErrors: Record<string, string> = {};
 
@@ -70,23 +71,51 @@ export default function CartSidebar({
     setErrors({});
     setIsProcessing(true);
 
-    // Simulate cooking processing speed
-    setTimeout(() => {
-      const order: SimulatedOrder = {
-        id: `XPERT-${Math.floor(100000 + Math.random() * 900000)}`,
+    setIsProcessing(true);
+
+    try {
+      const items = cart.map(item => ({
+        pizzaId: item.pizza.id || (item.pizza as any)._id,
+        pizzaName: item.pizza.name,
+        quantity: item.quantity,
+        customization: item.customization,
+        pricePerItem: item.pricePerItem
+      }));
+
+      const orderData = {
+        customerName: name,
+        phone,
+        address,
+        items,
+        paymentMethod,
+        subtotal,
+        tax,
+        deliveryFee,
+        total: grandTotal
+      };
+
+      const res = await placeOrder(orderData);
+      const newOrder = res.data;
+
+      const orderUi: SimulatedOrder = {
+        id: newOrder._id || newOrder.id,
         items: [...cart],
         paymentMethod,
-        createdAt: new Date().toISOString(),
-        stage: 'placed',
-        deliveryTimeRemaining: 1800, // 30 minutes in seconds
+        createdAt: newOrder.createdAt || new Date().toISOString(),
+        stage: newOrder.stage || 'placed',
+        deliveryTimeRemaining: newOrder.deliveryTimeRemaining || 2700,
         totalAmount: grandTotal,
         customerDetails: { name, phone, address }
       };
 
-      onCheckout(order);
-      setIsProcessing(false);
+      onCheckout(orderUi);
       onClose();
-    }, 2000);
+    } catch (error) {
+      console.error('Failed to place order:', error);
+      setErrors({ api: 'Network error placing order. Please try again.' });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -103,10 +132,10 @@ export default function CartSidebar({
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-charcoal/90 z-10">
             <div className="flex items-center gap-2.5">
               <ShoppingBag className="w-5 h-5 text-cheese animate-bounce" />
-              <h2 className="font-display text-2xl font-black text-white uppercase tracking-wide">
+              <h2 className="font-display text-2xl font-medium text-white uppercase tracking-wide">
                 YOUR CRAFT CART
               </h2>
-              <span className="bg-burgundy text-cheese font-mono text-[10px] font-black px-2 py-0.5 rounded-full border border-tomato/20">
+              <span className="bg-burgundy text-cheese font-mono text-[10px] font-medium px-2 py-0.5 rounded-full border border-tomato/20">
                 {cart.length} PIECES
               </span>
             </div>
@@ -141,7 +170,7 @@ export default function CartSidebar({
 
                         {/* Title and delete */}
                         <div className="flex items-start justify-between gap-1">
-                          <h4 className="font-display text-base font-black text-white uppercase truncate">
+                          <h4 className="font-display text-base font-medium text-white uppercase truncate">
                             {item.pizza.name}
                           </h4>
                           <button
@@ -165,7 +194,7 @@ export default function CartSidebar({
                             • <b className="text-cheese">BASE:</b> {item.customization.sauce}
                           </div>
                           {item.customization.extraCheese && (
-                            <div className="text-cheese font-black">
+                            <div className="text-cheese font-medium">
                               • UPGRADE: DOUBLE CHEZ CAVITY ADD
                             </div>
                           )}
@@ -194,7 +223,7 @@ export default function CartSidebar({
                             </button>
                           </div>
 
-                          <div className="font-mono text-sm font-black text-cheese">
+                          <div className="font-mono text-sm font-medium text-cheese">
                             ${(item.pricePerItem * item.quantity).toFixed(2)}
                           </div>
                         </div>
@@ -205,7 +234,7 @@ export default function CartSidebar({
                 </div>
 
                 {/* Subtotal summary card */}
-                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/70 font-bold">
+                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/70 font-medium">
                   <div className="flex justify-between">
                     <span>ITEMS TOTAL</span>
                     <span className="font-mono">${subtotal.toFixed(2)}</span>
@@ -229,7 +258,7 @@ export default function CartSidebar({
                       💡 Add ${(25 - subtotal).toFixed(2)} more to secure FREE delivery fee
                     </div>
                   )}
-                  <div className="pt-3 border-t border-white/5 flex justify-between text-sm font-black text-white uppercase">
+                  <div className="pt-3 border-t border-white/5 flex justify-between text-sm font-medium text-white uppercase">
                     <span>GRAND COMBINED TOTAL</span>
                     <span className="font-display text-2xl text-cheese text-glow-gold">
                       ${grandTotal.toFixed(2)}
@@ -239,7 +268,7 @@ export default function CartSidebar({
 
                 {/* Integrated checkout form inside the drawer context */}
                 <form onSubmit={handleSubmitOrder} className="bg-charcoal-light/80 border border-[var(--color-tomato)08] rounded-24px p-4.5 text-left space-y-4">
-                  <h3 className="font-display text-lg font-black text-cheese uppercase tracking-wide border-b border-white/5 pb-2">
+                  <h3 className="font-display text-lg font-medium text-cheese uppercase tracking-wide border-b border-white/5 pb-2">
                     🏎 INSTANT DISPATCH DETAILS
                   </h3>
 
@@ -253,6 +282,7 @@ export default function CartSidebar({
                       onChange={handleNameChange}
                       error={errors.name}
                     />
+                    {errors.api && <div className="text-xs text-tomato font-bold uppercase tracking-wider bg-burgundy/50 p-2 rounded-lg border border-tomato/50 mb-2">{errors.api}</div>}
 
                     {/* Phone */}
                     <PhoneInput
@@ -266,7 +296,7 @@ export default function CartSidebar({
 
                     {/* Address */}
                     <div className="space-y-1">
-                      <label className="text-cream/50 uppercase font-bold tracking-widest block">Delivery Address (Door No / Floor / Apt)</label>
+                      <label className="text-cream/50 uppercase font-medium tracking-widest block">Delivery Address (Door No / Floor / Apt)</label>
                       <textarea
                         rows={2}
                         placeholder="e.g. Apt 4B, 847 Artisan Ave, Oven District"
@@ -274,12 +304,12 @@ export default function CartSidebar({
                         onChange={(e) => setAddress(e.target.value)}
                         className="w-full bg-charcoal-dark border border-white/5 hover:border-white/10 rounded-lg py-2.5 px-3 text-cream focus:outline-none focus:border-cheese resize-none"
                       />
-                      {errors.address && <p className="text-[10px] text-tomato font-bold uppercase">{errors.address}</p>}
+                      {errors.address && <p className="text-[10px] text-tomato font-medium uppercase">{errors.address}</p>}
                     </div>
 
                     {/* Payment Method */}
                     <div className="space-y-1">
-                      <label className="text-cream/50 uppercase font-bold tracking-widest block">Payment Protocol</label>
+                      <label className="text-cream/50 uppercase font-medium tracking-widest block">Payment Protocol</label>
                       <select
                         value={paymentMethod}
                         onChange={(e) => setPaymentMethod(e.target.value)}
@@ -297,7 +327,7 @@ export default function CartSidebar({
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 bg-tomato text-white hover:bg-cheese hover:text-charcoal font-sans font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 btn-cheese-shadow flex items-center justify-center gap-2 cursor-pointer mt-2"
+                    className="w-full py-4 bg-tomato text-white hover:bg-cheese hover:text-charcoal font-sans font-medium text-xs uppercase tracking-widest rounded-xl transition-all duration-300 btn-cheese-shadow flex items-center justify-center gap-2 cursor-pointer mt-2"
                   >
                     {isProcessing ? (
                       <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -313,7 +343,7 @@ export default function CartSidebar({
             ) : (
               <div className="h-full flex flex-col justify-center items-center text-center py-12 px-4 space-y-4">
                 <ShoppingBag className="w-16 h-16 text-cheese/30 animate-pulse" />
-                <h3 className="font-display text-2xl font-black text-white uppercase">
+                <h3 className="font-display text-2xl font-medium text-white uppercase">
                   YOUR CART IS EMPTY
                 </h3>
                 <p className="font-sans text-xs text-cream/50 max-w-xs font-semibold">
@@ -321,7 +351,7 @@ export default function CartSidebar({
                 </p>
                 <button
                   onClick={onClose}
-                  className="bg-burgundy text-cheese hover:bg-tomato hover:text-white border border-cheese/10 py-3.5 px-6 rounded-xl font-sans font-black text-xs uppercase tracking-widest transition-all"
+                  className="bg-burgundy text-cheese hover:bg-tomato hover:text-white border border-cheese/10 py-3.5 px-6 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all"
                 >
                   Return to signatures
                 </button>

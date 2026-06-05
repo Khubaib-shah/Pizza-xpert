@@ -14,7 +14,7 @@ export default defineConfig(() => {
     server: {
       proxy: {
         '/api': {
-          target: 'https://pizza-xpert-backend.vercel.app',
+          target: 'http://localhost:4000',
           changeOrigin: true,
         }
       }

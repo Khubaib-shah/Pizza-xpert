@@ -54,14 +54,14 @@ export default function FeaturedPizzas({
           onCategoryVisible(visibleEntries[0].target.id.replace('category-', ''));
         }
       },
-      { rootMargin: '-20% 0px -75% 0px', threshold: 0 }
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
     );
 
     const sections = document.querySelectorAll('.menu-category-section');
     sections.forEach((s) => observer.observe(s));
 
     return () => observer.disconnect();
-  }, [onCategoryVisible, pizzas]);
+  }, [onCategoryVisible, pizzas, apiCategories, searchQuery]);
 
   // Derive menu options: use API data if available, else fall back to defaults
   const availableSizes = menuConfig?.sizes?.filter((s: any) => s.isAvailable).map((s: any) => s.name) ||
@@ -187,7 +187,7 @@ export default function FeaturedPizzas({
       <section id="menu" className="relative bg-charcoal bg-grain py-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 gap-4">
           <Loader2 className="w-12 h-12 text-cheese animate-spin" />
-          <p className="text-cream/60 font-sans font-bold uppercase tracking-widest text-xs">Loading Menu...</p>
+          <p className="text-cream/60 font-sans font-medium uppercase tracking-widest text-xs">Loading Menu...</p>
         </div>
       </section>
     );
@@ -198,7 +198,7 @@ export default function FeaturedPizzas({
       <section id="menu" className="relative bg-charcoal bg-grain py-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 gap-4">
           <Info className="w-12 h-12 text-tomato" />
-          <p className="text-cream/60 font-sans font-bold uppercase tracking-widest text-xs">{error}</p>
+          <p className="text-cream/60 font-sans font-medium uppercase tracking-widest text-xs">{error}</p>
         </div>
       </section>
     );
@@ -214,10 +214,10 @@ export default function FeaturedPizzas({
 
         {/* Section Headings */}
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy/50 text-cheese hover:bg-tomato hover:text-cream rounded-full text-xs font-bold uppercase tracking-wide border border-tomato/10">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy/50 text-cheese hover:bg-tomato hover:text-cream rounded-full text-xs font-medium uppercase tracking-wide border border-tomato/10">
             🥇 OUR SPECIALTIES
           </div>
-          <h2 className="font-display text-4xl md:text-6xl font-bold text-cream tracking-wide uppercase leading-none">
+          <h2 className="font-display text-4xl md:text-6xl font-medium text-cream tracking-wide uppercase leading-none">
             OUR <span className="text-cheese text-glow-gold">SIGNATURE</span> PIZZAS
           </h2>
           <div className="w-24 h-1.5 bg-cheese mx-auto rounded-full mt-2" />
@@ -229,31 +229,16 @@ export default function FeaturedPizzas({
         {/* Menu Sections by Category */}
         {searchMatchedPizzas.length > 0 ? (
           <div className="space-y-20">
-            {(apiCategories.length > 0 ? apiCategories : [
-              { slug: 'veg', name: 'Veg Decor' },
-              { slug: 'non-veg', name: 'Meat Crown' },
-              { slug: 'cheesy', name: 'Cheese Drip' },
-              { slug: 'bbq', name: 'Sweet BBQ' },
-              { slug: 'spicy', name: 'Spicy Fire' },
-              { slug: 'classic', name: 'Classic Herb' },
-              { slug: 'loaded', name: 'Lava Loaded' },
-            ]).filter(c => c.slug !== 'all').map((category) => {
+            {apiCategories.filter(c => c.slug !== 'all').map((category) => {
               const categoryPizzas = searchMatchedPizzas.filter((pizza) => {
-                if (category.slug === 'veg') return pizza.isVeg === true;
-                if (category.slug === 'non-veg') return pizza.isVeg === false;
-                if (category.slug === 'spicy') return pizza.isSpicy === true;
-                if (category.slug === 'cheesy') return pizza.category === 'cheesy';
-                if (category.slug === 'bbq') return pizza.category === 'bbq';
-                if (category.slug === 'loaded') return pizza.category === 'loaded';
-                if (category.slug === 'classic') return pizza.category === 'classic' || pizza.tags?.includes('CLASSIC HERB');
-                return false;
+                return pizza.category === category.slug;
               });
 
               if (categoryPizzas.length === 0) return null;
 
               return (
                 <div key={category.slug || category._id} id={`category-${category.slug}`} className="menu-category-section scroll-mt-32">
-                  <h3 className="font-display text-2xl md:text-3xl font-bold text-cheese uppercase mb-8 border-b border-white/10 pb-3 flex items-center gap-3">
+                  <h3 className="font-display text-2xl md:text-3xl font-medium text-cheese uppercase mb-8 border-b border-white/10 pb-3 flex items-center gap-3">
                     {category.name}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -280,7 +265,7 @@ export default function FeaturedPizzas({
                     {pizza.tags.map((tag, tIdx) => (
                       <span
                         key={tIdx}
-                        className="font-sans font-black text-[9px] tracking-widest text-charcoal bg-cheese py-1 px-2.5 rounded-full uppercase shadow-md pointer-events-none"
+                        className="font-sans font-medium text-[9px] tracking-widest text-charcoal bg-cheese py-1 px-2.5 rounded-full uppercase shadow-md pointer-events-none"
                       >
                         {tag}
                       </span>
@@ -288,7 +273,7 @@ export default function FeaturedPizzas({
                   </div>
 
                   {/* Cooking time badge */}
-                  <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5 px-2.5 py-1 bg-charcoal/90 text-cream/90 rounded-full text-[10px] font-bold border border-white/5">
+                  <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5 px-2.5 py-1 bg-charcoal/90 text-cream/90 rounded-full text-[10px] font-medium border border-white/5">
                     <Clock className="w-3.5 h-3.5 text-cheese" />
                     <span>{pizza.cookingTime}</span>
                   </div>
@@ -300,7 +285,7 @@ export default function FeaturedPizzas({
                   {/* Card Title & Taglines */}
                   <div className="space-y-1.5 text-left">
                     <div className="flex items-center justify-between">
-                      <span className="font-sans text-[11px] font-black text-tomato tracking-widest uppercase">
+                      <span className="font-sans text-[11px] font-medium text-tomato tracking-widest uppercase">
                         {pizza.tagline}
                       </span>
                       {/* Veg Indicator Badge */}
@@ -326,7 +311,7 @@ export default function FeaturedPizzas({
                   <div className="flex items-center justify-between py-2 border-y border-white/5 font-sans">
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-cheese text-cheese" />
-                      <span className="text-sm font-black text-cream">{pizza.rating}</span>
+                      <span className="text-sm font-medium text-cream">{pizza.rating}</span>
                       <span className="text-[11px] text-cream/50">({pizza.reviewsCount} reviews)</span>
                     </div>
                     <div>
@@ -341,7 +326,7 @@ export default function FeaturedPizzas({
                   {/* Action Purchase footer block */}
                   <div className="flex items-center justify-between gap-3 pt-2">
                     <div>
-                      <div className="font-sans text-[10px] font-bold text-cream/40 uppercase tracking-widest leading-none">
+                      <div className="font-sans text-[10px] font-medium text-cream/40 uppercase tracking-widest leading-none">
                         CRUST INCLUDED
                       </div>
                       <div className="font-display text-3xl font-medium text-cheese text-glow-gold mt-1">
@@ -360,7 +345,7 @@ export default function FeaturedPizzas({
 
                       <button
                         onClick={() => handleQuickAdd(pizza)}
-                        className="btn-primary-anim bg-burgundy text-cheese hover:bg-tomato hover:text-cream font-sans font-black text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all duration-300 border border-tomato/20 active:scale-95 cursor-pointer"
+                        className="btn-primary-anim bg-burgundy text-cheese hover:bg-tomato hover:text-cream font-sans font-medium text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all duration-300 border border-tomato/20 active:scale-95 cursor-pointer"
                       >
                         Add Basic
                       </button>
@@ -378,7 +363,7 @@ export default function FeaturedPizzas({
         ) : (
           <div className="text-center py-16 bg-charcoal-light/40 rounded-3xl border border-dashed border-white/10 max-w-lg mx-auto">
             <Info className="w-12 h-12 text-cheese mx-auto mb-4 opacity-70 animate-pulse" />
-            <h3 className="font-display text-2xl font-black text-cream mb-2 uppercase">NO PIZZAS FOUND MATCHING FILTER</h3>
+            <h3 className="font-display text-2xl font-medium text-cream mb-2 uppercase">NO PIZZAS FOUND MATCHING FILTER</h3>
             <p className="font-sans text-xs text-cream/60 px-6">
               Our master pizzaiolo hasn't cataloged details under those keyword specifications. Swipe back to another selection chip!
             </p>
@@ -425,7 +410,7 @@ export default function FeaturedPizzas({
                   {selectedToppings.length > 0 && (
                     <div className="absolute -right-4 top-1/4 z-20 space-y-2 animate-fade-in pointer-events-none">
                       {selectedToppings.slice(0, 3).map((top, i) => (
-                        <div key={top} className="bg-charcoal/90 border border-white/10 text-cheese font-sans font-bold text-[9px] uppercase px-2 py-1 rounded-md shadow-lg" style={{ animationDelay: `${i * 100}ms` }}>
+                        <div key={top} className="bg-charcoal/90 border border-white/10 text-cheese font-sans font-medium text-[9px] uppercase px-2 py-1 rounded-md shadow-lg" style={{ animationDelay: `${i * 100}ms` }}>
                           + {top}
                         </div>
                       ))}
@@ -435,13 +420,13 @@ export default function FeaturedPizzas({
                 </div>
 
                 <div className="text-center lg:text-left mt-auto">
-                  <span className="font-sans text-[9px] lg:text-[11px] font-black text-tomato uppercase tracking-widest">{customizingPizza.tagline}</span>
+                  <span className="font-sans text-[9px] lg:text-[11px] font-medium text-tomato uppercase tracking-widest">{customizingPizza.tagline}</span>
                   <h3 className="font-display text-xl lg:text-3xl font-normal text-white uppercase mt-0.5 lg:mt-1">{customizingPizza.name}</h3>
                   <p className="font-sans text-xs text-cream/70 mt-2 font-medium leading-relaxed hidden lg:block">{customizingPizza.description}</p>
 
                   <div className="mt-3 lg:mt-6 pt-3 lg:pt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="font-sans text-[10px] lg:text-xs font-bold text-cream/50 uppercase">Total</span>
-                    <span className="font-display text-2xl lg:text-4xl font-black text-cheese">Rs.{calculateCustomizedPrice().toFixed(2)}</span>
+                    <span className="font-sans text-[10px] lg:text-xs font-medium text-cream/50 uppercase">Total</span>
+                    <span className="font-display text-2xl lg:text-4xl font-medium text-cheese">Rs.{calculateCustomizedPrice().toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -453,10 +438,10 @@ export default function FeaturedPizzas({
                 <div className={`border rounded-2xl overflow-hidden transition-colors ${activeStep === 1 ? 'border-cheese/50 bg-charcoal-light/40' : 'border-white/5 bg-charcoal-light/20'}`}>
                   <button onClick={() => setActiveStep(1)} className="w-full p-4 flex items-center justify-between cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${activeStep === 1 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>1</span>
-                      <h4 className="font-sans font-bold text-sm uppercase text-cream tracking-wide">Choose Pizza Size</h4>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-medium text-xs ${activeStep === 1 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>1</span>
+                      <h4 className="font-sans font-medium text-sm uppercase text-cream tracking-wide">Choose Pizza Size</h4>
                     </div>
-                    {activeStep !== 1 && <span className="font-sans text-xs font-bold text-cheese">{size}</span>}
+                    {activeStep !== 1 && <span className="font-sans text-xs font-medium text-cheese">{size}</span>}
                   </button>
 
                   {activeStep === 1 && (
@@ -469,9 +454,9 @@ export default function FeaturedPizzas({
                             }`}
                         >
                           {size === s && <Check className="absolute top-2 right-2 w-4 h-4 text-cheese" />}
-                          <div className={`font-sans font-bold text-xs uppercase ${size === s ? 'text-cheese' : 'text-cream/90'}`}>{s.split(' ')[0]}</div>
+                          <div className={`font-sans font-medium text-xs uppercase ${size === s ? 'text-cheese' : 'text-cream/90'}`}>{s.split(' ')[0]}</div>
                           <div className="font-sans text-[10px] text-cream/50 mt-1">{s.split(' ')[1] || 'Standard'}</div>
-                          <div className="font-mono text-[10px] font-bold text-cream/40 mt-2">
+                          <div className="font-mono text-[10px] font-medium text-cream/40 mt-2">
                             {(() => {
                               const sc = menuConfig?.sizes?.find((x: any) => x.name === s);
                               if (!sc || sc.priceModifier === 0) return 'Included';
@@ -488,10 +473,10 @@ export default function FeaturedPizzas({
                 <div className={`border rounded-2xl overflow-hidden transition-colors ${activeStep === 2 ? 'border-cheese/50 bg-charcoal-light/40' : 'border-white/5 bg-charcoal-light/20'}`}>
                   <button onClick={() => setActiveStep(2)} className="w-full p-4 flex items-center justify-between cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${activeStep === 2 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>2</span>
-                      <h4 className="font-sans font-bold text-sm uppercase text-cream tracking-wide">Select Crust Style</h4>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-medium text-xs ${activeStep === 2 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>2</span>
+                      <h4 className="font-sans font-medium text-sm uppercase text-cream tracking-wide">Select Crust Style</h4>
                     </div>
-                    {activeStep !== 2 && <span className="font-sans text-xs font-bold text-cheese">{crust}</span>}
+                    {activeStep !== 2 && <span className="font-sans text-xs font-medium text-cheese">{crust}</span>}
                   </button>
 
                   {activeStep === 2 && (
@@ -508,10 +493,10 @@ export default function FeaturedPizzas({
                               }`}
                           >
                             {crust === c && <Check className="absolute top-3 right-3 w-4 h-4 text-cheese" />}
-                            {isRecommended && <span className="inline-block px-2 py-0.5 bg-olive/20 text-olive text-[9px] font-black uppercase rounded-md mb-2">Recommended</span>}
-                            {isPremium && crustConfig?.priceModifier > 0 && <span className="inline-block px-2 py-0.5 bg-cheese/20 text-cheese text-[9px] font-black uppercase rounded-md mb-2">Premium +Rs.{crustConfig.priceModifier}</span>}
+                            {isRecommended && <span className="inline-block px-2 py-0.5 bg-olive/20 text-olive text-[9px] font-medium uppercase rounded-md mb-2">Recommended</span>}
+                            {isPremium && crustConfig?.priceModifier > 0 && <span className="inline-block px-2 py-0.5 bg-cheese/20 text-cheese text-[9px] font-medium uppercase rounded-md mb-2">Premium +Rs.{crustConfig.priceModifier}</span>}
 
-                            <div className={`font-sans font-bold text-xs uppercase ${crust === c ? 'text-cheese' : 'text-cream/90'}`}>{c}</div>
+                            <div className={`font-sans font-medium text-xs uppercase ${crust === c ? 'text-cheese' : 'text-cream/90'}`}>{c}</div>
                           </button>
                         );
                       })}
@@ -523,10 +508,10 @@ export default function FeaturedPizzas({
                 <div className={`border rounded-2xl overflow-hidden transition-colors ${activeStep === 3 ? 'border-cheese/50 bg-charcoal-light/40' : 'border-white/5 bg-charcoal-light/20'}`}>
                   <button onClick={() => setActiveStep(3)} className="w-full p-4 flex items-center justify-between cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${activeStep === 3 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>3</span>
-                      <h4 className="font-sans font-bold text-sm uppercase text-cream tracking-wide">Premium Sauce Swirl</h4>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-medium text-xs ${activeStep === 3 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>3</span>
+                      <h4 className="font-sans font-medium text-sm uppercase text-cream tracking-wide">Premium Sauce Swirl</h4>
                     </div>
-                    {activeStep !== 3 && <span className="font-sans text-xs font-bold text-cheese">{sauce}</span>}
+                    {activeStep !== 3 && <span className="font-sans text-xs font-medium text-cheese">{sauce}</span>}
                   </button>
 
                   {activeStep === 3 && (
@@ -539,7 +524,7 @@ export default function FeaturedPizzas({
                             }`}
                         >
                           {sauce === sa && <Check className="absolute top-3 right-3 w-4 h-4 text-cheese" />}
-                          <div className={`font-sans font-bold text-[11px] uppercase pr-6 ${sauce === sa ? 'text-cheese' : 'text-cream/90'}`}>{sa}</div>
+                          <div className={`font-sans font-medium text-[11px] uppercase pr-6 ${sauce === sa ? 'text-cheese' : 'text-cream/90'}`}>{sa}</div>
                         </button>
                       ))}
                     </div>
@@ -550,8 +535,8 @@ export default function FeaturedPizzas({
                 <div className={`border rounded-2xl overflow-hidden transition-colors ${activeStep === 4 ? 'border-cheese/50 bg-charcoal-light/40' : 'border-white/5 bg-charcoal-light/20'}`}>
                   <button onClick={() => setActiveStep(4)} className="w-full p-4 flex items-center justify-between cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${activeStep === 4 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>4</span>
-                      <h4 className="font-sans font-bold text-sm uppercase text-cream tracking-wide">Extras & Toppings</h4>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-medium text-xs ${activeStep === 4 ? 'bg-cheese text-charcoal' : 'bg-charcoal text-cream/50'}`}>4</span>
+                      <h4 className="font-sans font-medium text-sm uppercase text-cream tracking-wide">Extras & Toppings</h4>
                     </div>
                   </button>
 
@@ -560,14 +545,14 @@ export default function FeaturedPizzas({
 
                       {/* Premium Upgrade Switch */}
                       <div>
-                        <h5 className="font-sans text-[10px] font-black text-cream/50 uppercase tracking-widest mb-3">Premium Base Upgrade</h5>
+                        <h5 className="font-sans text-[10px] font-medium text-cream/50 uppercase tracking-widest mb-3">Premium Base Upgrade</h5>
                         <label className="flex items-center justify-between p-4 bg-charcoal border border-white/5 rounded-xl cursor-pointer hover:border-white/20 transition-colors">
                           <div className="flex items-center gap-4">
                             <div className={`relative w-12 h-6 rounded-full transition-colors ${extraCheese ? 'bg-cheese' : 'bg-white/10'}`}>
                               <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${extraCheese ? 'translate-x-6' : 'translate-x-0'}`} />
                             </div>
                             <div>
-                              <div className={`font-sans font-bold text-xs uppercase ${extraCheese ? 'text-cheese' : 'text-cream'}`}>Double Mozzarella Drip</div>
+                              <div className={`font-sans font-medium text-xs uppercase ${extraCheese ? 'text-cheese' : 'text-cream'}`}>Double Mozzarella Drip</div>
                               <div className="font-sans text-[10px] text-cream/50 mt-0.5">Extra heavy layer of Wisconsin whole milk cheese</div>
                             </div>
                           </div>
@@ -577,7 +562,7 @@ export default function FeaturedPizzas({
 
                       {/* Add-on Toppings */}
                       <div>
-                        <h5 className="font-sans text-[10px] font-black text-cream/50 uppercase tracking-widest mb-3">Additional Toppings</h5>
+                        <h5 className="font-sans text-[10px] font-medium text-cream/50 uppercase tracking-widest mb-3">Additional Toppings</h5>
                         <div className="flex flex-col gap-2">
                           {Object.entries(availableToppings).map(([top, topPrice]) => {
                             const isSelected = selectedToppings.includes(top);
@@ -594,7 +579,7 @@ export default function FeaturedPizzas({
                                   ) : (
                                     <Plus className="w-4 h-4 text-cream/30" />
                                   )}
-                                  <div className={`font-sans font-bold text-[11px] uppercase ${isSelected ? 'text-cheese' : 'text-cream/90'}`}>{top}</div>
+                                  <div className={`font-sans font-medium text-[11px] uppercase ${isSelected ? 'text-cheese' : 'text-cream/90'}`}>{top}</div>
                                 </div>
                                 <div className="font-mono text-[10px] font-normal text-cream/40">
                                   +Rs.{topPrice}
@@ -609,7 +594,7 @@ export default function FeaturedPizzas({
                       <div className="pt-6 border-t border-white/5 mt-4">
                         <button
                           onClick={handleSaveCustomization}
-                          className="btn-primary-anim w-full py-4 bg-burgundy text-white font-sans font-black text-sm uppercase tracking-widest rounded-xl transition-all btn-burgundy-shadow flex items-center justify-center gap-3 cursor-pointer"
+                          className="btn-primary-anim w-full py-4 bg-burgundy text-white font-sans font-medium text-sm uppercase tracking-widest rounded-xl transition-all btn-burgundy-shadow flex items-center justify-center gap-3 cursor-pointer"
                         >
                           Add to Cart - Rs.{calculateCustomizedPrice().toFixed(2)}
                         </button>

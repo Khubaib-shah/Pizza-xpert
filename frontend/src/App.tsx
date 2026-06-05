@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import FeaturedPizzas from "./components/FeaturedPizzas";
 import PopularDeals from "./components/PopularDeals";
+import PremiumHorizontalMenu from "./components/PremiumHorizontalMenu";
 import Categories from "./components/Categories";
 import WhyChooseUs from "./components/WhyChooseUs";
 import Testimonials from "./components/Testimonials";
@@ -23,6 +24,8 @@ import CartSidebar from "./components/CartSidebar";
 import OrderTracker from "./components/OrderTracker";
 import Preloader from "./components/Preloader";
 import WaveDivider from "./components/WaveDivider";
+import FloatingMenu from "./components/FloatingMenu";
+import useDebounce from "./hooks/useDebounce";
 
 // Lazy load AdminPanel for code splitting
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
@@ -46,6 +49,7 @@ export default function App() {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300); // 300ms debounce
   const [selectedCategory, setSelectedCategory] = useState("veg");
   const [cartOpen, setCartOpen] = useState(false);
   const [trackerOpen, setTrackerOpen] = useState(false);
@@ -91,6 +95,7 @@ export default function App() {
 
   // Monitor screen scroll to display floating "Back to top" anchors
   useEffect(() => {
+    document.title = "Pizza Xpert | The Best Authentic Woodfire Pizza Delivery Deals";
     const toggleVisibility = () => {
       if (window.scrollY > 400) {
         setShowScrollTop(true);
@@ -264,13 +269,16 @@ export default function App() {
             {/* ━━ FEATURED SIGNATURE MENU (3) ━━ */}
             <FeaturedPizzas
               onAddToCart={handleAddToCart}
-              searchQuery={searchQuery}
+              searchQuery={debouncedSearchQuery}
               selectedCategory={selectedCategory}
               onCategoryVisible={setSelectedCategory}
             />
 
             {/* ━━ POPULAR COUPON DEALS (4) ━━ */}
             <PopularDeals onAddSpecialDealToCart={handleAddSpecialDealToCart} />
+
+            {/* ━━ PREMIUM HORIZONTAL DEALS (4.5) ━━ */}
+            <PremiumHorizontalMenu onAddSpecialDealToCart={handleAddSpecialDealToCart} />
 
             {/* ━━ WHY CHOOSE US (6) ━━ */}
             <WhyChooseUs />
@@ -326,10 +334,10 @@ export default function App() {
                   <Bell className="w-5 h-5 text-cheese" />
                 </div>
                 <div>
-                  <div className="font-display text-sm font-black text-white uppercase select-none">
+                  <div className="font-display text-sm font-medium text-white uppercase select-none">
                     PIZZA XPERT RADAR
                   </div>
-                  <p className="font-sans text-[11px] font-bold text-cheese uppercase tracking-wider mt-0.5 leading-tight">
+                  <p className="font-sans text-[11px] font-medium text-cheese uppercase tracking-wider mt-0.5 leading-tight">
                     {toast.message}
                   </p>
                 </div>
@@ -338,19 +346,23 @@ export default function App() {
 
             {/* ━━ BACK TO TOP CORNER FLOATER ━━ */}
             {showScrollTop && (
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-burgundy hover:bg-tomato text-cheese hover:text-white border border-cheese/10 shadow-2xl flex items-center justify-center transition-all cursor-pointer transform hover:-translate-y-1"
-                title="Back to top of lobby"
-              >
-                <ArrowUp className="w-5 h-5" />
-              </button>
+              <FloatingMenu 
+                onTrackOrder={() => {
+                  if (activeOrder) {
+                    setTrackerOpen(true);
+                  } else {
+                    showNotification(
+                      "🤔 Please place an order first to track live!",
+                    );
+                  }
+                }}
+              />
             )}
           </div>
         }
       />
       <Route
-        path="/admin"
+        path="/admin/*"
         element={
           <Suspense fallback={<Preloader />}>
             <AdminPanel onBackToStore={() => navigate("/")} />

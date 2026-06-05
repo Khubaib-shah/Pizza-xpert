@@ -50,7 +50,7 @@ export default function PhoneInput({
 
   return (
     <div className="space-y-1">
-      <label htmlFor={fieldId} className="block text-cream/50 uppercase font-bold tracking-widest text-[11px]">
+      <label htmlFor={fieldId} className="block text-cream/50 uppercase font-medium tracking-widest text-[11px]">
         {label}
       </label>
       <input
@@ -66,7 +66,7 @@ export default function PhoneInput({
         className={`u-form-input ${className}`}
         {...rest}
       />
-      {error ? <p className="text-[10px] text-tomato font-bold uppercase">{error}</p> : null}
+      {error ? <p className="text-[10px] text-tomato font-medium uppercase">{error}</p> : null}
     </div>
   );
 }

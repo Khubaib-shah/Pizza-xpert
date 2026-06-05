@@ -118,7 +118,7 @@ export const POPULAR_DEALS: Deal[] = [
     description: 'Any 2 Monster 16" Loaded or BBQ pizzas, paired with 4 bottles of dynamic herb coolers and garlic bread rolls.',
     originalPrice: 59.98,
     dealPrice: 29.99,
-    endsInSeconds: 3240, // 54 mins
+    validUntil: new Date(Date.now() + 3600 * 1000).toISOString(), // 54 mins
     isLimited: true
   },
   {
@@ -128,7 +128,7 @@ export const POPULAR_DEALS: Deal[] = [
     description: 'Get one Medium Triple-Cheese Burst free with any premium pizza order. Valid for deliveries after 9PM only.',
     originalPrice: 33.98,
     dealPrice: 16.99,
-    endsInSeconds: 7200, // 2 hours
+    validUntil: new Date(Date.now() + 7200 * 1000).toISOString(),
     isLimited: true
   },
   {
@@ -138,7 +138,7 @@ export const POPULAR_DEALS: Deal[] = [
     description: 'One Personal Pepperoni Crown + Golden Herb Wedges + Dynamic Dippers. Crafted for a solitary gamer fuel.',
     originalPrice: 24.99,
     dealPrice: 14.49,
-    endsInSeconds: 1540,
+    validUntil: new Date(Date.now() + 1540 * 1000).toISOString(),
     isLimited: false
   },
   {
@@ -148,7 +148,7 @@ export const POPULAR_DEALS: Deal[] = [
     description: 'An absolute feast: Any 3 Artisan Pizzas of your choice with charred crust edges, plus custom lava desserts.',
     originalPrice: 62.97,
     dealPrice: 44.00,
-    endsInSeconds: 4800,
+    validUntil: new Date(Date.now() + 4800 * 1000).toISOString(),
     isLimited: true
   }
 ];

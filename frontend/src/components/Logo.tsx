@@ -87,14 +87,14 @@ export default function Logo({ variant = 'light', className = '', iconOnly = fal
       {!iconOnly && (
         <div className="flex flex-col select-none">
           <div className="flex items-baseline leading-none font-sans">
-            <span className={`${textColor1} font-bold text-xl uppercase tracking-wide`}>
+            <span className={`${textColor1} font-medium text-xl uppercase tracking-wide`}>
               Pizza
             </span>
             <span className={`${textColor2} font-extrabold text-xl uppercase tracking-wide pl-1.5`}>
               Xpert
             </span>
           </div>
-          <span className="text-[8px] md:text-[9px] font-sans font-bold text-cheese tracking-[1.2px] uppercase mt-0.5 leading-none">
+          <span className="text-[8px] md:text-[9px] font-sans font-medium text-cheese tracking-[1.2px] uppercase mt-0.5 leading-none">
             Expertise In Every Slice
           </span>
         </div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ShieldCheck } from 'lucide-react';
 import Logo from './Logo';
 
-export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token: string) => void }) {
+export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginSuccess: (token: string) => void, onBackToStore: () => void }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -30,7 +30,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
       <div className="bg-charcoal-black border border-charcoal-border rounded-2xl p-8 w-full max-w-md shadow-2xl">
         <div className="flex flex-col items-center mb-8">
           <Logo />
-          <h2 className="text-xl font-black text-white mt-4 uppercase tracking-widest flex items-center gap-2">
+          <h2 className="text-xl font-medium text-white mt-4 uppercase tracking-widest flex items-center gap-2">
             <ShieldCheck className="text-cheese w-6 h-6" />
             Admin Portal
           </h2>
@@ -44,7 +44,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-cream/70 uppercase mb-1">Username</label>
+            <label className="block text-xs font-medium text-cream/70 uppercase mb-1">Username</label>
             <input
               type="text"
               value={username}
@@ -55,7 +55,7 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-cream/70 uppercase mb-1">Password</label>
+            <label className="block text-xs font-medium text-cream/70 uppercase mb-1">Password</label>
             <input
               type="password"
               value={password}
@@ -69,9 +69,16 @@ export default function AdminLogin({ onLoginSuccess }: { onLoginSuccess: (token:
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-cheese hover:bg-yellow-400 text-black font-black uppercase tracking-widest py-3 rounded-lg transition-colors mt-2"
+            className="w-full bg-cheese hover:bg-yellow-400 text-black font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2"
           >
             {loading ? 'Authenticating...' : 'Secure Login'}
+          </button>
+          <button
+            type="button"
+            onClick={onBackToStore}
+            className="w-full bg-transparent hover:bg-white/5 border border-white/10 text-cream/70 font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 text-xs"
+          >
+            Return to Store
           </button>
         </form>
       </div>

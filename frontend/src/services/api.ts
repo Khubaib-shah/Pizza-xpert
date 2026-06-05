@@ -57,6 +57,20 @@ export const fetchOrders = () => api.get('/orders');
 export const updateOrderStage = (id: string, stage: string) =>
   api.patch(`/orders/${id}/stage`, { stage });
 
+export const updateStaffStatus = (id: string, status: string) =>
+  api.patch(`/staff/${id}/status`, { status });
+
+// ── Gallery / Media Endpoints (Admin) ───────────────────────────
+export const fetchGallery = (folder?: string) => 
+  api.get('/gallery', { params: folder ? { folder } : {} });
+
+export const uploadMedia = (formData: FormData) =>
+  api.post('/gallery/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+
+export const deleteMedia = (id: string) => api.delete(`/gallery/${id}`);
+
 export const fetchCustomers = () => api.get('/customers');
 export const fetchStaff = () => api.get('/staff');
 export const createStaff = (data: object) => api.post('/staff', data);

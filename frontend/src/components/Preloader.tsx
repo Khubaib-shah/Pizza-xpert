@@ -9,7 +9,7 @@ export default function Preloader({ message = 'Preparing your pizza experience..
         <div className="inline-flex h-20 w-20 items-center justify-center rounded-full border-2 border-cheese/30 bg-charcoal mb-6">
           <div className="h-12 w-12 rounded-full border-t-4 border-cheese animate-spin" />
         </div>
-        <h1 className="text-xl font-black uppercase tracking-[0.3em] text-cheese mb-3">Loading</h1>
+        <h1 className="text-xl font-medium uppercase tracking-[0.3em] text-cheese mb-3">Loading</h1>
         <p className="text-sm text-cream/80 leading-tight">{message}</p>
       </div>
     </div>

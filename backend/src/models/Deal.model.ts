@@ -6,7 +6,7 @@ const DealSchema = new mongoose.Schema({
   description: { type: String, required: true },
   originalPrice: { type: Number, required: true },
   dealPrice: { type: Number, required: true },
-  endsInSeconds: { type: Number, required: true },
+  validUntil: { type: Date, required: true },
   isLimited: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
   image: { type: String, default: '' },

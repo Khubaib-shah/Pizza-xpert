@@ -48,58 +48,22 @@ const renderScallopPath = (points: number, innerRadius: number, outerRadius: num
   return path;
 };
 
-export default function Hero({ onScrollToElement }: HeroProps) {
-  // Carousel slides data list - perfectly structured for easy loading or dynamic connection with admin panel later
-  const slides: Slide[] = [
-    {
-      id: 'deal-8-pizza',
-      backgroundImg: dealBgMain,
-      badgeText: '🔥 TOP SELLING DEAL',
-      titleNumber: '8',
-      titleTextLines: ['LARGE', 'PIZZAS'],
-      items: [
-        '1 x JUMBO DRINK',
-        '8 x DIP SAUCES'
-      ],
-      price: '3850',
-      pricePrefix: 'Rs.',
-      primaryCtaText: 'ORDER NOW',
-      secondaryCtaText: 'VIEW MENU'
-    },
-    {
-      id: 'deal-4-pizza',
-      backgroundImg: dealBgOven,
-      badgeText: '⚡ FAMILY SPECIAL',
-      titleNumber: '4',
-      titleTextLines: ['MEDIUM', 'PIZZAS'],
-      items: [
-        '1 x LITER DRINK',
-        '4 x DIP SAUCES'
-      ],
-      price: '2150',
-      pricePrefix: 'Rs.',
-      primaryCtaText: 'GET THIS DEAL',
-      secondaryCtaText: 'SEE ALL DEALS'
-    },
-    {
-      id: 'deal-2-pizza',
-      backgroundImg: dealBgPepperoni,
-      badgeText: '🏆 CHEESY LOVERS',
-      titleNumber: '2',
-      titleTextLines: ['JUMBO', 'PIZZAS'],
-      items: [
-        '1 x CHILLED DRINK',
-        '3 x GARLIC DIPS'
-      ],
-      price: '1650',
-      pricePrefix: 'Rs.',
-      primaryCtaText: 'ORDER NOW',
-      secondaryCtaText: 'MORE DEALS'
-    }
-  ];
+import { fetchLandingContent } from '../services/api';
 
+export default function Hero({ onScrollToElement }: HeroProps) {
+  const [slides, setSlides] = useState<Slide[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    fetchLandingContent().then((res) => {
+      setSlides(res.data.heroSlides || []);
+    }).catch(() => {
+    }).finally(() => {
+      setLoading(false);
+    });
+  }, []);
 
   // Auto-slide transition timing loop logic
   useEffect(() => {
@@ -115,8 +79,16 @@ export default function Hero({ onScrollToElement }: HeroProps) {
   };
 
   const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    if (slides.length > 0) setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
+
+  if (loading || slides.length === 0) {
+    return (
+      <section id="home" className="min-h-[50vh] flex items-center justify-center pt-24">
+        <div className="w-12 h-12 border-4 border-cheese border-t-transparent rounded-full animate-spin"></div>
+      </section>
+    );
+  }
 
   const activeSlide = slides[currentSlide];
 
@@ -165,7 +137,7 @@ export default function Hero({ onScrollToElement }: HeroProps) {
             <div className="relative space-y-2">
               <div className="flex items-end gap-4 select-none">
                 {/* Big Number Display */}
-                <span className="!text-8xl self-end sm:text-[130px] md:text-[160px] font-bold text-white leading-none tracking-wide filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
+                <span className="!text-8xl self-end sm:text-[130px] md:text-[160px] font-medium text-white leading-none tracking-wide filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
                   {activeSlide.titleNumber}
                 </span>
 
@@ -175,7 +147,7 @@ export default function Hero({ onScrollToElement }: HeroProps) {
                     {activeSlide.titleTextLines.map((line, idx) => (
                       <span
                         key={idx}
-                        className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide text-cheese leading-[0.85] filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] uppercase"
+                        className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-wide text-cheese leading-[0.85] filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] uppercase"
                       >
                         {line}
                       </span>
@@ -229,14 +201,14 @@ export default function Hero({ onScrollToElement }: HeroProps) {
             <div className="flex items-center gap-2 sm:gap-4 pt-2 w-full max-w-[480px]">
               <button
                 onClick={() => onScrollToElement('menu')}
-                className="flex-1 btn-primary-anim bg-[var(--color-burgundy)] text-white font-sans font-bold text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl border border-white/10 btn-burgundy-shadow flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
+                className="flex-1 btn-primary-anim bg-[var(--color-burgundy)] text-white font-sans font-medium text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl border border-white/10 btn-burgundy-shadow flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
               >
                 <span className="truncate">{activeSlide.primaryCtaText}</span>
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               </button>
               <button
                 onClick={() => onScrollToElement('menu')}
-                className="flex-1 btn-secondary-anim font-sans font-bold text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
+                className="flex-1 btn-secondary-anim font-sans font-medium text-[10px] sm:text-xs uppercase tracking-wider py-3.5 px-2 sm:px-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer"
               >
                 <span className="btn-secondary-text flex items-center justify-center gap-1.5 sm:gap-2 truncate">
                   <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />

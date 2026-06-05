@@ -40,8 +40,8 @@ export default function AppPromo() {
               {/* Inside App Header */}
               <div className="flex items-center justify-between mt-3 text-left">
                 <div>
-                  <div className="text-[10px] text-cream/40 uppercase font-black tracking-wider leading-none">ORDERING APP</div>
-                  <div className="font-display text-lg font-black text-cheese leading-tight mt-0.5">PIZZA XPERT</div>
+                  <div className="text-[10px] text-cream/40 uppercase font-medium tracking-wider leading-none">ORDERING APP</div>
+                  <div className="font-display text-lg font-medium text-cheese leading-tight mt-0.5">PIZZA XPERT</div>
                 </div>
                 <span className="w-7 h-7 bg-burgundy rounded-full flex items-center justify-center border border-white/5">
                   🍕
@@ -58,10 +58,10 @@ export default function AppPromo() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="mt-2 text-center">
-                  <div className="font-display text-sm font-black text-white uppercase tracking-wider">
+                  <div className="font-display text-sm font-medium text-white uppercase tracking-wider">
                     PEPPY PEPPERONI
                   </div>
-                  <div className="text-yellow-400 text-[10px] font-bold">
+                  <div className="text-yellow-400 text-[10px] font-medium">
                     ★ 4.9 (184 voters)
                   </div>
                 </div>
@@ -71,10 +71,10 @@ export default function AppPromo() {
               <div className="bg-charcoal-800/90 border border-white/5 rounded-2xl p-3 text-left space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-[9px] text-cream/40 uppercase leading-none font-bold">TOTAL SUM</div>
-                    <div className="text-base font-black text-cheese mt-0.5">$18.99</div>
+                    <div className="text-[9px] text-cream/40 uppercase leading-none font-medium">TOTAL SUM</div>
+                    <div className="text-base font-medium text-cheese mt-0.5">$18.99</div>
                   </div>
-                  <span className="text-[8px] bg-tomato text-white font-sans font-black py-1 px-2 rounded-full uppercase">
+                  <span className="text-[8px] bg-tomato text-white font-sans font-medium py-1 px-2 rounded-full uppercase">
                     HOT DISPATCH
                   </span>
                 </div>
@@ -99,12 +99,12 @@ export default function AppPromo() {
         {/* Right Side Copywriting Badges */}
         <div className="lg:col-span-7 text-left space-y-6 md:space-y-8 my-auto p-4">
 
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy/50 text-cheese rounded-full text-xs font-black uppercase tracking-widest border border-tomato/10">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-burgundy/50 text-cheese rounded-full text-xs font-medium uppercase tracking-widest border border-tomato/10">
             📱 PIZZA XPERT MOBILE
           </div>
 
           <div className="space-y-3">
-            <h2 className="font-display text-4xl md:text-6xl font-black text-white tracking-wide uppercase leading-none">
+            <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase leading-none">
               ORDER ON <span className="text-cheese text-glow-gold">THE GO</span>
             </h2>
             <p className="font-sans text-cream/80 text-sm md:text-base max-w-lg leading-tight font-semibold">
@@ -115,13 +115,13 @@ export default function AppPromo() {
           {/* Social Proof ratings */}
           <div className="flex items-center gap-5">
             <div>
-              <div className="text-2xl font-black text-cheese">4.9★</div>
-              <div className="text-[10px] uppercase font-bold text-cream/40 tracking-wider mt-0.5">App Store</div>
+              <div className="text-2xl font-medium text-cheese">4.9★</div>
+              <div className="text-[10px] uppercase font-medium text-cream/40 tracking-wider mt-0.5">App Store</div>
             </div>
             <div className="h-8 w-px bg-white/10" />
             <div>
-              <div className="text-2xl font-black text-cheese">500K+</div>
-              <div className="text-[10px] uppercase font-bold text-cream/40 tracking-wider mt-0.5">Downloads</div>
+              <div className="text-2xl font-medium text-cheese">500K+</div>
+              <div className="text-[10px] uppercase font-medium text-cream/40 tracking-wider mt-0.5">Downloads</div>
             </div>
           </div>
 
