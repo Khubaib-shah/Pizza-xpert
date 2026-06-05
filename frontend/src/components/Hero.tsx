@@ -121,24 +121,36 @@ export default function Hero({ onScrollToElement }: HeroProps) {
   const activeSlide = slides[currentSlide];
 
   return (
+
     <section
       id="home"
-      style={{
-        backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.6) 30%, rgba(20, 20, 20, 0.3) 60%, rgba(20, 20, 20, 0) 100%), url(${activeSlide.backgroundImg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center right',
-      }}
-      className="hero-section relative min-h-screen flex flex-col justify-between pt-24 md:pt-28 overflow-hidden select-none"
+      className="relative hero-section min-h-screen flex flex-col  justify-between pt-24 md:pt-28 overflow-hidden select-none"
       onMouseEnter={() => setIsPlaying(false)}
       onMouseLeave={() => setIsPlaying(true)}
     >
-      {/* Subtle Grain Overlay on the Backdrop */}
-      <div className="absolute inset-0 z-0 w-full h-full bg-grain pointer-events-none opacity-25" />
+      {/* Animated Background */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeSlide.backgroundImg}
+          className="absolute inset-0 bg-contain bg-no-repeat bg-[position:center_70px] md:bg-[right_center]"
+          style={{
+            backgroundImage: `url(${activeSlide.backgroundImg})`,
 
-      <div className="max-w-7xl mx-auto w-full px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center my-auto py-10 relative z-10">
+          }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        />
+      </AnimatePresence>
+
+      {/* Subtle Grain Overlay on the Backdrop */}
+      < div className="absolute inset-0 z-0 w-full h-full bg-grain pointer-events-none opacity-25" />
+
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center my-auto py-10 md:mt-auto md:pt-10 relative z-10">
 
         {/* LEFT COMPOSITION COLUMN WITH HERO CARD INFO */}
-        <AnimatePresence mode="wait"> 
+        <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0, x: -40 }}
@@ -151,7 +163,7 @@ export default function Hero({ onScrollToElement }: HeroProps) {
 
             {/* Main Display Heading */}
             <div className="relative space-y-2">
-              <div className="flex items-center gap-4 select-none">
+              <div className="flex items-end gap-4 select-none">
                 {/* Big Number Display */}
                 <span className="!text-8xl self-end sm:text-[130px] md:text-[160px] font-bold text-white leading-none tracking-wide filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]">
                   {activeSlide.titleNumber}
@@ -241,45 +253,45 @@ export default function Hero({ onScrollToElement }: HeroProps) {
 
           {/* Active slide pricing sticker overlay positioned precisely on top of the design circles */}
           <AnimatePresence mode="wait">
-           <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, scale: 0.7, rotate: -20 }}
-                animate={{ opacity: 1, scale: 1, rotate: -5 }}
-                exit={{ opacity: 0, scale: 0.7, rotate: 20 }}
-                transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.15 }}
-                className="hidden md:flex absolute right-[22%] top-[45%] md:right-[23%] md:top-[42%] lg:right-[35%] lg:top-[44%] -translate-x-1/2 -translate-y-1/2 z-20"
-              >
-                <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center" style={{ willChange: 'transform' }}>
-                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)]">
-                    {/* Outer Scalloped Border with Glow */}
-                    <path
-                      fill="var(--color-burgundy)"
-                      stroke="var(--color-cheese)"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                      d={renderScallopPath(28, 43, 47)}
-                    />
-                    {/* Inner White Scallop Accent */}
-                    <path
-                      fill="transparent"
-                      stroke="white"
-                      strokeWidth="0.8"
-                      strokeDasharray="1.5,1.5"
-                      strokeLinejoin="round"
-                      d={renderScallopPath(28, 39, 41)}
-                    />
-                  </svg>
-                  {/* Content */}
-                  <div className="relative z-10 text-center flex flex-col justify-center items-center select-none font-display">
-                    <span className="text-[10px] md:text-xs !font-normal text-cheese tracking-wide leading-none filter drop-shadow">
-                      {activeSlide.pricePrefix}
-                    </span>
-                    <span className="text-2xl md:text-3xl font-medium text-white tracking-wide leading-none mt-1 shadow-text filter drop-shadow-md">
-                      {activeSlide.price}
-                    </span>
-                  </div>
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 0.7, rotate: -20 }}
+              animate={{ opacity: 1, scale: 1, rotate: -5 }}
+              exit={{ opacity: 0, scale: 0.7, rotate: 20 }}
+              transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.15 }}
+              className="hidden md:flex absolute right-[22%] top-[45%] md:right-[23%] md:top-[42%] lg:right-[35%] lg:top-[44%] -translate-x-1/2 -translate-y-1/2 z-20"
+            >
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center" style={{ willChange: 'transform' }}>
+                <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)]">
+                  {/* Outer Scalloped Border with Glow */}
+                  <path
+                    fill="var(--color-burgundy)"
+                    stroke="var(--color-cheese)"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                    d={renderScallopPath(28, 43, 47)}
+                  />
+                  {/* Inner White Scallop Accent */}
+                  <path
+                    fill="transparent"
+                    stroke="white"
+                    strokeWidth="0.8"
+                    strokeDasharray="1.5,1.5"
+                    strokeLinejoin="round"
+                    d={renderScallopPath(28, 39, 41)}
+                  />
+                </svg>
+                {/* Content */}
+                <div className="relative z-10 text-center flex flex-col justify-center items-center select-none font-display">
+                  <span className="text-[10px] md:text-xs !font-normal text-cheese tracking-wide leading-none filter drop-shadow">
+                    {activeSlide.pricePrefix}
+                  </span>
+                  <span className="text-2xl md:text-3xl font-medium text-white tracking-wide leading-none mt-1 shadow-text filter drop-shadow-md">
+                    {activeSlide.price}
+                  </span>
                 </div>
-              </motion.div>
+              </div>
+            </motion.div>
           </AnimatePresence>
 
         </div>
@@ -329,6 +341,6 @@ export default function Hero({ onScrollToElement }: HeroProps) {
           ))}
         </div>
       </div>
-    </section>
+    </section >
   );
 }

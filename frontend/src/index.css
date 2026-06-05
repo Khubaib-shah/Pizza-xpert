@@ -66,6 +66,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -200,8 +201,7 @@
 }
 
 .hero-section {
-  background: radial-gradient(circle at center, #8B0000 0%, #660000 100%);
-  min-height: 400px;
+  min-height: 90vh;
   width: 100%;
 }
 
