@@ -45,6 +45,8 @@ export interface Deal {
 
 export interface Category {
   id: string;
+  _id?: string; // MongoDB id alias
+  slug?: string; // URL-friendly category slug from API
   name: string;
   iconName: string; // references lucide icons
   itemCount: number;

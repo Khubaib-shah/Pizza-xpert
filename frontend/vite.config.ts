@@ -12,10 +12,13 @@ export default defineConfig(() => {
       },
     },
     server: {
+      port: 5173,
       proxy: {
         '/api': {
-          target: 'http://localhost:4000',
-          changeOrigin: true,
+          target: process.env.BACKEND_URL || 'https://pizza-xpert-backend.vercel.app' || 'http://localhost:4000',
+          changeOrigin: true,       // rewrites Host header → no CORS
+          secure: true,
+          rewrite: (path) => path,
         }
       }
     },

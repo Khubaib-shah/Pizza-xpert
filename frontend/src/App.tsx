@@ -8,60 +8,50 @@ import {
   Bell,
   ArrowUp,
 } from "lucide-react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import FeaturedPizzas from "./components/FeaturedPizzas";
-import PopularDeals from "./components/PopularDeals";
-import PremiumHorizontalMenu from "./components/PremiumHorizontalMenu";
-import Categories from "./components/Categories";
-import WhyChooseUs from "./components/WhyChooseUs";
-import Testimonials from "./components/Testimonials";
-import DeliveryProcess from "./components/DeliveryProcess";
-import AppPromo from "./components/AppPromo";
-import CTABanner from "./components/CTABanner";
-import Footer from "./components/Footer";
-import CartSidebar from "./components/CartSidebar";
-import OrderTracker from "./components/OrderTracker";
-import Preloader from "./components/Preloader";
-import WaveDivider from "./components/WaveDivider";
-import FloatingMenu from "./components/FloatingMenu";
-import useDebounce from "./hooks/useDebounce";
+import Navbar from './shared/components/layout/Navbar';
+import Hero from './modules/content/components/Hero';
+import FeaturedPizzas from './modules/menu/components/FeaturedPizzas';
+import PopularDeals from './modules/menu/components/PopularDeals';
+import PremiumHorizontalMenu from './modules/menu/components/PremiumHorizontalMenu';
+import Categories from './modules/menu/components/Categories';
+import WhyChooseUs from './modules/content/components/WhyChooseUs';
+import Testimonials from './modules/content/components/Testimonials';
+import DeliveryProcess from './modules/content/components/DeliveryProcess';
+import AppPromo from './modules/content/components/AppPromo';
+import CTABanner from './modules/content/components/CTABanner';
+import Footer from './shared/components/layout/Footer';
+import CartSidebar from './modules/cart/components/CartSidebar';
+import OrderTracker from './modules/orders/components/OrderTracker';
+import Preloader from './shared/components/ui/Preloader';
+import WaveDivider from './shared/components/ui/WaveDivider';
+import FloatingMenu from './shared/components/layout/FloatingMenu';
+import useDebounce from './shared/hooks/useDebounce';
 
 // Lazy load AdminPanel for code splitting
-const AdminPanel = lazy(() => import("./components/AdminPanel"));
-import useImagePreloader from "./hooks/useImagePreloader";
-import heroBgMain from "./assets/images/1.png";
-import heroBgOven from "./assets/images/2.png";
-import heroBgPepperoni from "./assets/images/1.png";
-import { CartItem, SimulatedOrder, Deal, OrderStage } from "./types";
-import Marquee from "./components/Marquee";
+const AdminPanel = lazy(() => import("./app/routes/admin/AdminPanel"));
+import useImagePreloader from './shared/hooks/useImagePreloader';
+import heroBgMain from './assets/images/1.png';
+import heroBgOven from './assets/images/2.png';
+import heroBgPepperoni from './assets/images/1.png';
+import { Deal, OrderStage, CartItem, SimulatedOrder } from './types';
+import Marquee from './modules/content/components/Marquee';
+import { useCartStore } from './modules/cart/store/cart.store';
+import { useOrderStore } from './modules/orders/store/order.store';
+import { useToastStore } from './shared/hooks/useToastStore';
 
 export default function App() {
   const navigate = useNavigate();
-  // State definitions
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("pizzaxpert_cart");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [activeOrder, setActiveOrder] = useState<SimulatedOrder | null>(() => {
-    const saved = localStorage.getItem("pizzaxpert_active_order");
-    return saved ? JSON.parse(saved) : null;
-  });
+  // Zustand Stores
+  const { items: cart, addToCart: handleAddToCartRaw, updateQuantity: handleUpdateQuantity, removeItem: handleRemoveItem, clearCart } = useCartStore();
+  const { activeOrder, trackerOpen, setActiveOrder, setTrackerOpen, advanceStage: handleAdvanceStage } = useOrderStore();
+  const { toast, showNotification } = useToastStore();
 
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 300); // 300ms debounce
   const [selectedCategory, setSelectedCategory] = useState("veg");
   const [cartOpen, setCartOpen] = useState(false);
-  const [trackerOpen, setTrackerOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Success Toast system state
-  const [toast, setToast] = useState<{
-    id: number;
-    message: string;
-    visible: boolean;
-  } | null>(null);
   const [appReady, setAppReady] = useState(false);
 
   const assetsReady = useImagePreloader([
@@ -78,22 +68,6 @@ export default function App() {
     return undefined;
   }, [assetsReady]);
 
-  // Sync state with localStorage
-  useEffect(() => {
-    localStorage.setItem("pizzaxpert_cart", JSON.stringify(cart));
-  }, [cart]);
-
-  useEffect(() => {
-    if (activeOrder) {
-      localStorage.setItem(
-        "pizzaxpert_active_order",
-        JSON.stringify(activeOrder),
-      );
-    } else {
-      localStorage.removeItem("pizzaxpert_active_order");
-    }
-  }, [activeOrder]);
-
   // Monitor screen scroll to display floating "Back to top" anchors
   useEffect(() => {
     document.title = "Pizza Xpert | The Best Authentic Woodfire Pizza Delivery Deals";
@@ -108,33 +82,9 @@ export default function App() {
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  // Toast notifier trigger
-  const showNotification = (message: string) => {
-    const id = Date.now();
-    setToast({ id, message, visible: true });
-    setTimeout(() => {
-      setToast((prev) =>
-        prev?.id === id ? { ...prev, visible: false } : prev,
-      );
-    }, 3000);
-  };
-
   // Add Item to cart (recalculated and stacked with hash match)
   const handleAddToCart = (item: Omit<CartItem, "id">) => {
-    // Generate unique identification signature based on full ingredient customizations
-    const customHash = `${item.pizza.id}-${item.customization.size}-${item.customization.crust}-${item.customization.sauce}-${item.customization.extraCheese ? "ex-ch" : "no-ch"}-${item.customization.extraToppings.sort().join(",")}`;
-
-    setCart((prevCart) => {
-      const existingIdx = prevCart.findIndex((c) => c.id === customHash);
-      if (existingIdx > -1) {
-        const nextCart = [...prevCart];
-        nextCart[existingIdx].quantity += item.quantity;
-        return nextCart;
-      } else {
-        return [...prevCart, { ...item, id: customHash }];
-      }
-    });
-
+    handleAddToCartRaw(item);
     showNotification(`🔥 Loaded: ${item.pizza.name} in Cart!`);
   };
 
@@ -176,42 +126,17 @@ export default function App() {
     showNotification(`⚡ Claimed: ${deal.title} Promo Basket!`);
   };
 
-  const handleUpdateQuantity = (id: string, delta: number) => {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map((item) => {
-            if (item.id === id) {
-              const nextQty = item.quantity + delta;
-              return nextQty > 0 ? { ...item, quantity: nextQty } : null;
-            }
-            return item;
-          })
-          .filter(Boolean) as CartItem[],
-    );
-  };
-
-  const handleRemoveItem = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  const handleRemoveItemWithToast = (id: string) => {
+    handleRemoveItem(id);
     showNotification("🗑️ Item removed from platter.");
   };
 
   // On Checkout Completion
   const handleCheckoutComplete = (order: SimulatedOrder) => {
     setActiveOrder(order);
-    setCart([]); // Clear cart basket database
+    clearCart(); // Clear cart basket database
     setTrackerOpen(true); // Automatically trigger live monitoring radar
     showNotification("🚀 TRANSFERRED! Pizza oven fired up!");
-  };
-
-  // Handle live tracking stage increments from simulated dispatchers
-  const handleAdvanceStage = (orderId: string, nextStage: OrderStage) => {
-    setActiveOrder((prev) => {
-      if (prev && prev.id === orderId) {
-        return { ...prev, stage: nextStage };
-      }
-      return prev;
-    });
   };
 
   // Smooth-scroll anchor helper
@@ -317,7 +242,7 @@ export default function App() {
               onClose={() => setCartOpen(false)}
               cart={cart}
               onUpdateQuantity={handleUpdateQuantity}
-              onRemoveItem={handleRemoveItem}
+              onRemoveItem={handleRemoveItemWithToast}
               onCheckout={handleCheckoutComplete}
             />
 

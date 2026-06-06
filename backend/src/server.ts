@@ -32,7 +32,7 @@ app.use((helmet as any)());
 
 // Configure CORS for production domains (add local for dev)
 app.use(cors({
-  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'http://localhost:5173'],
+  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'http://localhost:5173', 'https://pizza-xpert-demo.vercel.app'],
   credentials: true
 }));
 
