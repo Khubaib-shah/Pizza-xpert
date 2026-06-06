@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 
 import { connectDB } from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
@@ -28,7 +28,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Security Middlewares
-app.use(helmet());
+app.use((helmet as any)());
 
 // Configure CORS for production domains (add local for dev)
 app.use(cors({
