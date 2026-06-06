@@ -2,15 +2,38 @@ interface PreloaderProps {
   message?: string;
 }
 
-export default function Preloader({ message = 'Preparing your pizza experience...' }: PreloaderProps) {
+export default function Preloader() {
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black-pure text-cream">
-      <div className="rounded-3xl border border-white/10 bg-charcoal-black/95 p-8 shadow-[0_30px_80px_rgba(0,0,0,0.65)] text-center max-w-sm w-full mx-4">
-        <div className="inline-flex h-20 w-20 items-center justify-center rounded-full border-2 border-cheese/30 bg-charcoal mb-6">
-          <div className="h-12 w-12 rounded-full border-t-4 border-cheese animate-spin" />
-        </div>
-        <h1 className="text-xl font-medium uppercase tracking-[0.3em] text-cheese mb-3">Loading</h1>
-        <p className="text-sm text-cream/80 leading-tight">{message}</p>
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-charcoal">
+      <div className="relative w-64 h-64 flex items-center justify-center">
+        {/* Rings */}
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div
+            key={`ring-${i}`}
+            className="absolute w-4 h-52 rounded-full bg-charcoal-border"
+            style={{
+              transform: `rotate(${i * 20}deg)`,
+            }}
+          />
+        ))}
+
+        {/* Balls */}
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div
+            key={`ball-${i}`}
+            className="absolute w-4 h-52"
+            style={{
+              transform: `rotate(${i * 20}deg)`,
+            }}
+          >
+            <div
+              className="w-4 h-4 rounded-full bg-cheese shadow-[0_0_20px_rgba(255,204,0,0.6)] animate-loader-ball"
+              style={{
+                animationDelay: `${i * 0.2}s`,
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

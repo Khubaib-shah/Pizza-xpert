@@ -36,7 +36,7 @@ export default function DeliveryProcess() {
             OUR <span className="text-cheese text-glow-gold">DELIVERY</span> PROCESS
           </h2>
           <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
-          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
+          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
             Chronological blueprint mapping our high-converting speed tunnel from oven peel to front porch.
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function DeliveryProcess() {
                   <h3 className="font-display text-xl font-medium tracking-wide text-white group-hover:text-cheese transition-colors uppercase leading-none">
                     {step.title}
                   </h3>
-                  <p className="font-sans text-cream/70 text-[11px] md:text-xs leading-relax font-normal">
+                  <p className="font-sans text-cream/80 text-[11px] md:text-xs leading-relax font-normal">
                     {step.description}
                   </p>
                 </div>

@@ -31,9 +31,8 @@ export default function Button({
     lg: 'text-sm px-6 py-3',
   };
 
-  const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${
-    disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-  } ${className}`;
+  const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+    } ${className}`;
 
   return (
     <button className={classes} disabled={disabled || isLoading} {...props}>

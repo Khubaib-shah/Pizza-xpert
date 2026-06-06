@@ -46,7 +46,7 @@ export default function WhyChooseUs() {
             WHY PIZZA <span className="text-cheese">XPERT</span> RULES
           </h2>
           <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
-          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
+          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
             Our strict culinary bylaws guarantee gold-plated speed without sacrificial taste degradation.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function WhyChooseUs() {
                   <h3 className="font-display text-[22px] font-medium text-white group-hover:text-cheese tracking-wide uppercase transition-colors duration-200">
                     {feat.title}
                   </h3>
-                  <p className="font-sans text-cream/70 text-xs font-medium leading-tight">
+                  <p className="font-sans text-cream/80 text-xs font-medium leading-tight">
                     {feat.description}
                   </p>
                 </div>

@@ -30,11 +30,10 @@ export default function OrdersManagement({
             <button
               key={f}
               onClick={() => setOrderFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider font-extrabold cursor-pointer transition-colors ${
-                orderFilter === f
-                  ? 'bg-cheese text-black'
-                  : 'bg-charcoal-800 text-cream/80 hover:bg-[#2c2c2c]'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider font-extrabold cursor-pointer transition-colors ${orderFilter === f
+                ? 'bg-cheese text-black'
+                : 'bg-charcoal-800 text-cream/80 hover:bg-[#2c2c2c]'
+                }`}
             >
               {f}
             </button>
@@ -135,16 +134,16 @@ export default function OrdersManagement({
                     <td className="p-4 font-medium text-cheese">{o.id}</td>
                     <td className="p-4 text-cream/50">{o.time}</td>
                     <td className="p-4 font-sans font-medium text-white">{o.customer}</td>
-                    <td className="p-4 font-sans text-cream/70 truncate max-w-xs">{o.items}</td>
+                    <td className="p-4 font-sans text-cream/80 truncate max-w-xs">{o.items}</td>
                     <td className="p-4 font-sans text-xs">{o.payment}</td>
                     <td className="p-4 font-sans font-medium text-cheese/80">{o.rider}</td>
                     <td className="p-4 text-white font-medium">Rs{o.total}</td>
                     <td className="p-4">
                       <Badge variant={
                         o.status === 'Pending' ? 'warning' :
-                        o.status === 'Preparing' ? 'info' :
-                        o.status === 'Ready' ? 'neutral' :
-                        o.status === 'Delivered' ? 'success' : 'error'
+                          o.status === 'Preparing' ? 'info' :
+                            o.status === 'Ready' ? 'neutral' :
+                              o.status === 'Delivered' ? 'success' : 'error'
                       }>
                         {o.status}
                       </Badge>

@@ -207,11 +207,6 @@ textarea:focus {
   box-shadow: 0 16px 48px rgba(93, 17, 19, 0.6);
 }
 
-.hero-section {
-  min-height: 90vh;
-  width: 100%;
-}
-
 /* Primary Button Animation */
 .btn-primary-anim {
   position: relative;
@@ -306,4 +301,23 @@ textarea:focus {
 .btn-secondary-text {
   position: relative;
   z-index: 3;
+}
+
+/* PreLoader */
+@keyframes loader-ball {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(12rem);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-loader-ball {
+  animation: loader-ball 3.6s ease-in-out infinite;
 }

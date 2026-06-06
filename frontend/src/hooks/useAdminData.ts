@@ -15,7 +15,7 @@ export function useAdminData() {
   const [activeTab, setActiveTab] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [notifications, setNotifications] = useState<any[]>([]);
-  
+
   // Analytics
   const [analytics, setAnalytics] = useState<any>({ revenue: 0, ordersHandled: 0, activeCouriers: 0, newSignups: 0 });
 
@@ -74,7 +74,7 @@ export function useAdminData() {
   // API data loading
   useEffect(() => {
     if (!authToken) return;
-    
+
     fetchOrders().then(res => setOrders(res.data.map((o: any) => ({
       id: o._id,
       time: new Date(o.createdAt).toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' }),
@@ -117,13 +117,13 @@ export function useAdminData() {
       status: c.status,
     })))).catch(() => { });
 
-    fetchHeroSlidesAdmin().then(res => setHeroSlides(res.data)).catch(() => {});
-    fetchMenuConfigAdmin().then(res => { setMenuConfig(res.data); setMenuConfigDraft(res.data); }).catch(() => {});
-    fetchCategoriesAdmin().then(res => setCategories(res.data)).catch(() => {});
-    fetchDealsAdmin().then(res => setAdminDeals(res.data)).catch(() => {});
-    fetchPizzas().then(res => setAdminPizzas(res.data)).catch(() => {});
-    fetchAnalytics().then(res => setAnalytics(res.data)).catch(() => {});
-    fetchGallery().then(res => setGallery(res.data)).catch(() => {});
+    fetchHeroSlidesAdmin().then(res => setHeroSlides(res.data)).catch(() => { });
+    fetchMenuConfigAdmin().then(res => { setMenuConfig(res.data); setMenuConfigDraft(res.data); }).catch(() => { });
+    fetchCategoriesAdmin().then(res => setCategories(res.data)).catch(() => { });
+    fetchDealsAdmin().then(res => setAdminDeals(res.data)).catch(() => { });
+    fetchPizzas().then(res => setAdminPizzas(res.data)).catch(() => { });
+    fetchAnalytics().then(res => setAnalytics(res.data)).catch(() => { });
+    fetchGallery().then(res => setGallery(res.data)).catch(() => { });
   }, [authToken]);
 
   useEffect(() => {

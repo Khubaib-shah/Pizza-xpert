@@ -83,8 +83,8 @@ export default function Navbar({
       <nav
         id="navbar"
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b ${isScrolled
-            ? 'nav-blur py-2 md:py-2.5 shadow-2xl border-white/5 bg-charcoal/85'
-            : 'bg-charcoal/50 backdrop-blur-sm py-4 md:py-4.5 border-white/5'
+          ? 'nav-blur py-2 md:py-2.5 shadow-2xl border-white/5 bg-charcoal/85'
+          : 'bg-charcoal/50 backdrop-blur-sm py-4 md:py-4.5 border-white/5'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -180,7 +180,7 @@ export default function Navbar({
                     setLocalSearch('');
                     onSearchChange('');
                   }}
-                  className="p-2 mr-2 hover:bg-white/10 rounded-full text-cream/70 hover:text-white transition-colors"
+                  className="p-2 mr-2 hover:bg-white/10 rounded-full text-cream/80 hover:text-white transition-colors"
                   title="Clear search"
                 >
                   <X className="w-5 h-5" />

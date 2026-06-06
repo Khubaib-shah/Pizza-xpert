@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Sparkles, Timer, CheckCircle, Tag } from 'lucide-react';
 import { Deal, CartItem } from '../types';
 import { fetchLandingContent } from '../services/api';
+import { CloudinaryImage } from './ui/CloudinaryImage';
 
 interface PopularDealsProps {
   onAddSpecialDealToCart: (deal: Deal) => void;
@@ -18,7 +19,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
       const fetchedDeals: Deal[] = (res.data.deals || []).map((d: any) => ({ ...d, id: d._id }));
       setDeals(fetchedDeals);
       const times: Record<string, number> = {};
-      fetchedDeals.forEach((deal) => { 
+      fetchedDeals.forEach((deal) => {
         times[deal.id] = Math.max(0, Math.floor((new Date(deal.validUntil).getTime() - Date.now()) / 1000));
       });
       setDealTimes(times);
@@ -48,9 +49,9 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
     const hours = Math.floor((totalSec % 86400) / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
-    
+
     const formattedTime = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    
+
     if (days > 0) {
       return `${days}d ${formattedTime}`;
     }
@@ -86,7 +87,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
             POPULAR <span className="text-cheese text-glow-gold">OFFERS</span> & DEALS
           </h2>
           <div className="w-16 h-1 bg-cheese mx-auto rounded-full" />
-          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-lg mx-auto font-medium tracking-wider">
+          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-lg mx-auto font-medium tracking-wider">
             Delicious combos perfect for sharing with family and friends. Grab these limited-time deals before they're gone!
           </p>
         </div>
@@ -104,7 +105,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                 className="group relative bg-cheese rounded-[24px] overflow-hidden flex flex-col shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(245,177,9,0.3)] text-charcoal border border-cheese-dark/35"
               >
                 {/* Ribbon Discount Badge */}
-                <div 
+                <div
                   className="absolute top-6 left-0 z-30 bg-burgundy text-cheese font-display text-sm md:text-lg font-medium py-1.5 pl-2 pr-6 uppercase tracking-wider"
                   style={{ clipPath: 'polygon(0% 0%, 100% 0%, 85% 50%, 100% 100%, 0% 100%)' }}
                 >
@@ -114,7 +115,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                 {/* Deal Image (if provided) */}
                 {deal.image && (
                   <div className="h-40 w-full overflow-hidden bg-charcoal relative">
-                    <img src={deal.image} alt={deal.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <CloudinaryImage src={deal.image} alt={deal.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
                   </div>
                 )}
@@ -127,59 +128,59 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                     </div>
                   )}
 
-                {/* Card Header Stamp */}
-                <div className="space-y-3 text-left">
+                  {/* Card Header Stamp */}
+                  <div className="space-y-3 text-left">
 
-                  <h3 className="font-display text-2xl md:text-3xl font-medium text-charcoal leading-none uppercase tracking-wide">
-                    {deal.title}
-                  </h3>
+                    <h3 className="font-display text-2xl md:text-3xl font-medium text-charcoal leading-none uppercase tracking-wide">
+                      {deal.title}
+                    </h3>
 
-                  <p className="font-sans text-xs text-charcoal/80 font-medium leading-relaxed whitespace-pre-line">
-                    {deal.description}
-                  </p>
-                </div>
-
-                {/* Card pricing and timer logic */}
-                <div className="mt-4 pt-4 border-t border-charcoal/10 space-y-4">
-
-                  {/* Countdown Timer with interactive glowing block */}
-                  <div className="flex items-center gap-2 px-3 py-2 bg-charcoal/10 rounded-xl border border-charcoal/5 justify-center">
-                    <Timer className="w-4 h-4 text-burgundy animate-spin" style={{ animationDuration: '4s' }} />
-                    <span className="font-mono text-xs font-medium tracking-widest text-burgundy uppercase">
-                      ENDS: {formatTime(timeRemaining)}
-                    </span>
+                    <p className="font-sans text-xs text-charcoal/80 font-medium leading-relaxed whitespace-pre-line">
+                      {deal.description}
+                    </p>
                   </div>
 
-                  {/* Pricing row */}
-                  <div className="flex items-baseline justify-center gap-2">
-                    <span className="font-sans text-xs font-medium line-through text-charcoal/50">
-                      Rs.{deal.originalPrice.toFixed(2)}
-                    </span>
-                    <span className="font-display text-4xl font-extrabold text-burgundy">
-                      Rs.{deal.dealPrice.toFixed(2)}
-                    </span>
+                  {/* Card pricing and timer logic */}
+                  <div className="mt-4 pt-4 border-t border-charcoal/10 space-y-4">
+
+                    {/* Countdown Timer with interactive glowing block */}
+                    <div className="flex items-center gap-2 px-3 py-2 bg-charcoal/10 rounded-xl border border-charcoal/5 justify-center">
+                      <Timer className="w-4 h-4 text-burgundy animate-spin" style={{ animationDuration: '4s' }} />
+                      <span className="font-mono text-xs font-medium tracking-widest text-burgundy uppercase">
+                        ENDS: {formatTime(timeRemaining)}
+                      </span>
+                    </div>
+
+                    {/* Pricing row */}
+                    <div className="flex items-baseline justify-center gap-2">
+                      <span className="font-sans text-xs font-medium line-through text-charcoal/50">
+                        Rs.{deal.originalPrice.toFixed(2)}
+                      </span>
+                      <span className="font-display text-4xl font-extrabold text-burgundy">
+                        Rs.{deal.dealPrice.toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Claim Button */}
+                    <button
+                      onClick={() => handleGrabDeal(deal)}
+                      disabled={isClaimed}
+                      className={`w-full py-3.5 px-4 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
+                        ? 'bg-olive text-white'
+                        : 'bg-charcoal text-cheese hover:bg-burgundy hover:text-white'
+                        }`}
+                    >
+                      {isClaimed ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-white" />
+                          CLAIMED VALUE!
+                        </>
+                      ) : (
+                        'GRAB DEAL'
+                      )}
+                    </button>
+
                   </div>
-
-                  {/* Claim Button */}
-                  <button
-                    onClick={() => handleGrabDeal(deal)}
-                    disabled={isClaimed}
-                    className={`w-full py-3.5 px-4 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
-                      ? 'bg-olive text-white'
-                      : 'bg-charcoal text-cheese hover:bg-burgundy hover:text-white'
-                      }`}
-                  >
-                    {isClaimed ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 text-white" />
-                        CLAIMED VALUE!
-                      </>
-                    ) : (
-                      'GRAB DEAL'
-                    )}
-                  </button>
-
-                </div>
                 </div>
               </div>
             );

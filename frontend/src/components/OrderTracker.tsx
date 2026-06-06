@@ -98,37 +98,37 @@ export default function OrderTracker({
     text: string;
     icon: string;
   }[] = [
-    {
-      stage: "placed",
-      label: "1. ORDER RECEIVED",
-      text: "Order mapped on terminal. Oak hearth activated.",
-      icon: "📝",
-    },
-    {
-      stage: "preparing",
-      label: "2. DOUGH STRETCH",
-      text: "Stretching sourdough. Infusing oregano oil.",
-      icon: "🥣",
-    },
-    {
-      stage: "baking",
-      label: "3. BRICK OVEN FIRE",
-      text: "Baking at 850°F on stone hearth. Bubbly cheese curls.",
-      icon: "🔥",
-    },
-    {
-      stage: "delivering",
-      label: "4. SPEED DISPATCH",
-      text: "Dispatched in induction-heated cases via moto-rider.",
-      icon: "🛵",
-    },
-    {
-      stage: "delivered",
-      label: "5. HANDED OVER",
-      text: "Scorchingly hot boxes handed over to recipient. Enjoy!",
-      icon: "📦",
-    },
-  ];
+      {
+        stage: "placed",
+        label: "1. ORDER RECEIVED",
+        text: "Order mapped on terminal. Oak hearth activated.",
+        icon: "📝",
+      },
+      {
+        stage: "preparing",
+        label: "2. DOUGH STRETCH",
+        text: "Stretching sourdough. Infusing oregano oil.",
+        icon: "🥣",
+      },
+      {
+        stage: "baking",
+        label: "3. BRICK OVEN FIRE",
+        text: "Baking at 850°F on stone hearth. Bubbly cheese curls.",
+        icon: "🔥",
+      },
+      {
+        stage: "delivering",
+        label: "4. SPEED DISPATCH",
+        text: "Dispatched in induction-heated cases via moto-rider.",
+        icon: "🛵",
+      },
+      {
+        stage: "delivered",
+        label: "5. HANDED OVER",
+        text: "Scorchingly hot boxes handed over to recipient. Enjoy!",
+        icon: "📦",
+      },
+    ];
 
   const getStageIndex = (stage: OrderStage) => {
     switch (stage) {
@@ -204,11 +204,10 @@ export default function OrderTracker({
             </span>
             <button
               onClick={() => setDemoSpeedUp(!demoSpeedUp)}
-              className={`py-1.5 px-3 rounded-lg text-[10px] font-medium uppercase tracking-wider select-none ${
-                demoSpeedUp
+              className={`py-1.5 px-3 rounded-lg text-[10px] font-medium uppercase tracking-wider select-none ${demoSpeedUp
                   ? "bg-cheese text-charcoal"
                   : "bg-charcoal text-cream border border-white/10"
-              }`}
+                }`}
             >
               {demoSpeedUp ? "ON" : "OFF"}
             </button>
@@ -266,13 +265,12 @@ export default function OrderTracker({
                   >
                     {/* Circle icon bullet */}
                     <div
-                      className={`w-4 h-4 rounded-full border-4 flex items-center justify-center flex-shrink-0 relative ${
-                        isCompleted
+                      className={`w-4 h-4 rounded-full border-4 flex items-center justify-center flex-shrink-0 relative ${isCompleted
                           ? "border-cheese bg-cheese"
                           : isActive
                             ? "border-cheese bg-charcoal"
                             : "border-charcoal-light bg-charcoal-gray"
-                      }`}
+                        }`}
                     >
                       {isActive && (
                         <span className="absolute w-1.5 h-1.5 bg-tomato rounded-full animate-ping" />
@@ -285,24 +283,22 @@ export default function OrderTracker({
                       </span>
                       <div className="leading-tight">
                         <div
-                          className={`font-medium uppercase tracking-wider ${
-                            isActive
+                          className={`font-medium uppercase tracking-wider ${isActive
                               ? "text-cheese font-medium"
                               : isCompleted
                                 ? "text-white/80 font-medium"
                                 : "text-cream/35"
-                          }`}
+                            }`}
                         >
                           {st.label}
                         </div>
                         <p
-                          className={`text-[10px] font-medium leading-tight mt-0.5 ${
-                            isActive
+                          className={`text-[10px] font-medium leading-tight mt-0.5 ${isActive
                               ? "text-cream/90"
                               : isCompleted
                                 ? "text-cream/50"
                                 : "text-cream/20"
-                          }`}
+                            }`}
                         >
                           {st.text}
                         </p>

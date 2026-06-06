@@ -13,7 +13,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       const response = await axios.post('/api/auth/login', { username, password });
       const { token } = response.data;
@@ -44,7 +44,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-cream/70 uppercase mb-1">Username</label>
+            <label className="block text-xs font-medium text-cream/80 uppercase mb-1">Username</label>
             <input
               type="text"
               value={username}
@@ -55,7 +55,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-cream/70 uppercase mb-1">Password</label>
+            <label className="block text-xs font-medium text-cream/80 uppercase mb-1">Password</label>
             <input
               type="password"
               value={password}
@@ -65,7 +65,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
               required
             />
           </div>
-          
+
           <button
             type="submit"
             disabled={loading}
@@ -76,7 +76,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
           <button
             type="button"
             onClick={onBackToStore}
-            className="w-full bg-transparent hover:bg-white/5 border border-white/10 text-cream/70 font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 text-xs"
+            className="w-full bg-transparent hover:bg-white/5 border border-white/10 text-cream/80 font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 text-xs"
           >
             Return to Store
           </button>

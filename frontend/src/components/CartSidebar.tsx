@@ -141,7 +141,7 @@ export default function CartSidebar({
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/5 rounded-full text-cream/70 hover:text-cheese transition-colors cursor-pointer"
+              className="p-2 hover:bg-white/5 rounded-full text-cream/80 hover:text-cheese transition-colors cursor-pointer"
             >
               <X className="w-5.5 h-5.5" />
             </button>
@@ -224,7 +224,7 @@ export default function CartSidebar({
                           </div>
 
                           <div className="font-mono text-sm font-medium text-cheese">
-                            ${(item.pricePerItem * item.quantity).toFixed(2)}
+                            Rs{(item.pricePerItem * item.quantity).toFixed(2)}
                           </div>
                         </div>
 
@@ -234,14 +234,14 @@ export default function CartSidebar({
                 </div>
 
                 {/* Subtotal summary card */}
-                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/70 font-medium">
+                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/80 font-medium">
                   <div className="flex justify-between">
                     <span>ITEMS TOTAL</span>
-                    <span className="font-mono">${subtotal.toFixed(2)}</span>
+                    <span className="font-mono">Rs{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>STATE GST TAX (8%)</span>
-                    <span className="font-mono">${tax.toFixed(2)}</span>
+                    <span className="font-mono">Rs{tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>SPEED MOTO COURIER</span>
@@ -249,19 +249,19 @@ export default function CartSidebar({
                       {deliveryFee === 0 ? (
                         <span className="text-olive">FREE TODAY</span>
                       ) : (
-                        `$${deliveryFee.toFixed(2)}`
+                        `${deliveryFee.toFixed(2)}`
                       )}
                     </span>
                   </div>
                   {deliveryFee > 0 && (
                     <div className="text-[10px] text-cheese/70 font-semibold uppercase text-center border border-dashed border-cheese/10 p-1.5 rounded bg-cheese/5">
-                      💡 Add ${(25 - subtotal).toFixed(2)} more to secure FREE delivery fee
+                      💡 Add Rs{(25 - subtotal).toFixed(2)} more to secure FREE delivery fee
                     </div>
                   )}
                   <div className="pt-3 border-t border-white/5 flex justify-between text-sm font-medium text-white uppercase">
                     <span>GRAND COMBINED TOTAL</span>
                     <span className="font-display text-2xl text-cheese text-glow-gold">
-                      ${grandTotal.toFixed(2)}
+                      Rs{grandTotal.toFixed(2)}
                     </span>
                   </div>
                 </div>

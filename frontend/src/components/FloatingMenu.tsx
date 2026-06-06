@@ -24,9 +24,9 @@ export default function FloatingMenu({ onTrackOrder }: { onTrackOrder: () => voi
   return (
     <div className="fixed bottom-6 right-6 z-50 flex items-center justify-center">
       <div className="relative w-14 h-14">
-        
+
         {/* Track Order Item */}
-        <button 
+        <button
           onClick={handleTrackOrder}
           className={`absolute w-12 h-12 rounded-full bg-charcoal text-cream flex items-center justify-center shadow-lg transition-all duration-300 transform ${isOpen ? '-translate-y-16 scale-100 opacity-100 hover:bg-tomato' : 'translate-y-0 scale-50 opacity-0 pointer-events-none'}`}
           title="Track Order"
@@ -35,7 +35,7 @@ export default function FloatingMenu({ onTrackOrder }: { onTrackOrder: () => voi
         </button>
 
         {/* WhatsApp Item */}
-        <button 
+        <button
           onClick={handleWhatsApp}
           className={`absolute w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg transition-all duration-300 delay-75 transform ${isOpen ? '-translate-y-12 -translate-x-12 scale-100 opacity-100 hover:bg-[#128C7E]' : 'translate-y-0 translate-x-0 scale-50 opacity-0 pointer-events-none'}`}
           title="Contact WhatsApp"
@@ -44,7 +44,7 @@ export default function FloatingMenu({ onTrackOrder }: { onTrackOrder: () => voi
         </button>
 
         {/* Back to Top Item */}
-        <button 
+        <button
           onClick={scrollToTop}
           className={`absolute w-12 h-12 rounded-full bg-cream text-charcoal border border-charcoal/10 flex items-center justify-center shadow-lg transition-all duration-300 delay-150 transform ${isOpen ? '-translate-x-16 scale-100 opacity-100 hover:bg-cheese' : 'translate-x-0 scale-50 opacity-0 pointer-events-none'}`}
           title="Back to Top"
@@ -53,7 +53,7 @@ export default function FloatingMenu({ onTrackOrder }: { onTrackOrder: () => voi
         </button>
 
         {/* Main Toggle Button */}
-        <button 
+        <button
           onClick={toggleMenu}
           className={`absolute inset-0 w-14 h-14 rounded-full bg-tomato text-white flex items-center justify-center shadow-xl transition-transform duration-300 hover:bg-burgundy ${isOpen ? 'rotate-[315deg]' : 'rotate-0'}`}
         >

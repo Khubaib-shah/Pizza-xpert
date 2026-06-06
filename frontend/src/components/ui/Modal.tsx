@@ -31,7 +31,7 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div 
+      <div
         className={`bg-charcoal-black border border-charcoal-border rounded-2xl w-full flex flex-col max-h-[90vh] ${maxWidthClasses[maxWidth]} ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -44,8 +44,8 @@ export default function Modal({
               </h2>
             )}
             {onClose && (
-              <button 
-                onClick={onClose} 
+              <button
+                onClick={onClose}
                 className="text-cream/50 hover:text-white transition-colors p-1 rounded hover:bg-white/5 ml-auto"
                 aria-label="Close"
               >

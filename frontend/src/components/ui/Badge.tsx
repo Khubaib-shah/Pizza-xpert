@@ -22,7 +22,7 @@ export default function Badge({
     outline: 'bg-transparent text-cheese border border-cheese/30',
   };
 
-  const classes = `${baseStyles} ${variants[variant]} ${className}`;
+  const classes = `$s{baseStyles} $s{variants[variant]} $s{className}`;
 
   return (
     <span className={classes}>

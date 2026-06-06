@@ -3,6 +3,7 @@ import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { Testimonial } from "../types";
 import { fetchLandingContent } from "../services/api";
 import { IMAGE_MAP } from "../data";
+import { CloudinaryImage } from "./ui/CloudinaryImage";
 
 const PIZZA_IMAGES = [
   IMAGE_MAP.pepperoni,
@@ -22,7 +23,7 @@ export default function Testimonials() {
       .then((res) => {
         setTestimonials(res.data.testimonials || []);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const handleNext = () => {
@@ -57,10 +58,11 @@ export default function Testimonials() {
 
           {/* Left: Image */}
           <div className="w-full md:w-2/5  flex-shrink-0 relative z-10">
-            <img
+            <CloudinaryImage
               src={assignedImage}
               alt="Customer enjoyment"
-              className="w-full aspect-square object-cover rounded-[32px] shadow-xl border-4 border-white/10"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 rounded-[32px] shadow-xl border-4 border-white/10 aspect-square"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
 

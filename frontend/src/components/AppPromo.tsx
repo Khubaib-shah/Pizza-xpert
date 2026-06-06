@@ -72,7 +72,7 @@ export default function AppPromo() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-[9px] text-cream/40 uppercase leading-none font-medium">TOTAL SUM</div>
-                    <div className="text-base font-medium text-cheese mt-0.5">$18.99</div>
+                    <div className="text-base font-medium text-cheese mt-0.5">Rs18.99</div>
                   </div>
                   <span className="text-[8px] bg-tomato text-white font-sans font-medium py-1 px-2 rounded-full uppercase">
                     HOT DISPATCH

@@ -53,13 +53,13 @@ export default function CustomersDirectory({
                 <tr key={c.id} className="hover:bg-charcoal-800/20 transition-all font-mono">
                   <td className="p-4 font-medium text-cream/50">{c.id}</td>
                   <td className="p-4 font-sans font-medium text-white">{c.name}</td>
-                  <td className="p-4 text-cream/70">{c.phone}</td>
+                  <td className="p-4 text-cream/80">{c.phone}</td>
                   <td className="p-4 text-center font-medium text-white">{c.orders}</td>
                   <td className="p-4 text-emerald-400 font-medium">Rs{c.spend.toLocaleString()}</td>
                   <td className="p-4">
                     <Badge variant={
                       c.tier === 'VIP' ? 'outline' :
-                      c.tier === 'Returning' ? 'info' : 'neutral'
+                        c.tier === 'Returning' ? 'info' : 'neutral'
                     }>
                       {c.tier}
                     </Badge>

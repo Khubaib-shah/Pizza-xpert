@@ -9,7 +9,7 @@ interface AnalyticsDashboardProps {
 
 export default function AnalyticsDashboard({ orders, analytics = {} }: AnalyticsDashboardProps) {
   const navigate = useNavigate();
-  
+
   const revenue = analytics.revenue || 0;
   const ordersHandled = analytics.ordersHandled || 0;
   const activeCouriers = analytics.activeCouriers || 0;
@@ -52,7 +52,7 @@ export default function AnalyticsDashboard({ orders, analytics = {} }: Analytics
   const fillD = `${pathD} L 500 200 L 0 200 Z`;
 
   const timelineLabels = [];
-  for(let i=0; i<4; i++) {
+  for (let i = 0; i < 4; i++) {
     const d = new Date(now - thirtyDaysMs + (i * thirtyDaysMs / 3));
     timelineLabels.push(d.toLocaleDateString('en-PK', { month: 'short', day: 'numeric' }));
   }
@@ -264,14 +264,14 @@ export default function AnalyticsDashboard({ orders, analytics = {} }: Analytics
               <tr key={o.id} className="hover:bg-charcoal-800/30 transition-colors font-mono">
                 <td className="p-3 font-medium text-cheese">{o.id}</td>
                 <td className="p-3 text-white font-sans font-medium">{o.customer}</td>
-                <td className="p-3 text-cream/70 font-sans">{o.items}</td>
+                <td className="p-3 text-cream/80 font-sans">{o.items}</td>
                 <td className="p-3 text-white">Rs. {o.total}</td>
                 <td className="p-3">
                   <Badge variant={
                     o.status === 'Pending' ? 'warning' :
-                    o.status === 'Preparing' ? 'info' :
-                    o.status === 'Ready' ? 'neutral' :
-                    o.status === 'Delivered' ? 'success' : 'error'
+                      o.status === 'Preparing' ? 'info' :
+                        o.status === 'Ready' ? 'neutral' :
+                          o.status === 'Delivered' ? 'success' : 'error'
                   }>
                     {o.status}
                   </Badge>

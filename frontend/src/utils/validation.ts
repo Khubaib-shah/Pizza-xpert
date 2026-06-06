@@ -4,8 +4,8 @@ export type ValidationResult = {
   formatted?: string;
 };
 
-const NAME_REGEX = /^[\p{L}][\p{L}\s'\-]{1,79}$/u;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NAME_REGEX = /^[\p{L}][\p{L}\s'\-]{1,79}Rs/u;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+Rs/;
 
 export function isRequired(value: string): boolean {
   return value.trim().length > 0;

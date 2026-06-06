@@ -77,7 +77,7 @@ export default function Categories({
             <span className="text-cheese text-glow-gold">CRAVING</span>?
           </h2>
           <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
-          <p className="font-sans text-cream/70 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
+          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
             Toggle categories to find your perfect artisan woodfire creation.
           </p>
         </div>
@@ -87,8 +87,8 @@ export default function Categories({
           <div
             ref={scrollContainerRef}
             className={`z-30 w-full flex flex-nowrap overflow-x-auto hide-scrollbar items-center justify-start md:justify-center gap-2.5 select-none transition-colors duration-200 px-4 py-2 ${isSticky
-                ? "fixed top-[52px] md:top-[64px] left-0 right-0 bg-charcoal/95 backdrop-blur-md border-b border-white/5 shadow-2xl"
-                : "relative"
+              ? "fixed top-[52px] md:top-[64px] left-0 right-0 bg-charcoal/95 backdrop-blur-md border-b border-white/5 shadow-2xl"
+              : "relative"
               }`}
           >
             {categories.filter(c => c.slug !== 'all').map((cat) => {
@@ -102,8 +102,8 @@ export default function Categories({
                     onScrollToElement(`category-${cat.slug}`);
                   }}
                   className={`flex-shrink-0 py-2.5 px-5 rounded-full text-xs font-sans font-medium uppercase tracking-wide border transition-all duration-300 transform active:scale-95 flex items-center gap-2 cursor-pointer ${isSelected
-                      ? "bg-burgundy text-cheese border-cheese shadow-[0_4px_15px_rgba(93,17,19,0.5)]"
-                      : "bg-charcoal-light text-cream/70 border-white/5 hover:border-white/15"
+                    ? "bg-burgundy text-cheese border-cheese shadow-[0_4px_15px_rgba(93,17,19,0.5)]"
+                    : "bg-charcoal-light text-cream/80 border-white/5 hover:border-white/15"
                     }`}
                 >
                   <span>{cat.name}</span>

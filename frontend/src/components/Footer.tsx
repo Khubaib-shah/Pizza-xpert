@@ -16,7 +16,7 @@ export default function Footer({ onScrollToElement, onTrackOrderToggle }: Footer
   );
 
   return (
-    <footer className="relative bg-charcoal-black bg-grain text-cream/70 py-16 px-4 md:px-6 overflow-hidden border-t border-white/5">
+    <footer className="relative bg-charcoal-black bg-grain text-cream/80 py-16 px-4 md:px-6 overflow-hidden border-t border-white/5">
 
       <div className="max-w-7xl mx-auto space-y-12 relative z-10 text-left">
 

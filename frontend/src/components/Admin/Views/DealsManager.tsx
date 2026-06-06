@@ -74,29 +74,29 @@ export default function DealsManager({
                   <span className="text-[9px] font-mono font-medium bg-burgundy/30 text-cheese px-2 py-0.5 rounded-full border border-cheese/20">{deal.discountBadge}</span>
                   <h3 className="font-display font-medium text-white uppercase text-sm mt-2">{deal.title}</h3>
                 </div>
-              <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-medium border shrink-0 ${deal.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
-                {deal.isActive ? 'Active' : 'Off'}
-              </span>
-            </div>
-            <p className="text-xs text-cream/50 font-sans leading-relaxed">{deal.description}</p>
-            <div className="flex items-center gap-3 pt-1">
-              <div className="text-cream/30 text-xs line-through font-mono">Rs.{deal.originalPrice}</div>
-              <div className="text-cheese font-display text-xl font-medium">Rs.{deal.dealPrice}</div>
-            </div>
-            <div className="flex gap-2 pt-2">
-              <button
-                onClick={() => { setEditingDeal(deal); setDealForm({ title: deal.title, discountBadge: deal.discountBadge, description: deal.description, originalPrice: String(deal.originalPrice), dealPrice: String(deal.dealPrice), validUntil: deal.validUntil ? new Date(deal.validUntil).toISOString().slice(0, 16) : '', isLimited: deal.isLimited, isActive: deal.isActive, image: deal.image || '' }); setShowDealModal(true); }}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 text-[10px] font-medium uppercase py-2 rounded-lg transition-all cursor-pointer"
-              >
-                <Edit2 className="w-3 h-3" /> Edit
-              </button>
-              <button
-                onClick={() => setDeleteTarget(deal)}
-                className="p-2 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg transition-all cursor-pointer"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
+                <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-medium border shrink-0 ${deal.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                  {deal.isActive ? 'Active' : 'Off'}
+                </span>
+              </div>
+              <p className="text-xs text-cream/50 font-sans leading-relaxed">{deal.description}</p>
+              <div className="flex items-center gap-3 pt-1">
+                <div className="text-cream/30 text-xs line-through font-mono">Rs.{deal.originalPrice}</div>
+                <div className="text-cheese font-display text-xl font-medium">Rs.{deal.dealPrice}</div>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => { setEditingDeal(deal); setDealForm({ title: deal.title, discountBadge: deal.discountBadge, description: deal.description, originalPrice: String(deal.originalPrice), dealPrice: String(deal.dealPrice), validUntil: deal.validUntil ? new Date(deal.validUntil).toISOString().slice(0, 16) : '', isLimited: deal.isLimited, isActive: deal.isActive, image: deal.image || '' }); setShowDealModal(true); }}
+                  className="flex-1 flex items-center justify-center gap-1.5 bg-charcoal-dark border border-white/5 text-cheese hover:border-cheese/40 text-[10px] font-medium uppercase py-2 rounded-lg transition-all cursor-pointer"
+                >
+                  <Edit2 className="w-3 h-3" /> Edit
+                </button>
+                <button
+                  onClick={() => setDeleteTarget(deal)}
+                  className="p-2 bg-charcoal-dark border border-white/5 text-red-400 hover:border-red-400/40 rounded-lg transition-all cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -153,8 +153,8 @@ export default function DealsManager({
                 </div>
               </div>
             ) : (
-              <div 
-                className="w-full h-32 rounded-xl border border-dashed border-charcoal-border bg-charcoal-dark flex flex-col items-center justify-center text-cream/40 gap-2 hover:border-cheese hover:text-cheese transition-colors cursor-pointer" 
+              <div
+                className="w-full h-32 rounded-xl border border-dashed border-charcoal-border bg-charcoal-dark flex flex-col items-center justify-center text-cream/40 gap-2 hover:border-cheese hover:text-cheese transition-colors cursor-pointer"
                 onClick={() => setShowGallery(true)}
               >
                 <ImageIcon className="w-6 h-6" />

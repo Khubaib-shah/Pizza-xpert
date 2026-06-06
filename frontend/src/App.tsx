@@ -34,6 +34,7 @@ import heroBgMain from "./assets/images/1.png";
 import heroBgOven from "./assets/images/2.png";
 import heroBgPepperoni from "./assets/images/1.png";
 import { CartItem, SimulatedOrder, Deal, OrderStage } from "./types";
+import Marquee from "./components/Marquee";
 
 export default function App() {
   const navigate = useNavigate();
@@ -256,6 +257,7 @@ export default function App() {
 
             {/* ━━ HERO SECTION (2) ━━ */}
             <Hero onScrollToElement={handleScrollToElement} />
+            <Marquee />
 
             <WaveDivider className="mt-[-1px] relative z-20" />
 
@@ -346,7 +348,7 @@ export default function App() {
 
             {/* ━━ BACK TO TOP CORNER FLOATER ━━ */}
             {showScrollTop && (
-              <FloatingMenu 
+              <FloatingMenu
                 onTrackOrder={() => {
                   if (activeOrder) {
                     setTrackerOpen(true);

@@ -47,7 +47,7 @@ export default function KitchenStatus() {
 
             <div className="bg-charcoal p-3 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
               <p className="text-white"><strong>Oven Temp Core:</strong> <span className="text-yellow-400 font-medium">{station.temp}</span></p>
-              <p className="text-cream/70"><strong>Payload Capacity:</strong> {station.load}</p>
+              <p className="text-cream/80"><strong>Payload Capacity:</strong> {station.load}</p>
               <p className="text-cream/50"><strong>System status flags:</strong> OK_SYSTEM_NORMAL_FIBER</p>
             </div>
           </div>

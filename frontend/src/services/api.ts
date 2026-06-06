@@ -43,8 +43,19 @@ export const fetchLandingContent = () => {
   return cache.get('/content')!;
 };
 
-export const fetchCategories = () => api.get('/categories');
-export const fetchMenuConfig = () => api.get('/menu-config');
+export const fetchCategories = () => {
+  if (!cache.has('/categories')) {
+    cache.set('/categories', api.get('/categories'));
+  }
+  return cache.get('/categories')!;
+};
+
+export const fetchMenuConfig = () => {
+  if (!cache.has('/menu-config')) {
+    cache.set('/menu-config', api.get('/menu-config'));
+  }
+  return cache.get('/menu-config')!;
+};
 export const fetchHeroSlides = () => api.get('/hero-slides');
 
 export const placeOrder = (orderData: object) => api.post('/orders', orderData);
@@ -61,7 +72,7 @@ export const updateStaffStatus = (id: string, status: string) =>
   api.patch(`/staff/${id}/status`, { status });
 
 // ── Gallery / Media Endpoints (Admin) ───────────────────────────
-export const fetchGallery = (folder?: string) => 
+export const fetchGallery = (folder?: string) =>
   api.get('/gallery', { params: folder ? { folder } : {} });
 
 export const uploadMedia = (formData: FormData) =>

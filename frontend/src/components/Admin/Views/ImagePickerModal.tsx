@@ -73,9 +73,9 @@ export default function ImagePickerModal({ isOpen, onClose, gallery, onSelect, t
         {/* Folders */}
         <div className="flex gap-2 mb-4 overflow-x-auto pb-2 custom-scrollbar flex-shrink-0">
           {folders.map(folder => (
-            <Button 
+            <Button
               key={folder}
-              variant={selectedFolder === folder ? 'primary' : 'secondary'} 
+              variant={selectedFolder === folder ? 'primary' : 'secondary'}
               onClick={() => setSelectedFolder(folder)}
               className='text-xs'
             >
@@ -107,8 +107,8 @@ export default function ImagePickerModal({ isOpen, onClose, gallery, onSelect, t
         <div className="flex-1 overflow-y-auto custom-scrollbar bg-charcoal rounded-xl border border-charcoal-border p-4">
           <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
             {filteredGallery.map(img => (
-              <div 
-                key={img._id} 
+              <div
+                key={img._id}
                 onClick={() => {
                   onSelect(img.url);
                   onClose();
@@ -130,14 +130,14 @@ export default function ImagePickerModal({ isOpen, onClose, gallery, onSelect, t
             )}
           </div>
         </div>
-        
+
         <div className="pt-4 flex justify-between items-center flex-shrink-0">
           <div>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              className="hidden" 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
               accept="image/*"
             />
             <Button onClick={() => fileInputRef.current?.click()} disabled={uploading}>

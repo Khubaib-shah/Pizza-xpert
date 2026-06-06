@@ -26,7 +26,7 @@ export default function GalleryManager({ gallery, setGallery }: GalleryManagerPr
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    
+
     const files = Array.from(e.target.files);
     if (files.length > 10) {
       setErrorModal({ title: 'Too Many Files', message: 'You can only upload up to 10 images at once.' });
@@ -70,24 +70,24 @@ export default function GalleryManager({ gallery, setGallery }: GalleryManagerPr
   };
 
   // Group images by folder for display
-  const filteredGallery = selectedFolder === 'all' 
-    ? gallery 
+  const filteredGallery = selectedFolder === 'all'
+    ? gallery
     : gallery.filter(img => img.folder === selectedFolder);
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-charcoal p-4 rounded-2xl border border-charcoal-border">
         <div className="flex gap-2">
-          <Button 
-            variant={selectedFolder === 'all' ? 'primary' : 'secondary'} 
+          <Button
+            variant={selectedFolder === 'all' ? 'primary' : 'secondary'}
             onClick={() => setSelectedFolder('all')}
           >
             All Media
           </Button>
           {folders.map(folder => (
-            <Button 
+            <Button
               key={folder}
-              variant={selectedFolder === folder ? 'primary' : 'secondary'} 
+              variant={selectedFolder === folder ? 'primary' : 'secondary'}
               onClick={() => setSelectedFolder(folder)}
             >
               <Folder className="w-4 h-4 mr-2" />
@@ -96,11 +96,11 @@ export default function GalleryManager({ gallery, setGallery }: GalleryManagerPr
           ))}
         </div>
         <div>
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleFileChange} 
-            className="hidden" 
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
             accept="image/*"
             multiple
           />
@@ -122,14 +122,14 @@ export default function GalleryManager({ gallery, setGallery }: GalleryManagerPr
               )}
               {/* Overlay controls */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                <button 
+                <button
                   onClick={() => window.open(img.url, '_blank')}
                   className="bg-charcoal p-2 rounded-full hover:bg-cheese text-cream hover:text-black transition-colors"
                   title="View Original"
                 >
                   <ImageIcon className="w-4 h-4" />
                 </button>
-                <button 
+                <button
                   onClick={() => setImageToDelete(img._id)}
                   className="bg-charcoal p-2 rounded-full hover:bg-tomato text-cream transition-colors"
                   title="Delete"
@@ -139,7 +139,7 @@ export default function GalleryManager({ gallery, setGallery }: GalleryManagerPr
               </div>
             </div>
             <div className="p-3">
-              <p className="text-[10px] font-mono text-cream/70 truncate">{img.filename}</p>
+              <p className="text-[10px] font-mono text-cream/80 truncate">{img.filename}</p>
               <p className="text-[9px] text-cream/40 mt-1 uppercase">{img.folder}</p>
             </div>
           </div>

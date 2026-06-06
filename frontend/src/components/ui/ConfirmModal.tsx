@@ -41,7 +41,7 @@ export default function ConfirmModal({
           </div>
         )}
 
-        <div className="text-sm text-cream/70 leading-relaxed font-sans">
+        <div className="text-sm text-cream/80 leading-relaxed font-sans">
           {message}
         </div>
 
@@ -49,9 +49,9 @@ export default function ConfirmModal({
           <Button variant="secondary" onClick={onClose} disabled={isLoading} className="flex-1">
             {cancelText}
           </Button>
-          <Button 
-            variant={isDanger ? 'primary' : 'primary'} 
-            onClick={onConfirm} 
+          <Button
+            variant={isDanger ? 'primary' : 'primary'}
+            onClick={onConfirm}
             disabled={isLoading}
             className={`flex-1 ${isDanger ? 'bg-burgundy hover:bg-tomato text-white border-none' : ''}`}
           >

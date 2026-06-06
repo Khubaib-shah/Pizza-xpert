@@ -19,21 +19,21 @@ export default function AdminSidebar({
     <aside className="w-full md:w-[260px] h-full bg-charcoal-black border-b md:border-b-0 md:border-r border-charcoal-border flex flex-col flex-shrink-0 z-20">
       {/* Sidebar Brand Logo */}
       <div className="flex-shrink-0 p-6 border-b border-charcoal-800 flex items-center justify-between">
-          <div className="flex flex-col gap-1 items-start">
-            <Logo />
-          </div>
-          {/* Simple exit toggle */}
-          <button
-            onClick={onBackToStore}
-            className="text-xs bg-charcoal-800 text-cheese hover:bg-cheese hover:text-charcoal-black px-2 py-1 rounded font-medium uppercase transition-all tracking-wide md:hidden"
-          >
-            Exit
-          </button>
+        <div className="flex flex-col gap-1 items-start">
+          <Logo />
         </div>
+        {/* Simple exit toggle */}
+        <button
+          onClick={onBackToStore}
+          className="text-xs bg-charcoal-800 text-cheese hover:bg-cheese hover:text-charcoal-black px-2 py-1 rounded font-medium uppercase transition-all tracking-wide md:hidden"
+        >
+          Exit
+        </button>
+      </div>
 
-        {/* Sidebar Nav Items */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
-          <nav className="p-3 space-y-1">
+      {/* Sidebar Nav Items */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <nav className="p-3 space-y-1">
           {SIDEBAR_ITEMS.map(item => {
             const Icon = item.icon;
             return (
@@ -41,10 +41,9 @@ export default function AdminSidebar({
                 key={item.id}
                 to={`/admin/${item.path}`}
                 className={({ isActive }) =>
-                  `w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-xs tracking-wider relative cursor-pointer ${
-                    isActive
-                      ? 'bg-charcoal text-cheese border-l-4 border-cheese pl-3'
-                      : 'text-cream/70 hover:text-white hover:bg-charcoal-dark'
+                  `w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-xs tracking-wider relative cursor-pointer ${isActive
+                    ? 'bg-charcoal text-cheese border-l-4 border-cheese pl-3'
+                    : 'text-cream/80 hover:text-white hover:bg-charcoal-dark'
                   }`
                 }
               >
@@ -62,8 +61,8 @@ export default function AdminSidebar({
               </NavLink>
             );
           })}
-          </nav>
-        </div>
+        </nav>
+      </div>
 
       {/* Sidebar Footer Account Profile */}
       <div className="flex-shrink-0 p-4 border-t border-charcoal-800 bg-charcoal-900">

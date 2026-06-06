@@ -46,7 +46,7 @@ export default function StaffManagement({
                   {idx === 0 && <span className="text-cheese">🏆</span>}
                   <span>{member.name}</span>
                 </td>
-                <td className="p-4 font-sans text-cream/70">{member.role}</td>
+                <td className="p-4 font-sans text-cream/80">{member.role}</td>
                 <td className="p-4">
                   <Badge variant={member.status === 'On Duty' ? 'success' : 'neutral'}>
                     {member.status}

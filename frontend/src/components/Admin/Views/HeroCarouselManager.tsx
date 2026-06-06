@@ -159,8 +159,8 @@ export default function HeroCarouselManager({
                 </div>
               </div>
             ) : (
-              <div 
-                className="w-full h-32 rounded-xl border border-dashed border-charcoal-border bg-charcoal-dark flex flex-col items-center justify-center text-cream/40 gap-2 hover:border-cheese hover:text-cheese transition-colors cursor-pointer" 
+              <div
+                className="w-full h-32 rounded-xl border border-dashed border-charcoal-border bg-charcoal-dark flex flex-col items-center justify-center text-cream/40 gap-2 hover:border-cheese hover:text-cheese transition-colors cursor-pointer"
                 onClick={() => setShowGallery(true)}
               >
                 <ImageIcon className="w-6 h-6" />
