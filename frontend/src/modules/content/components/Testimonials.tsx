@@ -4,6 +4,7 @@ import { Testimonial } from '../../../types';
 import { useLandingContent } from '../../content/hooks/useContentQueries';
 import { IMAGE_MAP } from '../../../shared/data/data';
 import { CloudinaryImage } from '../../../shared/components/ui/CloudinaryImage';
+import TestiTempImage from '../../../assets/images/pizza_oven_1780276189628.png';
 
 const PIZZA_IMAGES = [
   IMAGE_MAP.pepperoni,
@@ -52,7 +53,7 @@ export default function Testimonials() {
           {/* Left: Image */}
           <div className="w-full md:w-2/5  flex-shrink-0 relative z-10">
             <CloudinaryImage
-              src={assignedImage}
+              src={TestiTempImage}
               alt="Customer enjoyment"
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 rounded-[32px] shadow-xl border-4 border-white/10 aspect-square"
               sizes="(max-width: 768px) 100vw, 50vw"
