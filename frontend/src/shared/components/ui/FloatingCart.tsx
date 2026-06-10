@@ -47,7 +47,9 @@ export default function FloatingCart({ cartCount, onCartToggle }: FloatingCartPr
       aria-label="Open shopping cart"
     >
       {/* Bag icon with subtle scale on hover */}
-      <div className={`
+      <div 
+        id="cart-icon-destination"
+        className={`
         relative transition-transform duration-300
         ${isPulsing ? 'scale-125' : 'scale-100'}
         group-hover:scale-110

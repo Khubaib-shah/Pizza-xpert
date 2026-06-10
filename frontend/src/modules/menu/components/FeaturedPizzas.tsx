@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Clock, Flame, Check, Plus, Minus, X, Info, Loader2 } from 'lucide-react';
 import { Pizza, PizzaCustomization, CartItem } from '../../../types';
 import { usePizzas, useCategories, useMenuConfig } from '../hooks/useMenuQueries';
+import { flyToCart } from '../../../shared/utils/flyToCart';
 
 interface FeaturedPizzasProps {
   onAddToCart: (item: Omit<CartItem, 'id'>) => void;
@@ -75,7 +76,7 @@ export default function FeaturedPizzas({
   };
 
   // Quick Direct Add (Chef's Standard Setup)
-  const handleQuickAdd = (pizza: Pizza) => {
+  const handleQuickAdd = (e: React.MouseEvent, pizza: Pizza) => {
     const defaultCustomization: PizzaCustomization = {
       size: 'Medium (12")',
       crust: 'Classic Hand-Tossed',
@@ -90,6 +91,10 @@ export default function FeaturedPizzas({
       customization: defaultCustomization,
       pricePerItem: pizza.price
     });
+
+    // Trigger fly-to-cart animation
+    const imgElement = e.currentTarget.closest('.group')?.querySelector('img');
+    if (imgElement) flyToCart(imgElement as HTMLElement);
   };
 
   // Toggle Toppings
@@ -135,7 +140,7 @@ export default function FeaturedPizzas({
   };
 
   // Save customize and Add to cart
-  const handleSaveCustomization = () => {
+  const handleSaveCustomization = (e: React.MouseEvent) => {
     if (!customizingPizza) return;
 
     const customization: PizzaCustomization = {
@@ -152,6 +157,10 @@ export default function FeaturedPizzas({
       customization,
       pricePerItem: calculateCustomizedPrice()
     });
+
+    // Trigger fly-to-cart animation
+    const imgElement = e.currentTarget.closest('.fixed')?.querySelector('img');
+    if (imgElement) flyToCart(imgElement as HTMLElement);
 
     setCustomizingPizza(null);
   };
@@ -318,7 +327,7 @@ export default function FeaturedPizzas({
                                 customize                              </button>
 
                               <button
-                                onClick={() => handleQuickAdd(pizza)}
+                                onClick={(e) => handleQuickAdd(e, pizza)}
                                 className="flex-1 w-full btn-primary-anim bg-burgundy inline-flex justify-center text-cheese hover:bg-tomato hover:text-cream font-sans font-medium text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all duration-300 border border-tomato/20 active:scale-95 cursor-pointer"
                               >
                                 Rs {pizza.price.toFixed(2)} <Plus className="w-4 h-4 ml-2" />
@@ -368,7 +377,7 @@ export default function FeaturedPizzas({
                                 </div>
                                 <div className="flex gap-2">
                                   <button onClick={() => handleOpenCustomizer(pizza)} className="text-xs p-3 bg-white/5 hover:bg-white/15 border border-white/10 text-cream rounded-xl transition-all cursor-pointer">customize</button>
-                                  <button onClick={() => handleQuickAdd(pizza)} className="flex-1 btn-primary-anim bg-burgundy inline-flex justify-center text-cheese hover:bg-tomato hover:text-cream font-sans font-medium text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all border border-tomato/20 cursor-pointer">
+                                  <button onClick={(e) => handleQuickAdd(e, pizza)} className="flex-1 btn-primary-anim bg-burgundy inline-flex justify-center text-cheese hover:bg-tomato hover:text-cream font-sans font-medium text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all border border-tomato/20 cursor-pointer">
                                     Rs {pizza.price.toFixed(2)} <Plus className="w-4 h-4 ml-2" />
                                   </button>
                                 </div>
