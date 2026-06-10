@@ -2,6 +2,7 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import Badge from '../../../../../shared/components/ui/Badge';
 import Button from '../../../../../shared/components/ui/Button';
+import { useToastStore } from '../../../../../shared/hooks/useToastStore';
 
 interface OrdersManagementProps {
   orders: any[];
@@ -21,6 +22,8 @@ export default function OrdersManagement({
   orders, setOrders, orderFilter, setOrderFilter, searchQuery, setSearchQuery,
   selectedOrders, setSelectedOrders, handleSelectAllOrders, handleToggleSelectOrder, handleAdvanceKanban
 }: OrdersManagementProps) {
+  const showNotification = useToastStore(state => state.showNotification);
+
   return (
     <div className="space-y-6">
       {/* Filter controls */}
@@ -82,7 +85,7 @@ export default function OrdersManagement({
             <Button
               variant="secondary"
               onClick={() => {
-                alert(`Generating labels container for: ${selectedOrders.join(', ')}`);
+                showNotification(`Generating labels container for: ${selectedOrders.join(', ')}`);
               }}
             >
               Print Slips

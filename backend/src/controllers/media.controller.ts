@@ -10,6 +10,7 @@ export const uploadMedia = async (req: Request, res: Response) => {
     }
 
     const file = req.file as any;
+    console.log('Uploaded File:', file);
     
     // Create Media record
     const media = await Media.create({
@@ -18,13 +19,13 @@ export const uploadMedia = async (req: Request, res: Response) => {
       folder: req.body.folder || 'pizza-xpert/general',
       filename: file.originalname,
       format: file.mimetype,
-      bytes: file.size
+      bytes: file.size || 0, // Fallback in case size is undefined
     });
 
     res.status(201).json(media);
-  } catch (error) {
-    console.error('Upload Error:', error);
-    res.status(500).json({ message: 'Error uploading media' });
+  } catch (error: any) {
+    console.error('Upload Error Details:', error);
+    res.status(500).json({ message: 'Error uploading media: ' + (error.message || JSON.stringify(error)) });
   }
 };
 

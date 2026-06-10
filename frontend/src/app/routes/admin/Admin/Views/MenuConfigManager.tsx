@@ -2,6 +2,7 @@ import React from 'react';
 import { Save, RefreshCw, Plus, X } from 'lucide-react';
 import { updateMenuConfig } from '../../../../../services/api';
 import Button from '../../../../../shared/components/ui/Button';
+import { useToastStore } from '../../../../../shared/hooks/useToastStore';
 
 interface MenuConfigManagerProps {
   menuConfigDraft: any;
@@ -14,6 +15,8 @@ interface MenuConfigManagerProps {
 export default function MenuConfigManager({
   menuConfigDraft, setMenuConfigDraft, setMenuConfig, savingMenuConfig, setSavingMenuConfig
 }: MenuConfigManagerProps) {
+  const showNotification = useToastStore(state => state.showNotification);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -29,7 +32,7 @@ export default function MenuConfigManager({
             setMenuConfig(res.data);
             setMenuConfigDraft(res.data);
             setSavingMenuConfig(false);
-            alert('Menu config saved!');
+            showNotification('Menu config saved!');
           }}
           disabled={savingMenuConfig}
           variant="primary"

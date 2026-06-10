@@ -1,49 +1,57 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense, useMemo } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import {
-  Sparkles,
-  ShoppingBag,
-  ShieldCheck,
-  CheckSquare,
-  Bell,
-  ArrowUp,
-} from "lucide-react";
-import Navbar from './shared/components/layout/Navbar';
-import Hero from './modules/content/components/Hero';
-import FeaturedPizzas from './modules/menu/components/FeaturedPizzas';
-import PopularDeals from './modules/menu/components/PopularDeals';
-import PremiumHorizontalMenu from './modules/menu/components/PremiumHorizontalMenu';
-import Categories from './modules/menu/components/Categories';
-import WhyChooseUs from './modules/content/components/WhyChooseUs';
-import Testimonials from './modules/content/components/Testimonials';
-import DeliveryProcess from './modules/content/components/DeliveryProcess';
-import AppPromo from './modules/content/components/AppPromo';
-import CTABanner from './modules/content/components/CTABanner';
-import Footer from './shared/components/layout/Footer';
-import CartSidebar from './modules/cart/components/CartSidebar';
-import OrderTracker from './modules/orders/components/OrderTracker';
-import Preloader from './shared/components/ui/Preloader';
-import WaveDivider from './shared/components/ui/WaveDivider';
-import FloatingMenu from './shared/components/layout/FloatingMenu';
-import useDebounce from './shared/hooks/useDebounce';
+import { Bell } from "lucide-react";
+import Navbar from "./shared/components/layout/Navbar";
+import Hero from "./modules/content/components/Hero";
+import FeaturedPizzas from "./modules/menu/components/FeaturedPizzas";
+import PopularDeals from "./modules/menu/components/PopularDeals";
+import PremiumHorizontalMenu from "./modules/menu/components/PremiumHorizontalMenu";
+import Categories from "./modules/menu/components/Categories";
+import WhyChooseUs from "./modules/content/components/WhyChooseUs";
+import Testimonials from "./modules/content/components/Testimonials";
+import DeliveryProcess from "./modules/content/components/DeliveryProcess";
+import AppPromo from "./modules/content/components/AppPromo";
+import CTABanner from "./modules/content/components/CTABanner";
+import Footer from "./shared/components/layout/Footer";
+import CartSidebar from "./modules/cart/components/CartSidebar";
+import OrderTracker from "./modules/orders/components/OrderTracker";
+import Preloader from "./shared/components/ui/Preloader";
+import WaveDivider from "./shared/components/ui/WaveDivider";
+import FloatingMenu from "./shared/components/layout/FloatingMenu";
+import FloatingCart from "./shared/components/ui/FloatingCart";
+import SocialFloating from "./shared/components/ui/SocialFloating";
+import useDebounce from "./shared/hooks/useDebounce";
+
+
 
 // Lazy load AdminPanel for code splitting
 const AdminPanel = lazy(() => import("./app/routes/admin/AdminPanel"));
-import useImagePreloader from './shared/hooks/useImagePreloader';
-import heroBgMain from './assets/images/1.png';
-import heroBgOven from './assets/images/2.png';
-import heroBgPepperoni from './assets/images/1.png';
-import { Deal, OrderStage, CartItem, SimulatedOrder } from './types';
-import Marquee from './modules/content/components/Marquee';
-import { useCartStore } from './modules/cart/store/cart.store';
-import { useOrderStore } from './modules/orders/store/order.store';
-import { useToastStore } from './shared/hooks/useToastStore';
+import useImagePreloader from "./shared/hooks/useImagePreloader";
+import { Deal, OrderStage, CartItem, SimulatedOrder } from "./types";
+import Marquee from "./modules/content/components/Marquee";
+import { useCartStore } from "./modules/cart/store/cart.store";
+import { useOrderStore } from "./modules/orders/store/order.store";
+import { useToastStore } from "./shared/hooks/useToastStore";
+import { useLandingContent } from "./modules/content/hooks/useContentQueries";
+import { optimizeCloudinaryUrl } from "./shared/utils/cloudinary";
 
 export default function App() {
   const navigate = useNavigate();
   // Zustand Stores
-  const { items: cart, addToCart: handleAddToCartRaw, updateQuantity: handleUpdateQuantity, removeItem: handleRemoveItem, clearCart } = useCartStore();
-  const { activeOrder, trackerOpen, setActiveOrder, setTrackerOpen, advanceStage: handleAdvanceStage } = useOrderStore();
+  const {
+    items: cart,
+    addToCart: handleAddToCartRaw,
+    updateQuantity: handleUpdateQuantity,
+    removeItem: handleRemoveItem,
+    clearCart,
+  } = useCartStore();
+  const {
+    activeOrder,
+    trackerOpen,
+    setActiveOrder,
+    setTrackerOpen,
+    advanceStage: handleAdvanceStage,
+  } = useOrderStore();
   const { toast, showNotification } = useToastStore();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,23 +62,39 @@ export default function App() {
 
   const [appReady, setAppReady] = useState(false);
 
-  const assetsReady = useImagePreloader([
-    heroBgMain,
-    heroBgOven,
-    heroBgPepperoni,
-  ]);
+  // Fetch landing content to extract hero slide images for preloading
+  const { data: landingContent, isLoading: contentLoading } =
+    useLandingContent();
+
+  // Build the list of hero images dynamically from the API response
+  const heroImageUrls = useMemo(() => {
+    if (!landingContent?.heroSlides) return [];
+    return landingContent.heroSlides
+      .map((slide: any) => slide.backgroundImg)
+      .filter(Boolean)
+      .map((url: string) => optimizeCloudinaryUrl(url, 1920));
+  }, [landingContent]);
+
+  // Preload the actual hero background images from the API
+  const assetsReady = useImagePreloader(heroImageUrls);
 
   useEffect(() => {
-    if (assetsReady) {
-      const timeout = window.setTimeout(() => setAppReady(true), 150);
+    // App is ready when content is loaded AND hero images are preloaded
+    if (!contentLoading && assetsReady && heroImageUrls.length > 0) {
+      const timeout = window.setTimeout(() => setAppReady(true), 100);
       return () => window.clearTimeout(timeout);
     }
+    // If there are no hero slides but content finished loading, still show the app
+    if (!contentLoading && heroImageUrls.length === 0) {
+      setAppReady(true);
+    }
     return undefined;
-  }, [assetsReady]);
+  }, [assetsReady, contentLoading, heroImageUrls.length]);
 
   // Monitor screen scroll to display floating "Back to top" anchors
   useEffect(() => {
-    document.title = "Pizza Xpert | The Best Authentic Woodfire Pizza Delivery Deals";
+    document.title =
+      "Pizza Xpert | The Best Authentic Woodfire Pizza Delivery Deals";
     const toggleVisibility = () => {
       if (window.scrollY > 400) {
         setShowScrollTop(true);
@@ -78,7 +102,7 @@ export default function App() {
         setShowScrollTop(false);
       }
     };
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
@@ -170,7 +194,7 @@ export default function App() {
                   setTrackerOpen(true);
                 } else {
                   showNotification(
-                    "🤔 You don’t have an active dispatch order to track. Grab pizza first!",
+                    "🤔 You don't have an active dispatch order to track. Grab pizza first!",
                   );
                 }
               }}
@@ -205,7 +229,9 @@ export default function App() {
             <PopularDeals onAddSpecialDealToCart={handleAddSpecialDealToCart} />
 
             {/* ━━ PREMIUM HORIZONTAL DEALS (4.5) ━━ */}
-            <PremiumHorizontalMenu onAddSpecialDealToCart={handleAddSpecialDealToCart} />
+            <PremiumHorizontalMenu
+              onAddSpecialDealToCart={handleAddSpecialDealToCart}
+            />
 
             {/* ━━ WHY CHOOSE US (6) ━━ */}
             <WhyChooseUs />
@@ -270,6 +296,15 @@ export default function App() {
                 </div>
               </div>
             )}
+
+            {/* ━━ FLOATING CART BUTTON (RIGHT CENTER) ━━ */}
+            <FloatingCart
+              cartCount={cartCount}
+              onCartToggle={() => setCartOpen(true)}
+            />
+
+            {/* ━━ SOCIAL MEDIA BUTTONS (LEFT SIDE) ━━ */}
+            <SocialFloating />
 
             {/* ━━ BACK TO TOP CORNER FLOATER ━━ */}
             {showScrollTop && (

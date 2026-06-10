@@ -1,7 +1,10 @@
 import React from 'react';
 import Button from '../../../../../shared/components/ui/Button';
+import { useToastStore } from '../../../../../shared/hooks/useToastStore';
 
 export default function SystemSettings() {
+  const showNotification = useToastStore(state => state.showNotification);
+
   return (
     <div className="bg-charcoal border border-charcoal-border rounded-2xl p-6 space-y-6">
       <h4 className="text-xs uppercase tracking-widest font-medium text-cheese pb-2 border-b border-charcoal-border">STORE ENGINE PROPERTIES</h4>
@@ -73,7 +76,7 @@ export default function SystemSettings() {
       <div className="pt-4 border-t border-charcoal-border flex justify-end">
         <Button
           variant="primary"
-          onClick={() => alert('Properties saved locally to local config database.')}
+          onClick={() => showNotification('Properties saved locally to local config database.')}
         >
           Apply properties Override
         </Button>

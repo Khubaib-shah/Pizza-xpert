@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import Logo from '../../../shared/components/ui/Logo';
 
 export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginSuccess: (token: string) => void, onBackToStore: () => void }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -15,11 +16,20 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
     setError('');
 
     try {
-      const response = await axios.post('/api/auth/login', { username, password });
+      // Backend expects { username, password } where username is used as email lookup
+      const response = await axios.post('/api/auth/login', { username: email, password });
       const { token } = response.data;
       onLoginSuccess(token);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+      const msg = err.response?.data?.message || 'Login failed';
+      if (msg === 'Invalid credentials') {
+        setError('Invalid email or password. Please try again.');
+      } else if (err.response?.data?.errors) {
+        // Zod validation errors
+        setError(err.response.data.errors.map((e: any) => e.message).join(', '));
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -44,32 +54,47 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-cream/80 uppercase mb-1">Username</label>
+            <label htmlFor="admin-email" className="block text-xs font-medium text-cream/80 uppercase mb-1">Email</label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="admin-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-cheese"
-              placeholder="Enter username"
+              placeholder="admin@pizzaxpert.com"
+              autoComplete="email"
               required
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-cream/80 uppercase mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-cheese"
-              placeholder="Enter password"
-              required
-            />
+            <label htmlFor="admin-password" className="block text-xs font-medium text-cream/80 uppercase mb-1">Password</label>
+            <div className="relative">
+              <input
+                id="admin-password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 pr-12 text-white focus:outline-none focus:border-cheese"
+                placeholder="Enter password"
+                autoComplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cheese transition-colors"
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-cheese hover:bg-yellow-400 text-black font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2"
+            className="w-full bg-cheese hover:bg-yellow-400 text-black font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? 'Authenticating...' : 'Secure Login'}
           </button>

@@ -103,6 +103,8 @@
 .animate-ticker-scroller {
   animation: ticker-scroll 42s linear infinite;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Cheese Glow highlights */
@@ -213,6 +215,9 @@ textarea:focus {
   transition: ease-out 0.3s;
   overflow: hidden;
   z-index: 1;
+  will-change: transform, color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .btn-primary-anim::before {
@@ -252,6 +257,9 @@ textarea:focus {
   color: var(--color-cheese) !important;
   overflow: visible;
   z-index: 1;
+  will-change: transform, color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .btn-secondary-anim::before {

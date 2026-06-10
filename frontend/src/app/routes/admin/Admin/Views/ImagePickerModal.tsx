@@ -3,6 +3,7 @@ import Modal from '../../../../../shared/components/ui/Modal';
 import Button from '../../../../../shared/components/ui/Button';
 import { Image as ImageIcon, Folder, Upload, Plus, Loader2 } from 'lucide-react';
 import { uploadMedia } from '../../../../../services/api';
+import { useToastStore } from '../../../../../shared/hooks/useToastStore';
 
 interface ImagePickerModalProps {
   isOpen: boolean;
@@ -43,6 +44,8 @@ export default function ImagePickerModal({ isOpen, onClose, gallery, onSelect, t
     setIsAddingFolder(false);
   };
 
+  const showNotification = useToastStore(state => state.showNotification);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
@@ -57,10 +60,12 @@ export default function ImagePickerModal({ isOpen, onClose, gallery, onSelect, t
       if (onUploadSuccess) onUploadSuccess(res.data);
       // Auto-select the newly uploaded image!
       onSelect(res.data.url);
+      showNotification('Image uploaded successfully');
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload failed', error);
-      alert('Upload failed. Please try again.');
+      const msg = error.response?.data?.message || 'Upload failed. Please try again.';
+      showNotification(`Upload Error: ${msg}`);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
