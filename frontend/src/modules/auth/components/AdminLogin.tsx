@@ -1,32 +1,40 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { ShieldCheck, Eye, EyeOff } from 'lucide-react';
-import Logo from '../../../shared/components/ui/Logo';
+import { useState } from "react";
+import { ShieldCheck, Eye, EyeOff } from "lucide-react";
+import Logo from "../../../shared/components/ui/Logo";
+import { adminLogin } from "../../../services/api";
 
-export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginSuccess: (token: string) => void, onBackToStore: () => void }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function AdminLogin({
+  onLoginSuccess,
+  onBackToStore,
+}: {
+  onLoginSuccess: (token: string) => void;
+  onBackToStore: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Backend expects { username, password } where username is used as email lookup
-      const response = await axios.post('/api/auth/login', { username: email, password });
+      const response = await adminLogin({ username: email, password });
       const { token } = response.data;
       onLoginSuccess(token);
     } catch (err: any) {
-      const msg = err.response?.data?.message || 'Login failed';
-      if (msg === 'Invalid credentials') {
-        setError('Invalid email or password. Please try again.');
+      const msg = err.response?.data?.message || "Login failed";
+      if (msg === "Invalid credentials") {
+        setError("Invalid email or password. Please try again.");
       } else if (err.response?.data?.errors) {
         // Zod validation errors
-        setError(err.response.data.errors.map((e: any) => e.message).join(', '));
+        setError(
+          err.response.data.errors.map((e: any) => e.message).join(", "),
+        );
       } else {
         setError(msg);
       }
@@ -54,7 +62,12 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="admin-email" className="block text-xs font-medium text-cream/80 uppercase mb-1">Email</label>
+            <label
+              htmlFor="admin-email"
+              className="block text-xs font-medium text-cream/80 uppercase mb-1"
+            >
+              Email
+            </label>
             <input
               id="admin-email"
               type="email"
@@ -67,11 +80,16 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
             />
           </div>
           <div>
-            <label htmlFor="admin-password" className="block text-xs font-medium text-cream/80 uppercase mb-1">Password</label>
+            <label
+              htmlFor="admin-password"
+              className="block text-xs font-medium text-cream/80 uppercase mb-1"
+            >
+              Password
+            </label>
             <div className="relative">
               <input
                 id="admin-password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-charcoal-gray border border-charcoal-border rounded-lg py-2.5 px-4 pr-12 text-white focus:outline-none focus:border-cheese"
@@ -84,9 +102,13 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cheese transition-colors"
                 tabIndex={-1}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
           </div>
@@ -96,7 +118,7 @@ export default function AdminLogin({ onLoginSuccess, onBackToStore }: { onLoginS
             disabled={loading}
             className="w-full bg-cheese hover:bg-yellow-400 text-black font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? 'Authenticating...' : 'Secure Login'}
+            {loading ? "Authenticating..." : "Secure Login"}
           </button>
           <button
             type="button"
