@@ -1,7 +1,16 @@
-import { useState, useEffect } from 'react';
-import { ChefHat, Search, ShoppingBag, Menu, X, Trash2, Sliders, User } from 'lucide-react';
-import { CartItem } from '../../../types';
-import Logo from '../ui/Logo';
+import { useState, useEffect } from "react";
+import {
+  ChefHat,
+  Search,
+  ShoppingBag,
+  Menu,
+  X,
+  Trash2,
+  Sliders,
+  User,
+} from "lucide-react";
+import { CartItem } from "../../../types";
+import Logo from "../ui/Logo";
 
 export function PizzaXpertLogo() {
   return <Logo variant="light" />;
@@ -26,7 +35,7 @@ export default function Navbar({
   onScrollToElement,
   searchQuery,
   onSearchChange,
-  onToggleAdmin
+  onToggleAdmin,
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,7 +51,7 @@ export default function Navbar({
       if (localSearch !== searchQuery) {
         onSearchChange(localSearch);
         if (localSearch) {
-          onScrollToElement('menu');
+          onScrollToElement("menu");
         }
       }
     }, 300);
@@ -57,19 +66,19 @@ export default function Navbar({
         setIsScrolled(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
-    { label: 'Home', id: 'home' },
-    { label: 'Menu', id: 'menu' },
-    { label: 'Deals', id: 'deals' },
-    { label: 'Track Order', action: onTrackOrderToggle },
-    { label: 'About', id: 'about' }
+    { label: "Home", id: "home" },
+    { label: "Menu", id: "menu" },
+    { label: "Deals", id: "deals" },
+    { label: "Track Order", action: onTrackOrderToggle },
+    { label: "About", id: "about" },
   ];
 
-  const handleNavClick = (item: typeof navItems[0]) => {
+  const handleNavClick = (item: (typeof navItems)[0]) => {
     setMobileMenuOpen(false);
     if (item.id) {
       onScrollToElement(item.id);
@@ -82,15 +91,18 @@ export default function Navbar({
     <>
       <nav
         id="navbar"
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b ${isScrolled
-          ? 'nav-blur py-2 md:py-2.5 shadow-2xl border-white/5 bg-charcoal/85'
-          : 'bg-charcoal/50 backdrop-blur-sm py-4 md:py-4.5 border-white/5'
-          }`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b ${
+          isScrolled
+            ? "nav-blur py-2 md:py-2.5 shadow-2xl border-white/5 bg-charcoal/85"
+            : "bg-charcoal/50 backdrop-blur-sm py-4 md:py-4.5 border-white/5"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
-
           {/* Logo Brand Locked */}
-          <div className="cursor-pointer" onClick={() => onScrollToElement('home')}>
+          <div
+            className="cursor-pointer"
+            onClick={() => onScrollToElement("home")}
+          >
             <PizzaXpertLogo />
           </div>
 
@@ -100,7 +112,7 @@ export default function Navbar({
               <button
                 key={index}
                 onClick={() => handleNavClick(item)}
-                className="font-sans font-medium text-sm tracking-wide text-cream/80 hover:text-cheese transition-colors uppercase cursor-pointer"
+                className="font-sans font-medium text-sm tracking-wide text-cream/90 hover:text-cheese transition-colors uppercase cursor-pointer"
               >
                 {item.label}
               </button>
@@ -109,7 +121,6 @@ export default function Navbar({
 
           {/* Right Area Tools */}
           <div className="flex items-center gap-2 md:gap-4">
-
             {/* Search Input Toggle */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
@@ -144,8 +155,8 @@ export default function Navbar({
 
             {/* CTA Order Button */}
             <button
-              onClick={() => onScrollToElement('menu')}
-              className="hidden sm:block bg-burgundy text-cheese hover:bg-tomato hover:text-white font-sans font-medium text-xs uppercase tracking-wide py-2.5 px-5 rounded-xl border border-cheese/20 transition-all duration-300 cursor-pointer"
+              onClick={() => onScrollToElement("menu")}
+              className="hidden sm:block btn-primary-anim bg-burgundy text-cheese hover:bg-tomato hover:text-cream font-sans font-medium text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl border border-tomato/20 transition-all duration-300 active:scale-95 cursor-pointer"
             >
               Order Now
             </button>
@@ -155,9 +166,12 @@ export default function Navbar({
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-cream hover:text-cheese transition-colors"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
-
           </div>
         </div>
 
@@ -177,10 +191,10 @@ export default function Navbar({
               {localSearch && (
                 <button
                   onClick={() => {
-                    setLocalSearch('');
-                    onSearchChange('');
+                    setLocalSearch("");
+                    onSearchChange("");
                   }}
-                  className="p-2 mr-2 hover:bg-white/10 rounded-full text-cream/80 hover:text-white transition-colors"
+                  className="p-2 mr-2 hover:bg-white/10 rounded-full text-cream/90 hover:text-white transition-colors"
                   title="Clear search"
                 >
                   <X className="w-5 h-5" />
@@ -201,7 +215,6 @@ export default function Navbar({
       {/* Mobile Nav slide-in Overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden bg-charcoal/98 flex flex-col justify-between pt-24 pb-8 px-6 animate-fade-in">
-
           {/* Header row in mobile overlay */}
           <div className="absolute top-4 right-4">
             <button
@@ -232,7 +245,7 @@ export default function Navbar({
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onScrollToElement('menu');
+                onScrollToElement("menu");
               }}
               className="w-full bg-burgundy hover:bg-tomato text-cheese hover:text-white font-sans font-medium text-sm tracking-wide py-4 rounded-xl transition-all uppercase"
             >

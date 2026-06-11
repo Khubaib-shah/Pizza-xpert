@@ -9,8 +9,8 @@ import {
   Zap,
   ChevronRight,
 } from "lucide-react";
-import { Pizza, Check } from 'lucide-react';
-import { useCategories } from '../hooks/useMenuQueries';
+import { Pizza, Check } from "lucide-react";
+import { useCategories } from "../hooks/useMenuQueries";
 
 interface CategoriesProps {
   selectedCategory: string;
@@ -43,11 +43,16 @@ export default function Categories({
   // Auto-scroll the active pill into view
   useEffect(() => {
     if (scrollContainerRef.current) {
-      const activePill = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
+      const activePill = scrollContainerRef.current.querySelector(
+        '[data-active="true"]',
+      ) as HTMLElement;
       if (activePill) {
         const container = scrollContainerRef.current;
-        const scrollLeft = activePill.offsetLeft - container.offsetWidth / 2 + activePill.offsetWidth / 2;
-        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        const scrollLeft =
+          activePill.offsetLeft -
+          container.offsetWidth / 2 +
+          activePill.offsetWidth / 2;
+        container.scrollTo({ left: scrollLeft, behavior: "smooth" });
       }
     }
   }, [selectedCategory]);
@@ -71,7 +76,7 @@ export default function Categories({
             <span className="text-cheese text-glow-gold">CRAVING</span>?
           </h2>
           <div className="w-16 h-1 bg-tomato mx-auto rounded-full" />
-          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
+          <p className="font-sans text-cream/90 text-xs md:text-sm max-w-sm mx-auto font-medium uppercase tracking-wider">
             Toggle categories to find your perfect artisan woodfire creation.
           </p>
         </div>
@@ -80,33 +85,37 @@ export default function Categories({
         <div ref={placeholderRef} className="h-[60px]">
           <div
             ref={scrollContainerRef}
-            className={`z-30 w-full flex flex-nowrap overflow-x-auto hide-scrollbar items-center justify-start md:justify-center gap-2.5 select-none transition-colors duration-200 px-4 py-2 ${isSticky
-              ? "fixed top-[52px] md:top-[64px] left-0 right-0 bg-charcoal/95 backdrop-blur-md border-b border-white/5 shadow-2xl"
-              : "relative"
-              }`}
+            className={`z-30 w-full flex flex-nowrap overflow-x-auto hide-scrollbar items-center justify-start md:justify-center gap-2.5 select-none transition-colors duration-200 px-4 py-2 ${
+              isSticky
+                ? "fixed top-[52px] md:top-[64px] left-0 right-0 bg-charcoal/95 backdrop-blur-md border-b border-white/5 shadow-2xl"
+                : "relative"
+            }`}
           >
-            {categories.filter(c => c.slug !== 'all').map((cat) => {
-              const isSelected = selectedCategory === cat.slug;
-              return (
-                <button
-                  key={cat.slug}
-                  data-active={isSelected}
-                  onClick={() => {
-                    onSelectCategory(cat.slug);
-                    onScrollToElement(`category-${cat.slug}`);
-                  }}
-                  className={`flex-shrink-0 py-2.5 px-5 rounded-full text-xs font-sans font-medium uppercase tracking-wide border transition-all duration-300 transform active:scale-95 flex items-center gap-2 cursor-pointer ${isSelected
-                    ? "bg-burgundy text-cheese border-cheese shadow-[0_4px_15px_rgba(93,17,19,0.5)]"
-                    : "bg-charcoal-light text-cream/80 border-white/5 hover:border-white/15"
+            {categories
+              .filter((c) => c.slug !== "all")
+              .map((cat) => {
+                const isSelected = selectedCategory === cat.slug;
+                return (
+                  <button
+                    key={cat.slug}
+                    data-active={isSelected}
+                    onClick={() => {
+                      onSelectCategory(cat.slug);
+                      onScrollToElement(`category-${cat.slug}`);
+                    }}
+                    className={`flex-shrink-0 py-2.5 px-5 rounded-full text-xs font-sans font-medium uppercase tracking-wide border transition-all duration-300 transform active:scale-95 flex items-center gap-2 cursor-pointer ${
+                      isSelected
+                        ? "bg-burgundy text-cheese border-cheese shadow-[0_4px_15px_rgba(93,17,19,0.5)]"
+                        : "bg-charcoal-light text-cream/90 border-white/5 hover:border-white/15"
                     }`}
-                >
-                  <span>{cat.name}</span>
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-cheese" : "bg-cream/30"}`}
-                  />
-                </button>
-              );
-            })}
+                  >
+                    <span>{cat.name}</span>
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-cheese" : "bg-cream/30"}`}
+                    />
+                  </button>
+                );
+              })}
           </div>
         </div>
       </div>

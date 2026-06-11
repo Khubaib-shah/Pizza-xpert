@@ -64,7 +64,7 @@ export default function AdminLogin({
           <div>
             <label
               htmlFor="admin-email"
-              className="block text-xs font-medium text-cream/80 uppercase mb-1"
+              className="block text-xs font-medium text-cream/90 uppercase mb-1"
             >
               Email
             </label>
@@ -82,7 +82,7 @@ export default function AdminLogin({
           <div>
             <label
               htmlFor="admin-password"
-              className="block text-xs font-medium text-cream/80 uppercase mb-1"
+              className="block text-xs font-medium text-cream/90 uppercase mb-1"
             >
               Password
             </label>
@@ -123,7 +123,7 @@ export default function AdminLogin({
           <button
             type="button"
             onClick={onBackToStore}
-            className="w-full bg-transparent hover:bg-white/5 border border-white/10 text-cream/80 font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 text-xs"
+            className="w-full bg-transparent hover:bg-white/5 border border-white/10 text-cream/90 font-medium uppercase tracking-widest py-3 rounded-lg transition-colors mt-2 text-xs"
           >
             Return to Store
           </button>

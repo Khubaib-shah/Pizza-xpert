@@ -54,8 +54,6 @@ export default function CartSidebar({
     setPhone(value);
   };
 
-  if (!isOpen) return null;
-
   // Pricing math sum
   const subtotal = cart.reduce(
     (acc, item) => acc + item.pricePerItem * item.quantity,
@@ -139,15 +137,20 @@ export default function CartSidebar({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden font-sans select-none">
+    <div
+      className={`fixed inset-0 z-50 overflow-hidden font-sans select-none transition-all duration-300 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
+      aria-hidden={!isOpen}
+    >
       {/* Black Modal Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
       />
 
       {/* Slide drawer */}
-      <div className="absolute inset-y-0 right-0 max-w-full flex">
+      <div
+        className={`absolute inset-y-0 right-0 max-w-full flex transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+      >
         <div className="w-screen max-w-md bg-charcoal bg-grain border-l border-white/10 flex flex-col justify-between shadow-2xl relative">
           {/* Header Row */}
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-charcoal/90 z-10">
@@ -162,7 +165,7 @@ export default function CartSidebar({
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/5 rounded-full text-cream/80 hover:text-cheese transition-colors cursor-pointer"
+              className="p-2 hover:bg-white/5 rounded-full text-cream/90 hover:text-cheese transition-colors cursor-pointer"
             >
               <X className="w-5.5 h-5.5" />
             </button>
@@ -190,7 +193,7 @@ export default function CartSidebar({
                       <div className="flex-grow space-y-1.5 min-w-0">
                         {/* Title and delete */}
                         <div className="flex items-start justify-between gap-1">
-                          <h4 className="font-display text-base font-medium text-white uppercase truncate">
+                          <h4 className="font-display text-base text-white uppercase truncate">
                             {item.pizza.name}
                           </h4>
                           <button
@@ -259,7 +262,7 @@ export default function CartSidebar({
                 </div>
 
                 {/* Subtotal summary card */}
-                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/80 font-medium">
+                <div className="bg-charcoal-light/40 rounded-2xl p-4.5 border border-white/5 space-y-2.5 text-xs text-cream/90 font-medium">
                   <div className="flex justify-between">
                     <span>ITEMS TOTAL</span>
                     <span className="font-mono">Rs{subtotal.toFixed(2)}</span>
@@ -295,7 +298,7 @@ export default function CartSidebar({
                 {/* Integrated checkout form inside the drawer context */}
                 <form
                   onSubmit={handleSubmitOrder}
-                  className="bg-charcoal-light/80 border border-[var(--color-tomato)08] !rounded-[24px] p-4.5 text-left space-y-4"
+                  className="bg-charcoal-light/80 rounded-2xl p-4.5 border border-white/5 !rounded-[24px] p-4.5 text-left space-y-4"
                 >
                   <h3 className="font-display text-lg font-medium text-cheese uppercase tracking-wide border-b border-white/5 pb-2">
                     🏎 INSTANT DISPATCH DETAILS

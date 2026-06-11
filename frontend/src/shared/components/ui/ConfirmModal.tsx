@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import Modal from './Modal';
-import Button from './Button';
-import { AlertTriangle, Info } from 'lucide-react';
+import React, { ReactNode } from "react";
+import Modal from "./Modal";
+import Button from "./Button";
+import { AlertTriangle, Info } from "lucide-react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface ConfirmModalProps {
   message: string | ReactNode;
   confirmText?: string;
   cancelText?: string;
-  type?: 'danger' | 'warning' | 'info';
+  type?: "danger" | "warning" | "info";
   isLoading?: boolean;
 }
 
@@ -21,12 +21,12 @@ export default function ConfirmModal({
   onConfirm,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  type = 'danger',
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  type = "danger",
   isLoading = false,
 }: ConfirmModalProps) {
-  const isDanger = type === 'danger';
+  const isDanger = type === "danger";
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} maxWidth="sm">
@@ -41,21 +41,26 @@ export default function ConfirmModal({
           </div>
         )}
 
-        <div className="text-sm text-cream/80 leading-relaxed font-sans">
+        <div className="text-sm text-cream/90 leading-relaxed font-sans">
           {message}
         </div>
 
         <div className="flex justify-end gap-3 w-full pt-4 mt-2 border-t border-charcoal-border">
-          <Button variant="secondary" onClick={onClose} disabled={isLoading} className="flex-1">
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            disabled={isLoading}
+            className="flex-1"
+          >
             {cancelText}
           </Button>
           <Button
-            variant={isDanger ? 'primary' : 'primary'}
+            variant={isDanger ? "primary" : "primary"}
             onClick={onConfirm}
             disabled={isLoading}
-            className={`flex-1 ${isDanger ? 'bg-burgundy hover:bg-tomato text-white border-none' : ''}`}
+            className={`flex-1 ${isDanger ? "bg-burgundy hover:bg-tomato text-white border-none" : ""}`}
           >
-            {isLoading ? 'Processing...' : confirmText}
+            {isLoading ? "Processing..." : confirmText}
           </Button>
         </div>
       </div>

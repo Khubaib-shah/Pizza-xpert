@@ -1,8 +1,8 @@
-import React from 'react';
-import { X } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
-import Logo from '../../../../shared/components/ui/Logo';
-import { SIDEBAR_ITEMS } from '../../../../shared/data/adminPanelData';
+import React from "react";
+import { X } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import Logo from "../../../../shared/components/ui/Logo";
+import { SIDEBAR_ITEMS } from "../../../../shared/data/adminPanelData";
 
 interface AdminSidebarProps {
   pendingOrdersCount: number;
@@ -34,22 +34,25 @@ export default function AdminSidebar({
       {/* Sidebar Nav Items */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         <nav className="p-3 space-y-1">
-          {SIDEBAR_ITEMS.map(item => {
+          {SIDEBAR_ITEMS.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink
                 key={item.id}
                 to={`/admin/${item.path}`}
                 className={({ isActive }) =>
-                  `w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-xs tracking-wider relative cursor-pointer ${isActive
-                    ? 'bg-charcoal text-cheese border-l-4 border-cheese pl-3'
-                    : 'text-cream/80 hover:text-white hover:bg-charcoal-dark'
+                  `w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-xs tracking-wider relative cursor-pointer ${
+                    isActive
+                      ? "bg-charcoal text-cheese border-l-4 border-cheese pl-3"
+                      : "text-cream/90 hover:text-white hover:bg-charcoal-dark"
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-cheese' : 'text-cream/50'}`} />
+                    <Icon
+                      className={`w-4 h-4 ${isActive ? "text-cheese" : "text-cream/50"}`}
+                    />
                     <span>{item.label}</span>
                     {item.id === 2 && pendingOrdersCount > 0 && (
                       <span className="absolute right-3 bg-burgundy border border-cheese/30 text-white text-[9px] px-1.5 py-0.5 rounded-full font-mono animate-pulse">
@@ -77,8 +80,12 @@ export default function AdminSidebar({
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-charcoal-black" />
           </div>
           <div className="flex-1 min-w-0">
-            <span className="text-xs !font-medium text-white block truncate uppercase font-display">Admin User</span>
-            <span className="text-[9px] font-mono text-emerald-400 block truncate font-medium">SUPERUSER PORTAL</span>
+            <span className="text-xs !font-medium text-white block truncate uppercase font-display">
+              Admin User
+            </span>
+            <span className="text-[9px] font-mono text-emerald-400 block truncate font-medium">
+              SUPERUSER PORTAL
+            </span>
           </div>
           <button
             onClick={onLogout}

@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Sparkles, Timer, CheckCircle, Tag } from 'lucide-react';
-import { Deal, CartItem } from '../../../types';
-import { useLandingContent } from '../../content/hooks/useContentQueries';
-import { CloudinaryImage } from '../../../shared/components/ui/CloudinaryImage';
+import { useState, useEffect } from "react";
+import { Sparkles, Timer, CheckCircle, Tag } from "lucide-react";
+import { Deal, CartItem } from "../../../types";
+import { useLandingContent } from "../../content/hooks/useContentQueries";
+import { CloudinaryImage } from "../../../shared/components/ui/CloudinaryImage";
+import { flyToCart } from "../../../shared/utils/flyToCart";
 
 interface PopularDealsProps {
   onAddSpecialDealToCart: (deal: Deal) => void;
 }
 
-export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsProps) {
+export default function PopularDeals({
+  onAddSpecialDealToCart,
+}: PopularDealsProps) {
   const { data: landingContent } = useLandingContent();
   const dealsRaw: Deal[] = landingContent?.deals || [];
   const deals: Deal[] = dealsRaw.map((d: any) => ({ ...d, id: d._id || d.id }));
@@ -20,7 +23,10 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
     if (deals.length > 0) {
       const times: Record<string, number> = {};
       deals.forEach((deal) => {
-        times[deal.id] = Math.max(0, Math.floor((new Date(deal.validUntil).getTime() - Date.now()) / 1000));
+        times[deal.id] = Math.max(
+          0,
+          Math.floor((new Date(deal.validUntil).getTime() - Date.now()) / 1000),
+        );
       });
       setDealTimes(times);
     }
@@ -50,7 +56,7 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
 
-    const formattedTime = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 
     if (days > 0) {
       return `${days}d ${formattedTime}`;
@@ -58,17 +64,22 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
     return formattedTime;
   };
 
-  const handleGrabDeal = (deal: Deal) => {
+  const handleGrabDeal = (e: React.MouseEvent, deal: Deal) => {
     onAddSpecialDealToCart(deal);
     setClaimedDeals((prev) => ({ ...prev, [deal.id]: true }));
     setTimeout(() => {
       setClaimedDeals((prev) => ({ ...prev, [deal.id]: false }));
     }, 2500);
+
+    const imgElement = e.currentTarget.closest(".group")?.querySelector("img");
+    if (imgElement) flyToCart(imgElement as HTMLElement);
   };
 
   return (
-    <section id="deals" className="relative bg-burgundy bg-grain py-20 px-4 md:px-6 overflow-hidden">
-
+    <section
+      id="deals"
+      className="relative bg-burgundy bg-grain py-20 px-4 md:px-6 overflow-hidden"
+    >
       {/* Decorative Cheese Drips top border */}
       <div className="absolute top-0 left-0 right-0 h-6 bg-cheese/10 border-b border-cheese/10 overflow-hidden pointer-events-none" />
 
@@ -76,7 +87,6 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-cheese/5 blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-
         {/* Header content */}
         <div className="text-center space-y-4 mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-charcoal/40 text-cheese rounded-full text-xs font-medium uppercase tracking-wide border border-white/5">
@@ -84,11 +94,13 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
             EXCLUSIVE OFFERS
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-medium text-white tracking-wide uppercase">
-            POPULAR <span className="text-cheese text-glow-gold">OFFERS</span> & DEALS
+            POPULAR <span className="text-cheese text-glow-gold">OFFERS</span> &
+            DEALS
           </h2>
           <div className="w-16 h-1 bg-cheese mx-auto rounded-full" />
-          <p className="font-sans text-cream/80 text-xs md:text-sm max-w-lg mx-auto font-medium tracking-wider">
-            Delicious combos perfect for sharing with family and friends. Grab these limited-time deals before they're gone!
+          <p className="font-sans text-cream/90 text-xs md:text-sm max-w-lg mx-auto font-medium tracking-wider">
+            Delicious combos perfect for sharing with family and friends. Grab
+            these limited-time deals before they're gone!
           </p>
         </div>
 
@@ -107,7 +119,10 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                 {/* Ribbon Discount Badge */}
                 <div
                   className="absolute top-6 left-0 z-30 bg-burgundy text-cheese font-display text-sm md:text-lg font-medium py-1.5 pl-2 pr-6 uppercase tracking-wider"
-                  style={{ clipPath: 'polygon(0% 0%, 100% 0%, 85% 50%, 100% 100%, 0% 100%)' }}
+                  style={{
+                    clipPath:
+                      "polygon(0% 0%, 100% 0%, 85% 50%, 100% 100%, 0% 100%)",
+                  }}
                 >
                   {deal.discountBadge}
                 </div>
@@ -115,7 +130,12 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                 {/* Deal Image (if provided) */}
                 {deal.image && (
                   <div className="h-40 w-full overflow-hidden bg-charcoal relative">
-                    <CloudinaryImage src={deal.image} alt={deal.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                    <CloudinaryImage
+                      src={deal.image}
+                      alt={deal.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
                   </div>
                 )}
@@ -130,7 +150,6 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
 
                   {/* Card Header Stamp */}
                   <div className="space-y-3 text-left">
-
                     <h3 className="font-display text-2xl md:text-3xl font-medium text-charcoal leading-none uppercase tracking-wide">
                       {deal.title}
                     </h3>
@@ -142,10 +161,12 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
 
                   {/* Card pricing and timer logic */}
                   <div className="mt-4 pt-4 border-t border-charcoal/10 space-y-4">
-
                     {/* Countdown Timer with interactive glowing block */}
                     <div className="flex items-center gap-2 px-3 py-2 bg-charcoal/10 rounded-xl border border-charcoal/5 justify-center">
-                      <Timer className="w-4 h-4 text-burgundy animate-spin" style={{ animationDuration: '4s' }} />
+                      <Timer
+                        className="w-4 h-4 text-burgundy animate-spin"
+                        style={{ animationDuration: "4s" }}
+                      />
                       <span className="font-mono text-xs font-medium tracking-widest text-burgundy uppercase">
                         ENDS: {formatTime(timeRemaining)}
                       </span>
@@ -163,12 +184,13 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
 
                     {/* Claim Button */}
                     <button
-                      onClick={() => handleGrabDeal(deal)}
+                      onClick={(e) => handleGrabDeal(e, deal)}
                       disabled={isClaimed}
-                      className={`w-full py-3.5 px-4 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${isClaimed
-                        ? 'bg-olive text-white'
-                        : 'bg-charcoal text-cheese hover:bg-burgundy hover:text-white'
-                        }`}
+                      className={`w-full btn-primary-anim border border-tomato/20 active:scale-95 py-3.5 px-4 rounded-xl font-sans font-medium text-xs uppercase tracking-widest transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer ${
+                        isClaimed
+                          ? "bg-olive text-white"
+                          : "bg-burgundy text-cheese hover:bg-tomato hover:text-cream"
+                      }`}
                     >
                       {isClaimed ? (
                         <>
@@ -176,17 +198,15 @@ export default function PopularDeals({ onAddSpecialDealToCart }: PopularDealsPro
                           CLAIMED VALUE!
                         </>
                       ) : (
-                        'GRAB DEAL'
+                        "GRAB DEAL"
                       )}
                     </button>
-
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
-
       </div>
     </section>
   );

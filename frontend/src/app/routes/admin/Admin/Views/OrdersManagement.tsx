@@ -1,8 +1,8 @@
-import React from 'react';
-import { Search } from 'lucide-react';
-import Badge from '../../../../../shared/components/ui/Badge';
-import Button from '../../../../../shared/components/ui/Button';
-import { useToastStore } from '../../../../../shared/hooks/useToastStore';
+import React from "react";
+import { Search } from "lucide-react";
+import Badge from "../../../../../shared/components/ui/Badge";
+import Button from "../../../../../shared/components/ui/Button";
+import { useToastStore } from "../../../../../shared/hooks/useToastStore";
 
 interface OrdersManagementProps {
   orders: any[];
@@ -19,24 +19,41 @@ interface OrdersManagementProps {
 }
 
 export default function OrdersManagement({
-  orders, setOrders, orderFilter, setOrderFilter, searchQuery, setSearchQuery,
-  selectedOrders, setSelectedOrders, handleSelectAllOrders, handleToggleSelectOrder, handleAdvanceKanban
+  orders,
+  setOrders,
+  orderFilter,
+  setOrderFilter,
+  searchQuery,
+  setSearchQuery,
+  selectedOrders,
+  setSelectedOrders,
+  handleSelectAllOrders,
+  handleToggleSelectOrder,
+  handleAdvanceKanban,
 }: OrdersManagementProps) {
-  const showNotification = useToastStore(state => state.showNotification);
+  const showNotification = useToastStore((state) => state.showNotification);
 
   return (
     <div className="space-y-6">
       {/* Filter controls */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
         <div className="flex flex-wrap gap-2">
-          {['ALL', 'Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled'].map(f => (
+          {[
+            "ALL",
+            "Pending",
+            "Preparing",
+            "Ready",
+            "Delivered",
+            "Cancelled",
+          ].map((f) => (
             <button
               key={f}
               onClick={() => setOrderFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider font-extrabold cursor-pointer transition-colors ${orderFilter === f
-                ? 'bg-cheese text-black'
-                : 'bg-charcoal-800 text-cream/80 hover:bg-[#2c2c2c]'
-                }`}
+              className={`px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider font-extrabold cursor-pointer transition-colors ${
+                orderFilter === f
+                  ? "bg-cheese text-black"
+                  : "bg-charcoal-800 text-cream/90 hover:bg-[#2c2c2c]"
+              }`}
             >
               {f}
             </button>
@@ -49,7 +66,7 @@ export default function OrdersManagement({
             type="text"
             placeholder="Filter customer / code..."
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-charcoal border border-charcoal-border rounded-lg py-2 pl-9 pr-4 text-xs font-mono text-white w-full focus:outline-none focus:border-cheese"
           />
           <Search className="w-4 h-4 text-cream/40 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -60,13 +77,21 @@ export default function OrdersManagement({
       {selectedOrders.length > 0 && (
         <div className="bg-burgundy/30 border border-cheese/30 rounded-xl p-3 flex items-center justify-between animate-fade-in text-xs">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-cheese font-medium">{selectedOrders.length} ORDERS SELECTED</span>
+            <span className="font-mono text-cheese font-medium">
+              {selectedOrders.length} ORDERS SELECTED
+            </span>
           </div>
           <div className="flex gap-2">
             <Button
               variant="primary"
               onClick={() => {
-                setOrders(prev => prev.map(o => selectedOrders.includes(o.id) ? { ...o, status: 'Ready' } : o));
+                setOrders((prev) =>
+                  prev.map((o) =>
+                    selectedOrders.includes(o.id)
+                      ? { ...o, status: "Ready" }
+                      : o,
+                  ),
+                );
                 setSelectedOrders([]);
               }}
             >
@@ -76,7 +101,13 @@ export default function OrdersManagement({
               variant="secondary"
               className="bg-blue-600 hover:bg-blue-500 border-none text-white"
               onClick={() => {
-                setOrders(prev => prev.map(o => selectedOrders.includes(o.id) ? { ...o, rider: 'Rider Vicky' } : o));
+                setOrders((prev) =>
+                  prev.map((o) =>
+                    selectedOrders.includes(o.id)
+                      ? { ...o, rider: "Rider Vicky" }
+                      : o,
+                  ),
+                );
                 setSelectedOrders([]);
               }}
             >
@@ -85,7 +116,9 @@ export default function OrdersManagement({
             <Button
               variant="secondary"
               onClick={() => {
-                showNotification(`Generating labels container for: ${selectedOrders.join(', ')}`);
+                showNotification(
+                  `Generating labels container for: ${selectedOrders.join(", ")}`,
+                );
               }}
             >
               Print Slips
@@ -102,7 +135,9 @@ export default function OrdersManagement({
               <th className="p-4 w-10">
                 <input
                   type="checkbox"
-                  checked={selectedOrders.length === orders.length && orders.length > 0}
+                  checked={
+                    selectedOrders.length === orders.length && orders.length > 0
+                  }
                   onChange={handleSelectAllOrders}
                   className="rounded text-cheese"
                 />
@@ -120,12 +155,21 @@ export default function OrdersManagement({
           </thead>
           <tbody className="divide-y divide-charcoal-800">
             {orders
-              .filter(o => orderFilter === 'ALL' || o.status === orderFilter)
-              .filter(o => o.customer.toLowerCase().includes(searchQuery.toLowerCase()) || o.id.toLowerCase().includes(searchQuery.toLowerCase()))
-              .map(o => {
+              .filter((o) => orderFilter === "ALL" || o.status === orderFilter)
+              .filter(
+                (o) =>
+                  o.customer
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()) ||
+                  o.id.toLowerCase().includes(searchQuery.toLowerCase()),
+              )
+              .map((o) => {
                 const isChecked = selectedOrders.includes(o.id);
                 return (
-                  <tr key={o.id} className={`hover:bg-charcoal-800/20 transition-all font-mono ${isChecked ? 'bg-yellow-500/5' : ''}`}>
+                  <tr
+                    key={o.id}
+                    className={`hover:bg-charcoal-800/20 transition-all font-mono ${isChecked ? "bg-yellow-500/5" : ""}`}
+                  >
                     <td className="p-4">
                       <input
                         type="checkbox"
@@ -136,23 +180,36 @@ export default function OrdersManagement({
                     </td>
                     <td className="p-4 font-medium text-cheese">{o.id}</td>
                     <td className="p-4 text-cream/50">{o.time}</td>
-                    <td className="p-4 font-sans font-medium text-white">{o.customer}</td>
-                    <td className="p-4 font-sans text-cream/80 truncate max-w-xs">{o.items}</td>
+                    <td className="p-4 font-sans font-medium text-white">
+                      {o.customer}
+                    </td>
+                    <td className="p-4 font-sans text-cream/90 truncate max-w-xs">
+                      {o.items}
+                    </td>
                     <td className="p-4 font-sans text-xs">{o.payment}</td>
-                    <td className="p-4 font-sans font-medium text-cheese/80">{o.rider}</td>
+                    <td className="p-4 font-sans font-medium text-cheese/80">
+                      {o.rider}
+                    </td>
                     <td className="p-4 text-white font-medium">Rs{o.total}</td>
                     <td className="p-4">
-                      <Badge variant={
-                        o.status === 'Pending' ? 'warning' :
-                          o.status === 'Preparing' ? 'info' :
-                            o.status === 'Ready' ? 'neutral' :
-                              o.status === 'Delivered' ? 'success' : 'error'
-                      }>
+                      <Badge
+                        variant={
+                          o.status === "Pending"
+                            ? "warning"
+                            : o.status === "Preparing"
+                              ? "info"
+                              : o.status === "Ready"
+                                ? "neutral"
+                                : o.status === "Delivered"
+                                  ? "success"
+                                  : "error"
+                        }
+                      >
                         {o.status}
                       </Badge>
                     </td>
                     <td className="p-4 text-center">
-                      {o.status !== 'Delivered' && o.status !== 'Cancelled' && (
+                      {o.status !== "Delivered" && o.status !== "Cancelled" && (
                         <Button
                           variant="outline"
                           size="sm"

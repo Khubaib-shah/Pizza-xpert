@@ -1,8 +1,8 @@
-import React from 'react';
-import Badge from '../../../../../shared/components/ui/Badge';
-import Button from '../../../../../shared/components/ui/Button';
-import Modal from '../../../../../shared/components/ui/Modal';
-import TextInput from '../../../../../shared/components/form/TextInput';
+import React from "react";
+import Badge from "../../../../../shared/components/ui/Badge";
+import Button from "../../../../../shared/components/ui/Button";
+import Modal from "../../../../../shared/components/ui/Modal";
+import TextInput from "../../../../../shared/components/form/TextInput";
 
 interface StaffManagementProps {
   staff: any[];
@@ -14,12 +14,19 @@ interface StaffManagementProps {
 }
 
 export default function StaffManagement({
-  staff, setStaff, showAddStaffModal, setShowAddStaffModal, newStaff, setNewStaff
+  staff,
+  setStaff,
+  showAddStaffModal,
+  setShowAddStaffModal,
+  newStaff,
+  setNewStaff,
 }: StaffManagementProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <span className="text-xs uppercase text-cream/40 font-mono tracking-wider">AGGREGATE LEADERBOARD RATINGS FOR ON-DUTY STAFF</span>
+        <span className="text-xs uppercase text-cream/40 font-mono tracking-wider">
+          AGGREGATE LEADERBOARD RATINGS FOR ON-DUTY STAFF
+        </span>
         <Button onClick={() => setShowAddStaffModal(true)}>
           Register New Crew Member
         </Button>
@@ -46,14 +53,22 @@ export default function StaffManagement({
                   {idx === 0 && <span className="text-cheese">🏆</span>}
                   <span>{member.name}</span>
                 </td>
-                <td className="p-4 font-sans text-cream/80">{member.role}</td>
+                <td className="p-4 font-sans text-cream/90">{member.role}</td>
                 <td className="p-4">
-                  <Badge variant={member.status === 'On Duty' ? 'success' : 'neutral'}>
+                  <Badge
+                    variant={
+                      member.status === "On Duty" ? "success" : "neutral"
+                    }
+                  >
                     {member.status}
                   </Badge>
                 </td>
-                <td className="p-4 text-center font-medium text-white">{member.ordersToday} Workings</td>
-                <td className="p-4 text-emerald-400 font-extrabold">⭐ {member.rating.toFixed(1)} / 5.0</td>
+                <td className="p-4 text-center font-medium text-white">
+                  {member.ordersToday} Workings
+                </td>
+                <td className="p-4 text-emerald-400 font-extrabold">
+                  ⭐ {member.rating.toFixed(1)} / 5.0
+                </td>
               </tr>
             ))}
           </tbody>
@@ -74,13 +89,22 @@ export default function StaffManagement({
               name="staffName"
               placeholder="e.g. Ramesh Deshmukh"
               value={newStaff.name}
-              onChange={val => setNewStaff((prev: any) => ({ ...prev, name: val }))}
+              onChange={(val) =>
+                setNewStaff((prev: any) => ({ ...prev, name: val }))
+              }
             />
             <div className="space-y-1">
-              <label className="text-cream/40 uppercase font-mono tracking-widest text-[11px]">Job Title Role</label>
+              <label className="text-cream/40 uppercase font-mono tracking-widest text-[11px]">
+                Job Title Role
+              </label>
               <select
                 value={newStaff.role}
-                onChange={e => setNewStaff((prev: any) => ({ ...prev, role: e.target.value }))}
+                onChange={(e) =>
+                  setNewStaff((prev: any) => ({
+                    ...prev,
+                    role: e.target.value,
+                  }))
+                }
                 className="w-full bg-charcoal border border-charcoal-light rounded-lg p-2.5 text-white focus:outline-none focus:border-cheese"
               >
                 <option value="Rider Dispatcher">Rider Dispatcher</option>
@@ -90,21 +114,33 @@ export default function StaffManagement({
             </div>
           </div>
           <div className="pt-2 flex justify-end gap-2 text-xs">
-            <Button variant="secondary" onClick={() => setShowAddStaffModal(false)}>Cancel</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setShowAddStaffModal(false)}
+            >
+              Cancel
+            </Button>
             <Button
               variant="primary"
               onClick={() => {
                 if (newStaff.name) {
-                  setStaff(prev => [...prev, {
-                    id: `ST-0${prev.length + 1}`,
-                    name: newStaff.name,
-                    role: newStaff.role,
-                    status: 'On Duty',
-                    ordersToday: 0,
-                    rating: 5.0
-                  }]);
+                  setStaff((prev) => [
+                    ...prev,
+                    {
+                      id: `ST-0${prev.length + 1}`,
+                      name: newStaff.name,
+                      role: newStaff.role,
+                      status: "On Duty",
+                      ordersToday: 0,
+                      rating: 5.0,
+                    },
+                  ]);
                   setShowAddStaffModal(false);
-                  setNewStaff({ name: '', role: 'Rider Dispatcher', status: 'On Duty' });
+                  setNewStaff({
+                    name: "",
+                    role: "Rider Dispatcher",
+                    status: "On Duty",
+                  });
                 }
               }}
             >
